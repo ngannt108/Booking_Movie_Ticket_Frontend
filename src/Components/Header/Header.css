@@ -1,0 +1,53 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.container {
+  width: 90vw;
+}
+
+header {
+  width: 100vw;
+  padding: 15px 0px;
+  display: flex;
+  justify-content: center;
+  background-color: black;
+}
+
+header > div {
+  display: flex;
+}
+
+.MainHeader {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.container > div:nth-child(2) {
+  display: flex;
+  justify-content: flex-end;
+}
+
+h1 {
+  color: #d6ebff;
+  font-size: 25px;
+}
+
+header ul li {
+  display: inline-block;
+  margin-left: 20px;
+  font-size: 20px;
+  color: #d6ebff;
+}
+
+header ul li a {
+  text-decoration: none;
+  color: #d6ebff;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
