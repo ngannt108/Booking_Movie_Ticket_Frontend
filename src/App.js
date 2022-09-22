@@ -5,6 +5,7 @@ import Home from "./Components/Homepage/Home";
 import ShowingMovies from "./Components/ShowingMovies/ShowingMovies";
 import ComingMovies from "./Components/ComingMovies/ComingMovies";
 import Theaters from "./Components/Theaters/Theaters";
+import AllMovies from "./Page/Admin/Movies/AllMovies";
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
           <Route path="/ShowingMovies" element={<ShowingMovies />} />
           <Route path="/ComingMovies" element={<ComingMovies />} />
           <Route path="/Theaters" element={<Theaters />} />
+
+          <Route path="/Admin" element={<AllMovies />} />
         </Routes>
       </BrowserRouter>
     </div>

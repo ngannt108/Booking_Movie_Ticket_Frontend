@@ -1,0 +1,22 @@
+.vertical-menu {
+    width: fit-content;
+    border-radius: 4px;
+}
+
+.vertical-menu a {
+    background-color: #ccc;
+    color: black;
+    display: block;
+    padding: 12px;
+    text-decoration: none;
+    font-size: larger;
+}
+
+.vertical-menu a:hover {
+    background-color: rgb(31, 166, 245);
+}
+
+.vertical-menu a.active {
+    background-color: #005f5f;
+    color: white;
+}
