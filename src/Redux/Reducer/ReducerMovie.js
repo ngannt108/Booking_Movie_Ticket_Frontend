@@ -10,4 +10,9 @@ function GetMovie(state, { type, payload }) {
       return state;
   }
 }
-export default () => useReducer(GetMovie, []);
+
+function ListMovie() {
+  return useReducer(GetMovie, []);
+}
+
+export default ListMovie;

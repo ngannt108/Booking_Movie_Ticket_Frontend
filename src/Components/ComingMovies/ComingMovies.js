@@ -1,14 +1,12 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import "./ComingMovies.css";
 import { StoreContext } from "../../Redux/Store/Store";
-// require("dotenv").config({ path: "../../../.env" });
-// import dotenv from "dotenv";
+import { API_MOVIE } from "../../common/ApiController";
 
 export default function ComingMovies() {
   const store = useContext(StoreContext);
-  const domain = process.env.LOCAL;
   useEffect(() => {
-    fetch(`http://localhost:5000/movie/coming`)
+    fetch(API_MOVIE.COMING)
       .then((res) => res.json())
       .then((dt) => {
         store.lsComingMovie.ComingMovieDispatch({
@@ -18,18 +16,17 @@ export default function ComingMovies() {
       });
   }, []);
   return (
-    <div className="container">
+    <div className="lsMovie">
       {console.log(store)}
-      {store.lsComingMovie.ComingMovie.lsComingMovie &&
-        store.lsComingMovie.ComingMovie.lsComingMovie.map((n, i) => (
-          <div key={i} className="lsMovie">
-            <img src={n.hinhAnh} alt="Image" />
-            <p>{n.tenPhim}</p>
-            <p>{n.thoiLuong} phút</p>
-            <p>{n.danhGia}</p>
-            <button>Đặt vé</button>
-          </div>
-        ))}
+      {store.lsComingMovie.ComingMovie.lsComingMovie?.map((n, i) => (
+        <div key={i} className="movie">
+          <img src={n.hinhAnh} alt="movie.img" />
+          <h3>{n.tenPhim}</h3>
+          <p>{n.thoiLuong} phút</p>
+          <p>{n.danhGia}</p>
+          <button>Đặt vé</button>
+        </div>
+      ))}
     </div>
   );
 }

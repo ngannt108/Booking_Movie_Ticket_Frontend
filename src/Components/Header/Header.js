@@ -16,7 +16,7 @@ export default function Header() {
                 <Link to="/">ĐĂNG KÝ</Link>
               </li>
               <li>
-                <Link to="/">ĐĂNG NHẬP</Link>
+                <Link to="/Login">ĐĂNG NHẬP</Link>
               </li>
             </ul>
           </div>

@@ -7,4 +7,9 @@ function GetTheaters(state, { type, payload }) {
       return state;
   }
 }
-export default () => useReducer(GetTheaters, []);
+
+function ListTheaters() {
+  return useReducer(GetTheaters, []);
+}
+
+export default ListTheaters;

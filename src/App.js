@@ -5,6 +5,7 @@ import Home from "./Components/Homepage/Home";
 import ShowingMovies from "./Components/ShowingMovies/ShowingMovies";
 import ComingMovies from "./Components/ComingMovies/ComingMovies";
 import Theaters from "./Components/Theaters/Theaters";
+import LogIn from "./Components/LogIn/LogIn";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/ShowingMovies" element={<ShowingMovies />} />
           <Route path="/ComingMovies" element={<ComingMovies />} />
           <Route path="/Theaters" element={<Theaters />} />
+          <Route path="/Login" element={<LogIn />} />
         </Routes>
       </BrowserRouter>
     </div>

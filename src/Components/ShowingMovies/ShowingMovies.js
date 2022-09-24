@@ -1,11 +1,12 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import "./ShowingMovies.css";
 import { StoreContext } from "../../Redux/Store/Store";
+import { API_MOVIE } from "../../common/ApiController";
 
 export default function ComingMovies() {
   const store = useContext(StoreContext);
   useEffect(() => {
-    fetch("http://localhost:5000/movie/showing")
+    fetch(API_MOVIE.COMING)
       .then((res) => res.json())
       .then((dt) => {
         store.lsComingMovie.ShowingMovieDispatch({
@@ -16,16 +17,15 @@ export default function ComingMovies() {
   }, []);
   return (
     <div className="container">
-      {store.lsComingMovie.ComingMovie.lsComingMovie &&
-        store.lsComingMovie.ComingMovie.lsComingMovie.map((n, i) => (
-          <div key={i} className="lsMovie">
-            <img src={n.hinhAnh} alt="Image" />
-            <p>{n.tenPhim}</p>
-            <p>{n.thoiLuong} phút</p>
-            <p>{n.danhGia}</p>
-            <button>Đặt vé</button>
-          </div>
-        ))}
+      {store.lsComingMovie.ComingMovie.lsComingMovie?.map((n, i) => (
+        <div key={i} className="lsMovie">
+          <img src={n.hinhAnh} alt="movie.img" />
+          <p>{n.tenPhim}</p>
+          <p>{n.thoiLuong} phút</p>
+          <p>{n.danhGia}</p>
+          <button>Đặt vé</button>
+        </div>
+      ))}
     </div>
   );
 }

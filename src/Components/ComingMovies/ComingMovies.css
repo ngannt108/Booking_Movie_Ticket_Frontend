@@ -1,19 +1,15 @@
-* {
-  padding: 0px;
-  margin: 0px;
-  font-family: "Courier New", Courier, monospace;
-}
-
-.container {
-  width: 90vw;
-  display: flex;
-  flex-direction: column;
-}
-
 .lsMovie {
-  width: 20%;
+  display: flex;
+  width: 100vw;
+  padding: 30px 20px;
+  box-sizing: border-box;
 }
-/* 
-.lsMovie img {
-  width: 30%;
-} */
+
+.movie {
+  padding: 0px 15px;
+}
+
+.movie img {
+  width: 25vw;
+  height: 60vh;
+}
