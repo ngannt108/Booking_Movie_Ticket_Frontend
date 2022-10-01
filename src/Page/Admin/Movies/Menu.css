@@ -1,3 +1,7 @@
+.general {
+    display: flex;
+}
+
 .vertical-menu {
     width: fit-content;
     border-radius: 4px;

@@ -7,9 +7,12 @@ export const Button = ({
   fontWeight = "normal",
   name = "Hello",
   borderRadius = "none",
+  width = "100%",
+  margin = "0px",
   onClick,
 }) => (
-  <button style={{ border, borderRadius, color, background, fontWeight }}>
+  <button style={{ border, borderRadius, color, background, fontWeight, width, margin }} onClick={onClick}>
     {name}
+
   </button>
 );

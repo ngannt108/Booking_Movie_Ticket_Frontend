@@ -6,6 +6,8 @@ export default ({ children }) => {
   const [comingMovie, DispatchComingMovie] = ReducerMovie();
   const [showingMovie, DispatchShowingMovie] = ReducerMovie();
   const [theaters, DispatchTheater] = ReducerTheater();
+  const [detailMovie, DispatchDetailMovie] = ReducerMovie();
+
   const store = {
     lsComingMovie: {
       ComingMovie: comingMovie,
@@ -14,6 +16,10 @@ export default ({ children }) => {
     lsShowingMovie: {
       ShowingMovie: showingMovie,
       ShowingMovieDispatch: DispatchShowingMovie,
+    },
+    movie: {
+      DetailMovie: detailMovie,
+      DetailMovieDispatch: DispatchDetailMovie,
     },
     lsTheater: {
       Theater: theaters,
