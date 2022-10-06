@@ -13,10 +13,10 @@ export default function Header() {
           <div className="MainHeader">
             <ul>
               <li>
-                <Link to="/">ĐĂNG KÝ</Link>
+                <Link to="/SignUp">ĐĂNG KÝ</Link>
               </li>
               <li>
-                <Link to="/Login">ĐĂNG NHẬP</Link>
+                <Link to="/SignIn">ĐĂNG NHẬP</Link>
               </li>
             </ul>
           </div>

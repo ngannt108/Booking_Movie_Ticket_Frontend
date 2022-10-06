@@ -10,10 +10,11 @@ export default function ComingMovies() {
       .then((res) => res.json())
       .then((dt) => {
         store.lsComingMovie.ComingMovieDispatch({
-          type: "GETCOMINGMOVIE",
+          type: "GETCOMINGMOVIES",
           payload: dt.data,
         });
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="lsMovie">
