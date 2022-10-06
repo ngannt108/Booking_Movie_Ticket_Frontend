@@ -14,11 +14,11 @@ export default function AllMovies() {
 
 
   const [biDanh, setBiDanh] = React.useState()
-  const [isShow, setShow] = React.useState()
+  const [isShow, setShow] = React.useState(false)
   console.log(">>ID in AllMovies", biDanh)
   const handleClick = (biDanh) => {
     setBiDanh(biDanh)
-    setShow(!isShow)
+    setShow(isShow)
   }
 
   useEffect(() => {
@@ -62,7 +62,8 @@ export default function AllMovies() {
 
                   <td width="250px" className="actions">
 
-                    <Button color='black' name="Detail" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" onClick={() => handleClick(item.biDanh)} />
+                    <EditModalDialog biDanh={item.biDanh} show={false} />
+                    {/* <Button color='black' name="Detail" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" onClick={() => handleClick(item.biDanh)} /> */}
                     <Button margin="0px 4px" color='green' name="Edit" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" />
                     <Button margin="0px 4px" color='red' name="Remove" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" />
                     {/* <a href="?" className="edit-item" title="Edit">Edit</a> ||
@@ -74,9 +75,6 @@ export default function AllMovies() {
               }
             </tbody>
           </table>
-
-
-          <EditModalDialog biDanh={biDanh} show={isShow} />
         </div>
       </div>
     </>

@@ -4,8 +4,8 @@ function GetMovie(state, { type, payload }) {
     case "GETSHOWINGMOVIE":
       return { ...state, lsShowingMovie: payload };
     case "GETCOMINGMOVIE":
-      // state.lsComingMovie = payload;
-      // return { ...state };
+      //state.lsComingMovie = payload;
+      //return { ...state };
       return { ...state, lsComingMovie: payload };
     case "GETDETAILMOVIE":
       return { ...state, detailMovie: payload };
