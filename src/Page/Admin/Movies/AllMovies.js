@@ -6,7 +6,7 @@ import HeaderAdmin from "../Header/HeaderAdmin";
 import "./MovieManage.css"
 import { Button } from "../../../Components/Button/Button";
 import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
-import EditModalDialog from "../../../Components/EditFormModal/EditFormModal";
+import EditModalDialog from "../../../Components/Admin/EditFormModal/EditFormModal";
 
 
 export default function AllMovies() {
@@ -64,8 +64,7 @@ export default function AllMovies() {
 
                     <EditModalDialog biDanh={item.biDanh} show={false} />
                     {/* <Button color='black' name="Detail" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" onClick={() => handleClick(item.biDanh)} /> */}
-                    <Button margin="0px 4px" color='green' name="Edit" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" />
-                    <Button margin="0px 4px" color='red' name="Remove" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" />
+
                     {/* <a href="?" className="edit-item" title="Edit">Edit</a> ||
                  <a href="?" className="remove-item" title="Remove">Remove</a> */}
                   </td>

@@ -7,6 +7,7 @@ import ComingMovies from "./Components/ComingMovies/ComingMovies";
 import Theaters from "./Components/Theaters/Theaters";
 import LogIn from "./Components/LogIn/LogIn";
 import AllMovies from "./Page/Admin/Movies/AllMovies";
+import AddMovieForm from "./Components/Admin/AddMovieForm/AddMovieForm";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/Login" element={<LogIn />} />
 
           <Route path="/Admin" element={<AllMovies />} />
+          <Route path="/Admin/movie" element={<AddMovieForm />} />
         </Routes>
       </BrowserRouter>
     </div>

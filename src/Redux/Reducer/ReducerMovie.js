@@ -9,6 +9,10 @@ function GetMovie(state, { type, payload }) {
       return { ...state, lsComingMovie: payload };
     case "GETDETAILMOVIE":
       return { ...state, detailMovie: payload };
+    case "UPDATEDETAILMOVIE":
+      return { ...state, updateMovie: payload };
+    case "ADDMOVIE":
+      return { ...state, detailMovie: payload };
     default:
       return state;
   }

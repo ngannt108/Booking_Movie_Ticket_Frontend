@@ -9,8 +9,9 @@ export const Input = ({
   border = "1px solid lightgray",
   type,
   onChange,
+  onClick,
   boxShadow = "none",
-  disabled = "true"
+  disabled = "true",
 }) => (
   <div className="form-group">
     {label && <label htmlFor="input-field">{label}</label>}
@@ -21,6 +22,7 @@ export const Input = ({
       style={{ height, width, border, boxShadow }}
       className="form-control"
       onChange={onChange}
+      onClick={onClick}
       disabled={disabled}
     />
   </div>

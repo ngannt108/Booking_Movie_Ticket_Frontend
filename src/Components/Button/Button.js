@@ -10,8 +10,9 @@ export const Button = ({
   width = "100%",
   margin = "0px",
   onClick,
+  disabled
 }) => (
-  <button style={{ border, borderRadius, color, background, fontWeight, width, margin }} onClick={onClick}>
+  <button style={{ border, borderRadius, color, background, fontWeight, width, margin }} onClick={onClick} disabled={disabled}>
     {name}
 
   </button>
