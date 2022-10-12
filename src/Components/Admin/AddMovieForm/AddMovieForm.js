@@ -6,7 +6,7 @@ import { Button } from "../../Button/Button";
 import { Input } from "../../Input/Input.js";
 import isEmpty from 'validator/lib/isEmpty';
 import swal from 'sweetalert'
-
+import { useNavigate } from "react-router-dom";
 
 function AddMovieForm(props) {
     const store = useContext(StoreContext);
@@ -22,6 +22,7 @@ function AddMovieForm(props) {
         thoiLuong: "",
         trailer: ""
     }
+    const navigate = useNavigate();
     const [detailMovie, setDetailMovie] = React.useState(emptyMovie);
     console.log('>> detailMovie', detailMovie)
 
@@ -48,12 +49,12 @@ function AddMovieForm(props) {
             body: fd
         })
         if (res.status === 201) {
-
             swal({
                 title: "Thêm phim thành công",
                 text: "",
                 icon: "success",
             });
+            navigate("/Admin")
         } else swal({
             title: "Thêm phim mới thất bại",
             text: "Hãy thử lại",
@@ -123,35 +124,42 @@ function AddMovieForm(props) {
                     <a href="#">Tạo phim mới</a>
                     <a href="#">Phim được yêu thích</a>
                 </div>
-                <div className="container mt-3">
+                <div style={{ "margin-left": "40px" }} className="container mt-4">
                     {/* 
             <Button variant="success" onClick={initModal}>
                 Open Modal
             </Button> */}
                     <form>
-                        <label>THÔNG TIN PHIM MỚI</label>
-                        <Input type="text"
-                            value={detailMovie?.tenPhim}
-                            disabled={false}
-                            label="Tên phim"
-                            name="tenPhim"
-                            onChange={(event) => handleOnChange(event)}
-                            onClick={(event) => handleOnChange(event)} />
-                        <span style={{ color: 'red' }}>{validationMsg?.tenPhim}</span>
-                        <Input type={"date"}
-                            value={formattedDate(detailMovie?.ngayKhoiChieu)}
-                            label="Khởi chiếu"
-                            name="ngayKhoiChieu"
-                            disabled={false}
-                            onChange={(event) => handleOnChange(event)}
-                            onClick={(event) => handleOnChange(event)}
-                        />
-                        <div><span style={{ color: 'red' }}>{validationMsg?.ngayKhoiChieu}</span></div>
+                        <div style={{ "textAlign": "center", "width": "980px" }}><label >THÔNG TIN PHIM MỚI</label></div>
+
+                        <div className="row">
+                            <div className="col-md-5">
+                                <Input type="text"
+                                    value={detailMovie?.tenPhim}
+                                    disabled={false}
+                                    label="Tên phim"
+                                    name="tenPhim"
+                                    onChange={(event) => handleOnChange(event)}
+                                    onClick={(event) => handleOnChange(event)} />
+                                <span style={{ color: 'red' }}>{validationMsg?.tenPhim}</span>
+                            </div>
+                            <div className="col-md-4">
+                                <Input type={"date"}
+                                    value={formattedDate(detailMovie?.ngayKhoiChieu)}
+                                    label="Khởi chiếu"
+                                    name="ngayKhoiChieu"
+                                    disabled={false}
+                                    onChange={(event) => handleOnChange(event)}
+                                    onClick={(event) => handleOnChange(event)}
+                                />
+                                <div><span style={{ color: 'red' }}>{validationMsg?.ngayKhoiChieu}</span></div>
+                            </div>
+                        </div>
                         Mô tả
                         <br />
                         <textarea
                             rows="4"
-                            cols="76"
+                            cols="96"
                             disabled={false}
                             name="moTa"
                             value={detailMovie?.moTa}
@@ -159,35 +167,52 @@ function AddMovieForm(props) {
                             onClick={(event) => handleOnChange(event)}
                         />
                         <br />
-                        Thời lượng
-                        <input type="number"
-                            style={{
-                                "height": "25px",
-                                "width": "100%",
-                                "border": "1px solid lightgray"
-                            }}
-                            value={detailMovie?.thoiLuong}
-                            onKeyDown={(e) => e.preventDefault()}
-                            name="thoiLuong"
-                            disabled={false}
-                            min={0}
-                            onChange={(event) => handleOnChange(event)}
-                            onClick={(event) => handleOnChange(event)}
-                        />
-                        <div><span style={{ color: 'red' }}>{validationMsg?.thoiLuong}</span></div>
+                        <div className="row">
+                            <div className="col-md-3">
+                                Thời lượng
+                                <input type="number"
+                                    style={{
+                                        "height": "25px",
+                                        "width": "100%",
+                                        "border": "1px solid lightgray"
+                                    }}
+                                    value={detailMovie?.thoiLuong}
+                                    onKeyDown={(e) => e.preventDefault()}
+                                    name="thoiLuong"
+                                    disabled={false}
+                                    min={0}
+                                    onChange={(event) => handleOnChange(event)}
+                                    onClick={(event) => handleOnChange(event)}
+                                />
+                                <div><span style={{ color: 'red' }}>{validationMsg?.thoiLuong}</span></div>
+                            </div>
+                            <div className="col-md-4">
+                                Hình ảnh
+                                <br />
+                                <input type="file" name='hinhAnh' onChange={(event) => {
+                                    uploadImage(event)
+                                    validateAll(event)
+                                }} />
+                                <div><span style={{ color: 'red' }}>{validationMsg?.hinhAnh}</span></div>
+                            </div>
+                            <div className="col-md-4">
+                                <img src={image || detailMovie?.hinhAnh} height="80px"></img>
+                            </div>
 
-                        <input type="file" name='hinhAnh' onChange={(event) => {
-                            uploadImage(event)
-                            validateAll(event)
-                        }} />
-                        <div><span style={{ color: 'red' }}>{validationMsg?.hinhAnh}</span></div>
+                        </div>
+                        <div className="row" style={{ "margin-top": "24px", "margin-left": "78px" }}>
+                            <div className="col-md-4">
+                                <Button color="white" background="green" name="Đồng ý" disabled={Object.keys(validationMsg).length > 0} onClick={(e) => handleAdd(e)} />
 
-                        <img src={image || detailMovie?.hinhAnh} height="80px"></img>
-                        <Button color="white" background="green" name="Đồng ý" disabled={Object.keys(validationMsg).length > 0} onClick={(e) => handleAdd(e)} />
-                        <Button color="danger" name="Hủy" onClick={initModal} />
+                            </div>
+                            <div className="col-md-4">
+                                <Button color="danger" name="Hủy" onClick={initModal} />
+
+                            </div>
+                        </div>
                     </form>
                 </div >
-            </div>
+            </div >
         </>
     )
 }
