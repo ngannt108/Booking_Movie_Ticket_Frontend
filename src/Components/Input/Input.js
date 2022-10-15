@@ -8,13 +8,18 @@ export const Input = ({
   width = "100%",
   border = "1px solid lightgray",
   type,
+  color = "black",
   onChange,
   onClick,
   boxShadow = "none",
   disabled = "true"
 }) => (
-  <div className="form-group">
-    {label && <label htmlFor="input-field">{label}</label>}
+  <div className="form-group" style={{ padding: "15px 0px" }}>
+    {label && (
+      <label style={{ color }} htmlFor="input-field">
+        {label}
+      </label>
+    )}
     <input
       type={type}
       value={value}

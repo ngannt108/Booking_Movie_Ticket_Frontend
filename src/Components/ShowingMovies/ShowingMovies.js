@@ -9,15 +9,16 @@ export default function ComingMovies() {
     fetch(API_MOVIE.COMING)
       .then((res) => res.json())
       .then((dt) => {
-        store.lsComingMovie.ShowingMovieDispatch({
-          type: "GETSHOWINGMOVIE",
+        store.lsShowingMovie.ShowingMovieDispatch({
+          type: "GETSHOWINGMOVIES",
           payload: dt.data,
         });
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="container">
-      {store.lsComingMovie.ComingMovie.lsComingMovie?.map((n, i) => (
+      {store.lsShowingMovie.ShowingMovie.lsShowingMovie?.map((n, i) => (
         <div key={i} className="lsMovie">
           <img src={n.hinhAnh} alt="movie.img" />
           <p>{n.tenPhim}</p>

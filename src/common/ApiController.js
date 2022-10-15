@@ -9,5 +9,11 @@ export const API_MOVIE = {
 };
 
 export const API_THEATERS = {
-  THEATERS: API_DOMAIN + "admins/movie/movietheater",
+  SHOWING: API_DOMAIN + "movies/showing",
+  THEATERS: API_DOMAIN + "movies/movietheater",
+};
+
+export const API_ACCOUNTS = {
+  SIGNIN: API_DOMAIN + "accounts/signin",
+  SIGNUP: API_DOMAIN + "accounts/signUp",
 };

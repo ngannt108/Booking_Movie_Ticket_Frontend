@@ -9,6 +9,9 @@ import LogIn from "./Components/LogIn/LogIn";
 import AllMovies from "./Page/Admin/Movies/AllMovies";
 import AddMovieForm from "./Components/Admin/AddMovieForm/AddMovieForm";
 import Showtimes from "./Page/Admin/Showtimes/Showtimes";
+import SignIn from "./Components/SignIn/SignIn";
+import SignUp from "./Components/SignUp/SignUp";
+import "./App.css";
 
 function App() {
   return (
@@ -26,6 +29,9 @@ function App() {
           <Route path="/Admin" element={<AllMovies />} />
           <Route path="/Admin/movie" element={<AddMovieForm />} />
           <Route path="/Admin/:slug/showtimes" element={<Showtimes />} />
+          <Route path="/SignIn" element={<SignIn />} />
+          <Route path="/SignUp" element={<SignUp />} />
+          {/* <Route path="/Admin" element={<Admin />} /> */}
         </Routes>
       </BrowserRouter>
     </div>
