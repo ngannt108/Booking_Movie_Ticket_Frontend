@@ -1,11 +1,13 @@
 import React, { createContext } from "react";
-import ReducerMovie from "../Reducer/ReducerMovies";
-import ReducerTheater from "../Reducer/ReducerTheaters";
+import ReducerMovies from "../Reducer/ReducerMovies";
+import ReducerAccounts from "../Reducer/ReducerAccounts";
+import ReducerTheaters from "../Reducer/ReducerTheaters";
 export const StoreContext = createContext(null);
 const Store = ({ children }) => {
-  const [comingMovie, DispatchComingMovie] = ReducerMovie();
-  const [showingMovie, DispatchShowingMovie] = ReducerMovie();
-  const [theaters, DispatchTheater] = ReducerTheater();
+  const [comingMovie, DispatchComingMovie] = ReducerMovies();
+  const [showingMovie, DispatchShowingMovie] = ReducerMovies();
+  const [theaters, DispatchTheater] = ReducerTheaters();
+  const [userAcc, DispatchAccount] = ReducerAccounts(null);
   const store = {
     lsComingMovie: {
       ComingMovie: comingMovie,
@@ -18,6 +20,10 @@ const Store = ({ children }) => {
     lsTheater: {
       Theater: theaters,
       TheaterDispatch: DispatchTheater,
+    },
+    account: {
+      userAccount: userAcc,
+      AccountDispatch: DispatchAccount,
     },
   };
   return (

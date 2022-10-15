@@ -1,44 +1,113 @@
 import React, { useState } from "react";
 import { Button } from "../Button/Button";
 import { Input } from "../Input/Input";
+import { Link, useNavigate } from "react-router-dom";
 import "./SignUp.css";
 import { API_ACCOUNTS } from "../../common/ApiController";
 
 export default function LogIn() {
-  const [info, setAccount] = useState({
+  const [account, setAccount] = useState({
     taiKhoan: "",
-    matKhau: "",
-    nhapLaiMatKhau: "",
-    email: "",
-    hoTen: "",
-    SDT: "",
+    messError: "",
   });
-  const account = {
-    taiKhoan: info.taiKhoan,
-    matKhau: info.matKhau,
-    email: info.email,
-    hoTen: info.hoTen,
-    SDT: info.SDT,
+  const [password, setPassword] = useState({
+    matKhau: "",
+    messError: "",
+  });
+  const [passwordRetype, setPassRetype] = useState({
+    nhapLaiMatKhau: "",
+    messError: "",
+  });
+  const [email, setEmail] = useState({
+    email: "",
+    messError: "",
+  });
+  const [name, setName] = useState({
+    hoTen: "",
+    messError: "",
+  });
+  const [phoneNumber, setPhoneNumber] = useState({
+    SDT: "",
+    messError: "",
+  });
+  const info = {
+    taiKhoan: account.taiKhoan,
+    matKhau: password.matKhau,
+    email: email.email,
+    hoTen: name.hoTen,
+    SDT: phoneNumber.SDT,
   };
+
+  const REGEX_LIST = [
+    {
+      nameInput: "account",
+      inputValue: "taiKhoan",
+      error: "messError",
+      pattern: /^.+$/,
+      messError: "Vui lòng nhập tên tài khoản!",
+    },
+    {
+      nameInput: "password",
+      inputValue: "matKhau",
+      error: "messError",
+      pattern: /^.+$/,
+      messError: "Vui lòng nhập mật khẩu!",
+    },
+    {
+      nameInput: "email",
+      inputValue: "email",
+      error: "messError",
+      pattern: /^\w+@\w+(\.\w+)+$/,
+      messError: "Vui lòng nhập đúng cú pháp email!",
+      messError1: "Vui lòng nhập email!",
+    },
+    {
+      nameInput: "phoneNumber",
+      inputValue: "SDT",
+      error: "messError",
+      pattern: /^\d{10}$/,
+      messError: "Vui lòng nhập đúng dãy số điện thoại!",
+      messError1: "Vui lòng nhập số điện thoại!",
+    },
+    {
+      nameInput: "name",
+      inputValue: "hoTen",
+      error: "messError",
+      pattern: /^.+$/,
+      messError: "Vui lòng nhập tên đầy đủ",
+    },
+  ];
+
+  const navigate = useNavigate();
 
   const UserRegister = async (event, account) => {
     event.preventDefault();
-    if (info.matKhau === info.nhapLaiMatKhau) {
-      let res = await fetch(API_ACCOUNTS.SIGNUP, {
-        headers: {
-          //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(account),
-      });
-      console.log(account);
-      if (res.status === 200) {
-        console.log(res.status);
-      } else {
-        console.log(0);
+    if (Validation(account)) {
+      if (password.matKhau === passwordRetype.nhapLaiMatKhau) {
+        let res = await fetch(API_ACCOUNTS.SIGNUP, {
+          headers: {
+            //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(account),
+        });
+        if (res.status === 201) {
+          navigate("/SignIn");
+        } else {
+          alert("Đăng ký thất bại!");
+        }
       }
     }
+  };
+  const Validation = (account) => {
+    Object.values(account).forEach((info) => {
+      if (info.trim() === "") {
+        alert("Vui lòng nhập đầy đủ");
+        return false;
+      }
+      return true;
+    });
   };
   return (
     <div className="main">
@@ -67,7 +136,7 @@ export default function LogIn() {
                 label="Mật khẩu:"
                 name="password"
                 onChange={(event) =>
-                  setAccount((previousAccount) => {
+                  setPassword((previousAccount) => {
                     return { ...previousAccount, matKhau: event.target.value };
                   })
                 }
@@ -83,7 +152,7 @@ export default function LogIn() {
                 color="#d6ebff"
                 name="passwordRetype"
                 onChange={(event) =>
-                  setAccount((previousAccount) => {
+                  setPassRetype((previousAccount) => {
                     return {
                       ...previousAccount,
                       nhapLaiMatKhau: event.target.value,
@@ -103,7 +172,7 @@ export default function LogIn() {
                 name="email"
                 color="#d6ebff"
                 onChange={(event) =>
-                  setAccount((previousAccount) => {
+                  setEmail((previousAccount) => {
                     return { ...previousAccount, email: event.target.value };
                   })
                 }
@@ -118,7 +187,7 @@ export default function LogIn() {
                 name="phoneNumber"
                 color="#d6ebff"
                 onChange={(event) =>
-                  setAccount((previousAccount) => {
+                  setPhoneNumber((previousAccount) => {
                     return { ...previousAccount, SDT: event.target.value };
                   })
                 }
@@ -133,7 +202,7 @@ export default function LogIn() {
                 name="fullname"
                 color="#d6ebff"
                 onChange={(event) =>
-                  setAccount((previousAccount) => {
+                  setName((previousAccount) => {
                     return { ...previousAccount, hoTen: event.target.value };
                   })
                 }
@@ -151,8 +220,15 @@ export default function LogIn() {
             color="black"
             fontWeight="bolder"
             width="100%"
-            onClick={(event) => UserRegister(event, account)}
+            onClick={(event) => UserRegister(event, info)}
           />
+          <span style={{ color: "#d6ebff" }}>Đã có tài khoản? </span>
+          <Link
+            to="/SignIn"
+            style={{ textDecoration: "underline", fontWeight: "bolder" }}
+          >
+            Đăng nhập
+          </Link>
         </form>
       </div>
     </div>

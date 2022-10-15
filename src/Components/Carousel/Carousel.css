@@ -49,7 +49,10 @@
   right: -150px;
   transform: rotate(-45deg) scaleX(-1);
 }
-
+.MainNav ul li a {
+  text-decoration: none;
+  color: black;
+}
 .Banner {
   width: 100vw;
   background-image: url("./Carousel-Image/bg.jpg");

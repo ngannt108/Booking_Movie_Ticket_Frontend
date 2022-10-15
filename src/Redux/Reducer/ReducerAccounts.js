@@ -1,10 +1,8 @@
 import { useReducer } from "react";
 function GetAccount(state, { type, payload }) {
   switch (type) {
-    case "SIGNIN":
-      return { ...state, user: payload };
-    case "SIGNUP":
-      return { ...state, user: payload };
+    case "ACCOUNT":
+      return { ...state, account: payload };
     default:
       return state;
   }
