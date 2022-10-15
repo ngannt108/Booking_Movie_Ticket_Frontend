@@ -1,9 +1,9 @@
 import { useReducer } from "react";
-function GetMovie(state, { type, payload }) {
+function GetMovies(state, { type, payload }) {
   switch (type) {
-    case "GETSHOWINGMOVIE":
+    case "GETSHOWINGMOVIES":
       return { ...state, lsShowingMovie: payload };
-    case "GETCOMINGMOVIE":
+    case "GETCOMINGMOVIES":
       state.lsComingMovie = payload;
       return { ...state };
     default:
@@ -12,7 +12,7 @@ function GetMovie(state, { type, payload }) {
 }
 
 function ListMovie() {
-  return useReducer(GetMovie, []);
+  return useReducer(GetMovies, []);
 }
 
 export default ListMovie;

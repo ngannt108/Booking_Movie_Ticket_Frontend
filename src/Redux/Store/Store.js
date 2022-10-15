@@ -1,11 +1,13 @@
 import React, { createContext } from "react";
-import ReducerMovie from "../Reducer/ReducerMovie";
-import ReducerTheater from "../Reducer/ReducerTheater";
+import ReducerMovies from "../Reducer/ReducerMovies";
+import ReducerAccounts from "../Reducer/ReducerAccounts";
+import ReducerTheaters from "../Reducer/ReducerTheaters";
 export const StoreContext = createContext(null);
-export default ({ children }) => {
-  const [comingMovie, DispatchComingMovie] = ReducerMovie();
-  const [showingMovie, DispatchShowingMovie] = ReducerMovie();
-  const [theaters, DispatchTheater] = ReducerTheater();
+const Store = ({ children }) => {
+  const [comingMovie, DispatchComingMovie] = ReducerMovies();
+  const [showingMovie, DispatchShowingMovie] = ReducerMovies();
+  const [theaters, DispatchTheater] = ReducerTheaters();
+  const [userAcc, DispatchAccount] = ReducerAccounts(null);
   const store = {
     lsComingMovie: {
       ComingMovie: comingMovie,
@@ -19,8 +21,14 @@ export default ({ children }) => {
       Theater: theaters,
       TheaterDispatch: DispatchTheater,
     },
+    account: {
+      userAccount: userAcc,
+      AccountDispatch: DispatchAccount,
+    },
   };
   return (
     <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
   );
 };
+
+export default Store;

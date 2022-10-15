@@ -1,0 +1,25 @@
+.main {
+  position: relative;
+  display: flex;
+  height: 90.5vh;
+  justify-content: center;
+  align-items: center;
+  background: url(./bg2.jpg);
+}
+
+.sign-in {
+  background: rgba(24, 103, 168, 0.7);
+  border-radius: 15px;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.sign-in h1 {
+  text-align: center;
+  padding: 20px;
+  color: #d6ebff;
+}
+
+.sign-in a {
+  color: #d6ebff;
+}
