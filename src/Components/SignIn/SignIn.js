@@ -106,6 +106,7 @@ export default function LogIn() {
             border="0px"
             height="25px"
             boxShadow="0px 2px 0px 0px rgba(0, 0, 0, 0.2)"
+          // disabled="false"
           />
           <Input
             type="password"
@@ -120,6 +121,7 @@ export default function LogIn() {
             border="0px"
             height="25px"
             boxShadow="0px 2px 0px 0px rgba(0, 0, 0, 0.2)"
+          // disabled="false"
           />
           <Button
             border="0px"
