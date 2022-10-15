@@ -7,6 +7,7 @@ import "./MovieManage.css"
 import { Button } from "../../../Components/Button/Button";
 import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
 import EditModalDialog from "../../../Components/Admin/EditFormModal/EditFormModal";
+import { NavLink } from "react-router-dom";
 
 
 export default function AllMovies() {
@@ -15,6 +16,7 @@ export default function AllMovies() {
 
   const [biDanh, setBiDanh] = React.useState()
   const [isShow, setShow] = React.useState(false)
+  const [isComing, setIsComing] = React.useState(true)
   console.log(">>ID in AllMovies", biDanh)
   const handleClick = (biDanh) => {
     setBiDanh(biDanh)
@@ -22,25 +24,48 @@ export default function AllMovies() {
   }
 
   useEffect(() => {
-    fetch(API_MOVIE.COMING)
-      .then((res) => res.json())
-      .then((dt) => {
-        store.lsComingMovie.ComingMovieDispatch({
-          type: "GETCOMINGMOVIE",
-          payload: dt.data,
+    if (isComing)
+      fetch(API_MOVIE.COMING)
+        .then((res) => res.json())
+        .then((dt) => {
+          store.lsComingMovie.ComingMovieDispatch({
+            type: "GETCOMINGMOVIE",
+            payload: dt.data,
+          });
         });
-      });
-  }, []);
+    else
+      fetch(API_MOVIE.SHOWING)
+        .then((res) => res.json())
+        .then((dt) => {
+          store.lsShowingMovie.ShowingMovieDispatch({
+            type: "GETSHOWINGMOVIE",
+            payload: dt.data,
+          });
+        });
+  }, [isComing]);
 
+  let movies = isComing ? store.lsComingMovie.ComingMovie?.lsComingMovie : store.lsShowingMovie.ShowingMovie?.lsShowingMovie
+  console.log(">> MOVIES", movies)
   return (
     <>
       <HeaderAdmin />
       <div className="general">
         <div className="vertical-menu">
           <a href="#" className="active">Tất cả phim</a>
-          <a href="#">Tạo phim mới</a>
+          <NavLink end to="/Admin/movie">Tạo phim mới</NavLink>
           <a href="#">Phim được yêu thích</a>
         </div>
+
+        <div className="row">
+          <div className="col-md-4">
+            <Button width="60px" name="Phim sắp chiếu" onClick={() => setIsComing(true)} />
+
+          </div>
+          <div className="col-md-4">
+            <Button width="60px" name="Phim đang chiếu" onClick={() => setIsComing(false)} />
+          </div>
+        </div>
+
 
         <div className="container-body">
           <table className="layout display responsive-table">
@@ -53,7 +78,7 @@ export default function AllMovies() {
               </tr>
             </thead>
             <tbody>
-              {store.lsComingMovie.ComingMovie.lsComingMovie?.map((item, index) => (
+              {movies?.map((item, index) => (
                 <tr>
                   <td className="organisationname number">{index + 1}</td>
                   <td width="250px" className="organisationname">{item.tenPhim}</td>
@@ -61,7 +86,6 @@ export default function AllMovies() {
                   <td width="900px" className="organisationname">{item.moTa}</td>
 
                   <td width="250px" className="actions">
-
                     <EditModalDialog biDanh={item.biDanh} show={false} />
                     {/* <Button color='black' name="Detail" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" onClick={() => handleClick(item.biDanh)} /> */}
 

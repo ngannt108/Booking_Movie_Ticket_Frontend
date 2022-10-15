@@ -6,6 +6,7 @@ import { Button } from "../../Button/Button";
 import { Input } from "../../Input/Input.js";
 import isEmpty from 'validator/lib/isEmpty';
 import swal from 'sweetalert'
+import { NavLink } from "react-router-dom";
 
 
 function EditModalDialog(props) {
@@ -47,12 +48,12 @@ function EditModalDialog(props) {
                     thoiLuong: dt.data[0]?.thoiLuong.toString(),
                 })
             });
-        console.log(">> useEffect")
 
     }, [biDanh, isEdit]);
 
-    data = store.movie.DetailMovie
-    console.log('>> detailMovie', detailMovie)
+    data = store.movie?.DetailMovie
+    // console.log('>> detailMovie', detailMovie)
+    // console.log('>> ERROR', validationMsg)
 
     const initModal = () => {
         setInvokeModal(!isShow)
@@ -114,7 +115,7 @@ function EditModalDialog(props) {
             "ngayKhoiChieu": "ngày khởi chiếu",
             "thoiLuong": "thời lượng",
         }
-        if (isEmpty(event.target.value) || event.target.value.trim()) {
+        if (isEmpty(event.target.value) || event.target.value.trim() == 0) {
             msg[event.target.name] = `Vui lòng điền ${labelOfField[event.target.name]} `
         } else delete msg[event.target.name]
         setValidationMsg(msg)
@@ -131,14 +132,12 @@ function EditModalDialog(props) {
         }
     };
     return (
-        <div className="container mt-3">
-            <Button color='black' name="Detail" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" onClick={() => handleClick(props.biDanh)} />
-            <Button margin="0px 4px" color='red' name="Remove" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" />
-
-            {/* 
-            <Button variant="success" onClick={initModal}>
-                Open Modal
-            </Button> */}
+        /*className="container mt-3"*/
+        <div style={{ "display": "flex" }}>
+            <Button color='black' name="Chi tiết" background="pink" width="fit-content" borderRadius="10.2em" fontWeight="bold" onClick={() => handleClick(props.biDanh)} />
+            <NavLink end to={`/Admin/${props.biDanh}/showtimes`}>
+                <Button margin="0px 4px" color='red' name="Lịch chiếu" background="pink" width="fit-content" borderRadius="10.2em" fontWeight="bold" />
+            </NavLink>
             <Modal size="lg" show={isShow}>
                 <Modal.Header closeButton onClick={initModal}>
                     {isEdit ?
@@ -239,12 +238,14 @@ function EditModalDialog(props) {
                 </Modal.Body>
                 <Modal.Footer>
                     {
-                        isEdit ? (<><Button color="white" background="green" name="Đồng ý" disabled={Object.keys(validationMsg).length > 0} onClick={(e, movie) => handleEdit(e, movie)} />
-                            <Button color="danger" name="Hủy" onClick={initModal} /></>) : (
-                            <>
-                                <Button color="black" background="yellow" name="Chỉnh sửa" onClick={() => setIsEdit(true)} />
-                                <Button color="danger" name="Hủy" onClick={initModal} />
-                            </>
+                        isEdit ? (<div class="d-grid gap-2 col-6 mx-auto">
+                            <Button color="white" background="green" name="Đồng ý" borderRadius="0.4em" disabled={Object.keys(validationMsg).length > 0} onClick={(e, movie) => handleEdit(e, movie)} />
+                            <Button color="danger" name="Hủy" borderRadius="0.4em" onClick={initModal} />
+                        </div>) : (
+                            <div class="d-grid gap-2 col-6 mx-auto">
+                                <Button color="black" background="yellow" name="Chỉnh sửa" borderRadius="0.4em" onClick={() => setIsEdit(true)} />
+                                <Button color="danger" name="Hủy" borderRadius="0.4em" onClick={initModal} />
+                            </div>
                         )
                     }
                 </Modal.Footer>

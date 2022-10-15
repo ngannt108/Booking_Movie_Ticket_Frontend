@@ -1,5 +1,5 @@
 import React from "react";
-
+import './Button.css'
 export const Button = ({
   border = "1px solid lightgray",
   background = "brown",
@@ -10,10 +10,10 @@ export const Button = ({
   width = "100%",
   margin = "0px",
   onClick,
-  disabled
+  disabled,
+  textAlign
 }) => (
-  <button style={{ border, borderRadius, color, background, fontWeight, width, margin }} onClick={onClick} disabled={disabled}>
+  <button className="on-hover" style={{ border, borderRadius, color, background, fontWeight, width, margin, textAlign }} onClick={onClick} disabled={disabled} >
     {name}
-
-  </button>
+  </button >
 );

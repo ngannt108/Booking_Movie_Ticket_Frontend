@@ -6,7 +6,8 @@ import { Button } from "../../Button/Button";
 import { Input } from "../../Input/Input.js";
 import isEmpty from 'validator/lib/isEmpty';
 import swal from 'sweetalert'
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+
 
 function AddMovieForm(props) {
     const store = useContext(StoreContext);
@@ -22,7 +23,7 @@ function AddMovieForm(props) {
         thoiLuong: "",
         trailer: ""
     }
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [detailMovie, setDetailMovie] = React.useState(emptyMovie);
     console.log('>> detailMovie', detailMovie)
 
@@ -54,7 +55,7 @@ function AddMovieForm(props) {
                 text: "",
                 icon: "success",
             });
-            navigate("/Admin")
+            //  navigate("/Admin")
         } else swal({
             title: "Thêm phim mới thất bại",
             text: "Hãy thử lại",
@@ -64,8 +65,31 @@ function AddMovieForm(props) {
         })
 
     }
-    const handleAdd = async (e) => {
-        AddMovieAction(e)
+
+    const handleAdd = (e) => {
+        if (validateAll(e))
+            AddMovieAction(e)
+        else return
+    }
+    const validateAll = (e) => {
+        let msg = {}
+        const labelOfField = {
+            "tenPhim": "tên phim",
+            "ngayKhoiChieu": "ngày khởi chiếu",
+            "thoiLuong": "thời lượng",
+            "hinhAnh": "hình ảnh"
+        }
+        for (let keyOfObj in labelOfField) {
+            console.log(keyOfObj, ":")
+            if (isEmpty(detailMovie[keyOfObj]) || detailMovie[keyOfObj].trim() === 0) {
+                if (keyOfObj == "hinhAnh")
+                    msg[keyOfObj] = `Vui lòng chọn ${labelOfField[keyOfObj]} `
+                else msg[keyOfObj] = `Vui lòng điền ${labelOfField[keyOfObj]} `
+            }
+        }
+        setValidationMsg(msg)
+        if (Object.keys(msg).length > 0) return false
+        return true
     }
     const formattedDate = (dateInput) => {
         let today = new Date(dateInput);
@@ -79,7 +103,7 @@ function AddMovieForm(props) {
         return yyyy + '-' + mm + '-' + dd;
 
     }
-    const validateAll = (event) => {
+    const validateField = (event) => {
         const msg = { ...validationMsg }
         const labelOfField = {
             "tenPhim": "tên phim",
@@ -111,7 +135,7 @@ function AddMovieForm(props) {
     console.log('>> Error', validationMsg)
     const handleOnChange = (event) => {
         if (['tenPhim', 'ngayKhoiChieu', 'thoiLuong'].includes(event.target.name))
-            validateAll(event)
+            validateField(event)
         console.log('>> in handleOnChange', event.target.name)
         setDetailMovie({ ...detailMovie, [event.target.name]: event.target.value })
     }
@@ -120,11 +144,11 @@ function AddMovieForm(props) {
             <HeaderAdmin />
             <div className="general">
                 <div className="vertical-menu">
-                    <a href="#" className="active">Tất cả phim</a>
-                    <a href="#">Tạo phim mới</a>
+                    <NavLink end to="/Admin">Tất cả phim</NavLink>
+                    <a href="#" className="active">Tạo phim mới</a>
                     <a href="#">Phim được yêu thích</a>
                 </div>
-                <div style={{ "margin-left": "40px" }} className="container mt-4">
+                <div style={{ "marginLeft": "40px" }} className="container mt-4">
                     {/* 
             <Button variant="success" onClick={initModal}>
                 Open Modal
@@ -170,11 +194,13 @@ function AddMovieForm(props) {
                         <div className="row">
                             <div className="col-md-3">
                                 Thời lượng
-                                <input type="number"
+                                <input className="form-control"
+                                    type="number"
                                     style={{
                                         "height": "25px",
                                         "width": "100%",
-                                        "border": "1px solid lightgray"
+                                        "border": "1px solid lightgray",
+                                        "boxShadow": "none",
                                     }}
                                     value={detailMovie?.thoiLuong}
                                     onKeyDown={(e) => e.preventDefault()}
@@ -191,7 +217,7 @@ function AddMovieForm(props) {
                                 <br />
                                 <input type="file" name='hinhAnh' onChange={(event) => {
                                     uploadImage(event)
-                                    validateAll(event)
+                                    validateField(event)
                                 }} />
                                 <div><span style={{ color: 'red' }}>{validationMsg?.hinhAnh}</span></div>
                             </div>
@@ -200,13 +226,13 @@ function AddMovieForm(props) {
                             </div>
 
                         </div>
-                        <div className="row" style={{ "margin-top": "24px", "margin-left": "78px" }}>
+                        <div className="row" style={{ "marginTop": "24px", "marginLeft": "78px" }}>
                             <div className="col-md-4">
-                                <Button color="white" background="green" name="Đồng ý" disabled={Object.keys(validationMsg).length > 0} onClick={(e) => handleAdd(e)} />
+                                <Button color="white" background="green" name="Đồng ý" borderRadius="0.4em" disabled={Object.keys(validationMsg).length > 0} onClick={(e) => handleAdd(e)} />
 
                             </div>
                             <div className="col-md-4">
-                                <Button color="danger" name="Hủy" onClick={initModal} />
+                                <Button color="danger" name="Hủy" borderRadius="0.4em" onClick={initModal} />
 
                             </div>
                         </div>

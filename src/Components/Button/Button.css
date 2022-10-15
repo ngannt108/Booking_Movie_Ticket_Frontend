@@ -1,0 +1,20 @@
+.on-hover {
+    color: #fff;
+
+    -webkit-transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out;
+}
+
+.on-hover:hover {
+    box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+}
+
+button:disabled {
+    background: dimgray !important;
+}
+
+button:disabled:hover {
+    box-shadow: none !important;
+}
+
+/* 3498db */

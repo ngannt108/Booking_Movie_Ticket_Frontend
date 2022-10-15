@@ -11,7 +11,7 @@ export const Input = ({
   onChange,
   onClick,
   boxShadow = "none",
-  disabled = "true",
+  disabled = "true"
 }) => (
   <div className="form-group">
     {label && <label htmlFor="input-field">{label}</label>}
