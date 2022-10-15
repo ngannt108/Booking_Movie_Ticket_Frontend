@@ -23,26 +23,27 @@ export default function AllMovies() {
     setShow(isShow)
   }
 
-  useEffect(() => {
-    if (isComing)
-      fetch(API_MOVIE.COMING)
-        .then((res) => res.json())
-        .then((dt) => {
-          store.lsComingMovie.ComingMovieDispatch({
-            type: "GETCOMINGMOVIE",
-            payload: dt.data,
-          });
-        });
-    else
-      fetch(API_MOVIE.SHOWING)
-        .then((res) => res.json())
-        .then((dt) => {
-          store.lsShowingMovie.ShowingMovieDispatch({
-            type: "GETSHOWINGMOVIE",
-            payload: dt.data,
-          });
-        });
-  }, [isComing]);
+  // useEffect(() => {
+  //   if (isComing)
+  //   let data = store.lsShowingMovie.ShowingMovie.lsShowingMovie
+  //     // fetch(API_MOVIE.COMING)
+  //     //   .then((res) => res.json())
+  //     //   .then((dt) => {
+  //     //     store.lsComingMovie.ComingMovieDispatch({
+  //     //       type: "GETCOMINGMOVIES",
+  //     //       payload: dt.data,
+  //     //     });
+  //     //   });
+  //   else
+  //     fetch(API_MOVIE.SHOWING)
+  //       .then((res) => res.json())
+  //       .then((dt) => {
+  //         store.lsShowingMovie.ShowingMovieDispatch({
+  //           type: "GETSHOWINGMOVIES",
+  //           payload: dt.data,
+  //         });
+  //       });
+  // }, [isComing]);
 
   let movies = isComing ? store.lsComingMovie.ComingMovie?.lsComingMovie : store.lsShowingMovie.ShowingMovie?.lsShowingMovie
   console.log(">> MOVIES", movies)
