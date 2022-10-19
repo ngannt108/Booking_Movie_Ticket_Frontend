@@ -7,21 +7,28 @@ import { Input } from "../../Input/Input.js";
 import isEmpty from 'validator/lib/isEmpty';
 import swal from 'sweetalert'
 import { NavLink, useNavigate } from "react-router-dom";
-
+import { Col, Form } from "react-bootstrap";
+import { Multiselect } from 'multiselect-react-dropdown'
 
 function AddMovieForm(props) {
     const store = useContext(StoreContext);
     const [validationMsg, setValidationMsg] = React.useState({})
     const [image, setDisplayImage] = React.useState()
     const [fileImage, setFileImage] = React.useState(null)
+    const [banner, setDisplayBanner] = React.useState()
+    const [fileBanner, setFileBanner] = React.useState(null)
+    const [genres, setGenres] = React.useState([]);
 
     let emptyMovie = {
-        tenPhim: "",
+        tenPhim: "Phim mới luôn",
         hinhAnh: "",
         moTa: "",
-        ngayKhoiChieu: "",
-        thoiLuong: "",
-        trailer: ""
+        ngayKhoiChieu: "2022-10-20",
+        thoiLuong: "58",
+        trailer: "",
+        anhBia: "",
+        theLoai: [],
+        quocGia: ""
     }
     // const navigate = useNavigate();
     const [detailMovie, setDetailMovie] = React.useState(emptyMovie);
@@ -33,14 +40,17 @@ function AddMovieForm(props) {
         setValidationMsg({})
     }
     const AddMovieAction = async (e) => {
+        console.log(">> into AddAction")
         e.preventDefault();
         const fd = new FormData();
         if (fileImage != null)
             fd.append("hinhAnh", fileImage, fileImage.name)
+        if (fileBanner != null)
+            fd.append("anhBia", fileBanner, fileBanner.name)
         for (let keyOfObj in detailMovie) {
             fd.append(keyOfObj, detailMovie[keyOfObj])
         }
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmRiN2Q3MDljMGQxZDA4NjA5ZjUzY2EiLCJtYUxvYWlOZ3VvaUR1bmciOiIwIiwiaWF0IjoxNjY1NTAxNjEwLCJleHAiOjE2NjU1MDUyMTB9.Cxy-tsEdS49rD8ODVbCII_V6WpGev0qizWbZMhjxA6w'
+        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmRiN2Q3MDljMGQxZDA4NjA5ZjUzY2EiLCJtYUxvYWlOZ3VvaUR1bmciOiIwIiwiaWF0IjoxNjY1OTA1Njk1LCJleHAiOjE2NjU5MDkyOTV9.MF2qTRHcXRPx7kfGtXIL1vWDf4-XDz8kinF5dr3G2o8'
 
         let res = await fetch(API_MOVIE.ADD, {
             headers: {
@@ -71,22 +81,31 @@ function AddMovieForm(props) {
             AddMovieAction(e)
         else return
     }
+    console.log(">> file banner", fileBanner)
+    console.log(">> file image", fileImage)
     const validateAll = (e) => {
         let msg = {}
         const labelOfField = {
             "tenPhim": "tên phim",
             "ngayKhoiChieu": "ngày khởi chiếu",
             "thoiLuong": "thời lượng",
-            "hinhAnh": "hình ảnh"
         }
+        delete detailMovie.hinhAnh
+        delete detailMovie.anhBia
         for (let keyOfObj in labelOfField) {
-            console.log(keyOfObj, ":")
+            console.log(keyOfObj, ":", detailMovie[keyOfObj])
             if (isEmpty(detailMovie[keyOfObj]) || detailMovie[keyOfObj].trim() === 0) {
-                if (keyOfObj == "hinhAnh")
-                    msg[keyOfObj] = `Vui lòng chọn ${labelOfField[keyOfObj]} `
-                else msg[keyOfObj] = `Vui lòng điền ${labelOfField[keyOfObj]} `
+                // if (keyOfObj == "hinhAnh")
+                //     msg[keyOfObj] = `Vui lòng chọn ${labelOfField[keyOfObj]} `
+                // if (keyOfObj == "anhBia")
+                //     msg[keyOfObj] = `Vui lòng chọn ${labelOfField[keyOfObj]} `
+                msg[keyOfObj] = `Vui lòng điền ${labelOfField[keyOfObj]} `
             }
         }
+        if (image == null)
+            msg.hinhAnh = 'Chọn hình đại diện cho phim'
+        if (banner == null)
+            msg.anhBia = 'Chọn ảnh bìa cho phim'
         setValidationMsg(msg)
         if (Object.keys(msg).length > 0) return false
         return true
@@ -109,12 +128,18 @@ function AddMovieForm(props) {
             "tenPhim": "tên phim",
             "ngayKhoiChieu": "ngày khởi chiếu",
             "thoiLuong": "thời lượng",
-            "hinhAnh": "hình ảnh"
+            "trailer": "trailer",
+            "hinhAnh": "hình ảnh",
+            "anhBia": "ảnh bìa"
         }
         if (fileImage == null)
             msg.hinhAnh = 'Chọn hình đại diện cho phim'
+        if (fileBanner == null)
+            msg.anhBia = 'Chọn ảnh bìa cho phim'
         if (event.target.value == "hinhAnh" && fileImage != null)
             delete msg["hinhAnh"]
+        if (event.target.value == "anhBia" && fileBanner != null)
+            delete msg["anhBia"]
         if (isEmpty(event.target.value) || event.target.value.trim() == 0) {
             msg[event.target.name] = `Vui lòng điền ${labelOfField[event.target.name]} `
         } else delete msg[event.target.name]
@@ -132,9 +157,17 @@ function AddMovieForm(props) {
             setDisplayImage(url);
         }
     };
+    const uploadBanner = async (event) => {
+        if (event.target.files[0] != null) {
+            setFileBanner(event.target.files[0]);
+            console.log('>> uploadBanner', event.target.files[0])
+            let url = URL.createObjectURL(event.target.files[0]);
+            setDisplayBanner(url);
+        }
+    };
     console.log('>> Error', validationMsg)
     const handleOnChange = (event) => {
-        if (['tenPhim', 'ngayKhoiChieu', 'thoiLuong'].includes(event.target.name))
+        if (['tenPhim', 'ngayKhoiChieu', 'thoiLuong', 'trailer'].includes(event.target.name))
             validateField(event)
         console.log('>> in handleOnChange', event.target.name)
         setDetailMovie({ ...detailMovie, [event.target.name]: event.target.value })
@@ -167,9 +200,18 @@ function AddMovieForm(props) {
                                     onClick={(event) => handleOnChange(event)} />
                                 <span style={{ color: 'red' }}>{validationMsg?.tenPhim}</span>
                             </div>
-                            <div className="col-md-4">
-                                <Input type={"date"}
+                            <div className="col-md-4" style={{ "padding": "15px 12px" }} >
+                                Ngày khởi chiếu
+                                <input className="form-control"
+                                    type="date"
+                                    style={{
+                                        "height": "25px",
+                                        "width": "100%",
+                                        "border": "1px solid lightgray",
+                                        "boxShadow": "none",
+                                    }}
                                     value={formattedDate(detailMovie?.ngayKhoiChieu)}
+                                    min={formattedDate(Date())}
                                     label="Khởi chiếu"
                                     name="ngayKhoiChieu"
                                     disabled={false}
@@ -181,9 +223,9 @@ function AddMovieForm(props) {
                         </div>
                         Mô tả
                         <br />
-                        <textarea
+                        <textarea className="col-md-9"
                             rows="4"
-                            cols="96"
+                            // cols="96"
                             disabled={false}
                             name="moTa"
                             value={detailMovie?.moTa}
@@ -192,7 +234,7 @@ function AddMovieForm(props) {
                         />
                         <br />
                         <div className="row">
-                            <div className="col-md-3">
+                            <div className="col-md-3" style={{ "padding": "15px 12px" }}>
                                 Thời lượng
                                 <input className="form-control"
                                     type="number"
@@ -212,6 +254,55 @@ function AddMovieForm(props) {
                                 />
                                 <div><span style={{ color: 'red' }}>{validationMsg?.thoiLuong}</span></div>
                             </div>
+                            <div className="col-md-3">
+                                <Input type={"url"}
+                                    value={detailMovie?.trailer}
+                                    label="Trailer"
+                                    name="trailer"
+                                    disabled={false}
+                                    onChange={(event) => handleOnChange(event)}
+                                    onClick={(event) => handleOnChange(event)}
+                                />
+                                <div><span style={{ color: 'red' }}>{validationMsg?.trailer}</span></div>
+
+                            </div>
+                            <div className="row">
+                                <div className="col-md-4">
+                                    Thể loại
+                                    <Multiselect
+                                        isObject={false}
+                                        onRemove={(event) => {
+                                            setDetailMovie({ ...detailMovie, "theLoai": event });
+                                        }}
+                                        onSelect={(event) => {
+                                            setDetailMovie({ ...detailMovie, "theLoai": event });
+                                        }}
+                                        options={["Kinh dị", " Hài hước", "Lãng mạn", "Hành động", "Hoạt hình", "Viễn tưởng"]}
+                                        // selectedValues={genres}
+                                        showCheckbox
+                                        hidePlaceholder
+                                        placeholder="Nhấp để chọn"
+                                    />
+                                </div>
+                                <div className="col-md-4">
+                                    Quốc gia
+                                    <Form.Select aria-label="Default select example" onChange={(e) => setDetailMovie({ ...detailMovie, "quocGia": e.target.value })}>
+                                        <option value="Mỹ">Mỹ</option>
+                                        <option value="Việt Nam">Việt Nam</option>
+                                        <option value="Anh">Anh</option>
+                                        <option value="Pháp">Pháp</option>
+                                        <option value="Nhật">Nhật</option>
+                                        <option value="Thái Lan">Thái Lan</option>
+                                        <option value="Hàn">Hàn</option>
+                                        <option value="Khác">Khác</option>
+                                    </Form.Select>
+                                </div>
+                                <div className="col-md-6">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
                             <div className="col-md-4">
                                 Hình ảnh
                                 <br />
@@ -222,9 +313,25 @@ function AddMovieForm(props) {
                                 <div><span style={{ color: 'red' }}>{validationMsg?.hinhAnh}</span></div>
                             </div>
                             <div className="col-md-4">
+                                Ảnh bìa
+                                <br />
+                                <input type="file" name='anhBia' onChange={(event) => {
+                                    uploadBanner(event)
+                                    validateField(event)
+                                }} />
+                                <div><span style={{ color: 'red' }}>{validationMsg?.anhBia}</span></div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-md-4">
                                 <img src={image || detailMovie?.hinhAnh} height="80px"></img>
                             </div>
 
+
+
+                            <div className="col-md-4">
+                                <img src={banner || detailMovie?.anhBia} height="80px"></img>
+                            </div>
                         </div>
                         <div className="row" style={{ "marginTop": "24px", "marginLeft": "78px" }}>
                             <div className="col-md-4">

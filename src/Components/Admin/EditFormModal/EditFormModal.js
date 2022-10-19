@@ -7,7 +7,8 @@ import { Input } from "../../Input/Input.js";
 import isEmpty from 'validator/lib/isEmpty';
 import swal from 'sweetalert'
 import { NavLink } from "react-router-dom";
-
+import { Col, Form } from "react-bootstrap";
+import { Multiselect } from 'multiselect-react-dropdown'
 
 function EditModalDialog(props) {
     const [isShow, setInvokeModal] = React.useState(false)
@@ -16,13 +17,19 @@ function EditModalDialog(props) {
     const [validationMsg, setValidationMsg] = React.useState({})
     const [image, setDisplayImage] = React.useState()
     const [fileImage, setFileImage] = React.useState('')
-
+    const [banner, setDislayBanner] = React.useState()
+    const [fileBanner, setFileBanner] = React.useState('')
     const [biDanh, setBiDanh] = React.useState()
+
     let emptyMovie = {
         hinhAnh: "",
         moTa: "",
         ngayKhoiChieu: "",
         thoiLuong: "",
+        trailer: "",
+        anhBia: "",
+        theLoai: [],
+        quocGia: ""
     }
     const [detailMovie, setDetailMovie] = React.useState(emptyMovie);
 
@@ -40,9 +47,12 @@ function EditModalDialog(props) {
                     type: "GETDETAILMOVIE",
                     payload: dt.data[0],
                 });
-                console.log('>> biDanh', dt.data[0])
                 setDetailMovie({
                     hinhAnh: dt.data[0]?.hinhAnh,
+                    anhBia: dt.data[0]?.anhBia,
+                    theLoai: dt.data[0]?.theLoai,
+                    quocGia: dt.data[0]?.quocGia,
+                    trailer: dt.data[0]?.trailer,
                     moTa: dt.data[0]?.moTa,
                     ngayKhoiChieu: dt.data[0]?.ngayKhoiChieu,
                     thoiLuong: dt.data[0]?.thoiLuong.toString(),
@@ -68,10 +78,12 @@ function EditModalDialog(props) {
         const fd = new FormData();
         if (fileImage != null && fileImage != "")
             fd.append("hinhAnh", fileImage, fileImage.name)
+        if (fileBanner != null && fileBanner != "")
+            fd.append("anhBia", fileBanner, fileBanner.name)
         for (let keyOfObj in detailMovie) {
             fd.append(keyOfObj, detailMovie[keyOfObj])
         }
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmRiN2Q3MDljMGQxZDA4NjA5ZjUzY2EiLCJtYUxvYWlOZ3VvaUR1bmciOiIwIiwiaWF0IjoxNjY1NTkyNzQzLCJleHAiOjE2NjU1OTYzNDN9.KIUDS3J_XmcIPrSaSZfSVljlDcRHPRNDKQJIgJk9Ph0'
+        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmRiN2Q3MDljMGQxZDA4NjA5ZjUzY2EiLCJtYUxvYWlOZ3VvaUR1bmciOiIwIiwiaWF0IjoxNjY2MDEzOTExLCJleHAiOjE2NjYwMTc1MTF9.L6-mSgOPaHuXGUjl8ILfOjXFa45uyn9hrb4vhjptL0U'
         let res = await fetch(API_MOVIE.UPDATE + biDanh, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -84,6 +96,7 @@ function EditModalDialog(props) {
                 title: "Cập nhật thành công!",
                 text: "",
                 icon: "success",
+                buttons: true,
             });
             setIsEdit(false)
         } else swal({
@@ -126,9 +139,17 @@ function EditModalDialog(props) {
     const uploadImage = async (event) => {
         if (event.target.files[0] != null) {
             setFileImage(event.target.files[0]);
-            console.log('>> uploadImage', event.target.files[0])
+            // console.log('>> uploadImage', event.target.files[0])
             let url = URL.createObjectURL(event.target.files[0]);
             setDisplayImage(url);
+        }
+    };
+    const uploadBanner = async (event) => {
+        if (event.target.files[0] != null) {
+            setFileBanner(event.target.files[0]);
+            // console.log('>> uploadBanner', event.target.files[0])
+            let url = URL.createObjectURL(event.target.files[0]);
+            setDislayBanner(url);
         }
     };
     return (
@@ -153,35 +174,67 @@ function EditModalDialog(props) {
                                 label="Tên phim"
                                 name="Tên phim" />
                         </div>
+                        {/* <Input type={isEdit ? "date" : "text"}
+                                    value={isEdit ? formattedDate(detailMovie?.ngayKhoiChieu) : new Date(data.detailMovie?.ngayKhoiChieu).toDateString()}
+                                    label="Khởi chiếu"
+                                    name="ngayKhoiChieu"
+                                    disabled={isEdit ? false : true}
+                                    onChange={(event) => {
+                                        validateAll(event)
+                                        setDetailMovie({ ...detailMovie, ngayKhoiChieu: event.target.value })
+                                    }
+                                    }
+                                    onClick={(event) => validateAll(event)}
+                                /> */}
                         <div className="col-md-5">
-                            <Input type={isEdit ? "date" : "text"}
-                                value={isEdit ? formattedDate(detailMovie?.ngayKhoiChieu) : new Date(data.detailMovie?.ngayKhoiChieu).toDateString()}
-                                label="Khởi chiếu"
-                                name="ngayKhoiChieu"
-                                disabled={isEdit ? false : true}
-                                onChange={(event) => {
-                                    validateAll(event)
-                                    //console.log(">> toLocaleString()", new Date(detailMovie?.ngayKhoiChieu).toLocaleString())
-                                    setDetailMovie({ ...detailMovie, ngayKhoiChieu: event.target.value })
-                                }
-                                }
-                                onClick={(event) => validateAll(event)}
-                            />
+                            {!isEdit ?
+                                <Input type={"text"}
+                                    value={new Date(data.detailMovie?.ngayKhoiChieu).toDateString()}
+                                    label="Khởi chiếu"
+                                    name="ngayKhoiChieu"
+                                />
+                                :
+                                <div style={{ "padding": "15px 0px" }}>Khởi chiếu
+                                    <input className="form-control"
+                                        type="date"
+                                        style={{
+                                            "height": "25px",
+                                            "width": "100%",
+                                            "border": "1px solid lightgray",
+                                            "boxShadow": "none",
+                                        }}
+                                        value={formattedDate(detailMovie?.ngayKhoiChieu)}
+                                        label="Khởi chiếu"
+                                        name="ngayKhoiChieu"
+                                        min={formattedDate(Date())}
+                                        disabled={false}
+                                        onChange={(event) => {
+                                            validateAll(event)
+                                            setDetailMovie({ ...detailMovie, ngayKhoiChieu: event.target.value })
+                                        }
+                                        }
+                                        onClick={(event) => validateAll(event)}
+                                    />
+                                </div>
+                            }
+
                         </div>
                     </div>
-                    Mô tả
-                    <br />
-                    <textarea
-                        rows="4"
-                        cols="76"
-                        disabled={isEdit ? false : true}
-                        name="moTa"
-                        value={detailMovie?.moTa}
-                        onChange={(event) => {
-                            setDetailMovie({ ...detailMovie, moTa: event.target.value })
-                        }}
-                    />
-                    <span style={{ color: 'red' }}>{validationMsg?.moTa}</span>
+                    <div className="col-md-12">
+                        Mô tả
+                        <br />
+                        <textarea className="col-md-12"
+                            // rows="4"
+                            //cols="100%"
+                            disabled={isEdit ? false : true}
+                            name="moTa"
+                            value={detailMovie?.moTa}
+                            onChange={(event) => {
+                                setDetailMovie({ ...detailMovie, moTa: event.target.value })
+                            }}
+                        />
+                        <span style={{ color: 'red' }}>{validationMsg?.moTa}</span>
+                    </div>
                     <div className="row">
                         <div className="col-md-5">
                             <Input type={isEdit ? "hidden" : "text"}
@@ -189,7 +242,7 @@ function EditModalDialog(props) {
                                 label={!isEdit ? "Ngày kết thúc" : ""}
                                 name="Ngày kết thúc" />
                         </div>
-                        <div className="col-md-5">
+                        <div className="col-md-5" style={{ "padding": "15px 0px" }}>
                             Thời lượng
                             <input className="form-control"
                                 type="number"
@@ -212,13 +265,72 @@ function EditModalDialog(props) {
                             />
                         </div>
                     </div>
-                    {isEdit ?
-                        <input type="file" name="hinhAnh" onChange={(event) => {
-                            uploadImage(event)
-                        }} />
-                        : <div>Hình ảnh</div>}
-                    <img style={{ "margin-top": "8px" }} src={image || detailMovie?.hinhAnh} height="80px"></img>
                     <div className="row">
+                        <div className="col-md-5">
+                            Thể loại
+                            <Multiselect
+                                disable={isEdit ? false : true}
+                                isObject={false}
+                                onRemove={(event) => {
+                                    setDetailMovie({ ...detailMovie, "theLoai": event });
+                                }}
+                                onSelect={(event) => {
+                                    setDetailMovie({ ...detailMovie, "theLoai": event });
+                                }}
+                                options={["Kinh dị", "Hài hước", "Lãng mạn", "Hành động", "Hoạt hình", "Viễn tưởng"]}
+                                selectedValues={detailMovie.theLoai}
+                                showCheckbox
+                                hidePlaceholder
+                                placeholder="Nhấp để chọn"
+                            />
+                        </div>
+                        <div className="col-md-5">
+                            Quốc gia
+                            <Form.Select disabled={isEdit ? false : true} aria-label="Default select example" value={detailMovie?.quocGia} onChange={(e) => setDetailMovie({ ...detailMovie, "quocGia": e.target.value })}>
+                                <option value="Mỹ">Mỹ</option>
+                                <option value="Việt Nam">Việt Nam</option>
+                                <option value="Anh">Anh</option>
+                                <option value="Pháp">Pháp</option>
+                                <option value="Nhật">Nhật</option>
+                                <option value="Thái Lan">Thái Lan</option>
+                                <option value="Hàn">Hàn</option>
+                                <option value="Khác">Khác</option>
+                            </Form.Select>
+                        </div>
+                        <div className="col-md-6">
+
+                        </div>
+                    </div>
+                    <div className="row">
+
+                        <div className="col-md-6">
+                            {isEdit ?
+                                <input type="file" name="hinhAnh" onChange={(event) => { uploadImage(event) }} />
+                                :
+                                <div>Hình ảnh</div>
+                            }
+                        </div>
+
+                        <div className="col-md-6">
+                            {isEdit ?
+                                <input type="file" name="anhBia" onChange={(event) => { uploadBanner(event) }} />
+                                :
+                                <div>Ảnh bìa</div>
+                            }
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col-md-6">
+                            <img style={{ "margin-top": "8px" }} src={image || detailMovie?.hinhAnh} height="80px"></img>
+                        </div>
+
+                        <div className="col-md-6">
+                            <img style={{ "margin-top": "8px" }} src={banner || detailMovie?.anhBia} height="80px"></img>
+                            <div className="row">
+                            </div>
+                        </div>
+
                         <div className="col-md-5">
                             <Input type="number"
                                 value={data.detailMovie?.danhGia}
