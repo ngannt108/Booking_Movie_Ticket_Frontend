@@ -10,11 +10,19 @@
 }
 
 button:disabled {
-    background: dimgray !important;
+    background: #d1d7db !important;
 }
 
 button:disabled:hover {
     box-shadow: none !important;
+}
+
+input:disabled {
+    background: #d1d7db !important;
+}
+
+textarea:disabled {
+    background: #d1d7db !important;
 }
 
 /* 3498db */

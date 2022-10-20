@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.2.1",
     "dotenv": "^16.0.2",
+    "multiselect-react-dropdown": "^2.0.25",
     "react": "^18.2.0",
     "react-bootstrap-buttons": "^1.0.0",
     "react-bootstrap-modal": "^4.2.0",
