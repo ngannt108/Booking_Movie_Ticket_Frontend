@@ -1,54 +1,86 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { StoreContext } from "../../Redux/Store/Store";
+import VideoPopUp from "../VideoPopUp2/VideoPopUp2";
 import "./Carousel.css";
 
 export default function Carousel() {
+  const store = useContext(StoreContext);
   return (
-    <div>
-      <div className="MainNav">
-        <h1>NP MOVIE-STAR</h1>
-        <ul>
-          <li>
-            <div className="dropdown">
-              <span>PHIM</span>
-              <div className="dropdown-content">
-                <Link to="/ShowingMovies">PHIM ĐANG CHIẾU</Link>
-                <Link to="/ComingMovies">PHIM SẮP CHIẾU</Link>
+    // Carousel
+    <div id="demo" className="carousel slide" data-ride="carousel">
+      {/* Indicators */}
+      <ul className="carousel-indicators">
+        <li data-target="#demo" data-slide-to="0" className="active"></li>
+        <li data-target="#demo" data-slide-to="1"></li>
+        <li data-target="#demo" data-slide-to="2"></li>
+        <li data-target="#demo" data-slide-to="3"></li>
+      </ul>
+      {/* The slideshow */}
+      <div className="carousel-inner">
+        {store.lsComingMovie.ComingMovie.listMovie && (
+          <div
+            style={{
+              // backgroundImage: `url(${store.lsComingMovie.ComingMovie.listMovie.BannerUrl})`,
+              background: "black",
+            }}
+            className={`carousel-item item2 text-white active`}
+          >
+            <div className="container-xl px-5">
+              <div className="row">
+                <div className="col-md-9">
+                  <h3 className="carousel__h3">
+                    {store.lsComingMovie.ComingMovie.listMovie.ApiGenreName}
+                  </h3>
+                  <h1 className="carousel__h1">
+                    {store.lsComingMovie.ComingMovie.listMovie.tenPhim}
+                  </h1>
+                  <p className="carousel__p mb-4 movie-decription">
+                    {store.lsComingMovie.ComingMovie.listMovie.moTa}
+                  </p>
+                  <div className="carousel-trailer">
+                    {/* <span className="carousel__span">
+                      {store.lsComingMovie.ComingMovie.listMovie.ApiRating}
+                    </span> */}
+                    <VideoPopUp
+                      link={store.lsComingMovie.ComingMovie.listMovie.trailer}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </li>
-          <li>
-            <div className="dropdown">
-              <span>CỤM RẠP</span>
-              <div className="dropdown-content">
-                <Link to="/Theaters">TẤT CẢ CÁC RẠP</Link>
-                <Link to="/">RẠP YÊU THÍCH</Link>
+          </div>
+        )}
+        {store.lsComingMovie.ComingMovie.listMovie &&
+          store.lsComingMovie.ComingMovie.listMovie
+            .slice(1, 4)
+            .map((movie, index) => (
+              <div
+                key={index}
+                style={{ backgroundImage: `url(${movie.BannerUrl})` }}
+                className={`carousel-item item${index + 1} text-white`}
+              >
+                <div className="container-xl px-5">
+                  <div className="row">
+                    <div className="col-md-9">
+                      {/* <h3 className="carousel__h3">{movie.ApiGenreName}</h3> */}
+                      <h1 className="carousel__h1">{movie.tenPhim}</h1>
+                      <p className="carousel__p mb-4 movie-decription">
+                        {movie.moTa}
+                      </p>
+                      <div className="carousel-trailer">
+                        {/* <span className="carousel__span">
+                          {movie.ApiRating}
+                        </span> */}
+                        <VideoPopUp link={movie.trailer} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </li>
-          <li>
-            <Link to="/">LỊCH CHIẾU</Link>
-          </li>
-          <li>
-            <div className="dropdown">
-              <span>THÀNH VIÊN</span>
-              <div className="dropdown-content">
-                <Link to="/">TÀI KHOẢN</Link>
-                <Link to="/">VÉ CỦA TÔI</Link>
-              </div>
-            </div>
-          </li>
-        </ul>
+            ))}
       </div>
-      <div className="Banner">
-        <div>
-          <img
-            src="https://dnm.nflximg.net/api/v6/BvVbc2Wxr2w6QuoANoSpJKEIWjQ/AAAAQWsliUxUhUxwb5jY8RoZwwd_s327F0SpA_bd8KCGBvcGAY_GumB9ClOwYrliLPigeDYfAcAxETe7QT2dmOvFwZkqzfufSVKqNvTh81RV7U99P53wP5D_yLjdpkdoFx8Jul82H8OWZxF8neZJY1cSSHqINKw.jpg?r=03a"
-            width="1200px"
-            height="400px"
-            alt="img"
-          />
-        </div>
+      <div className="carousel__icon">
+        <img className="carousel__arrow" src="./img/scroll-arrow.svg" alt="" />
       </div>
     </div>
   );

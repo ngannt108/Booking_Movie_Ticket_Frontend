@@ -1,50 +1,18 @@
-.container {
-  width: 90vw;
+.un-login {
+  margin-top: 10px;
 }
 
-header {
-  width: 100vw;
-  padding: 15px 0px;
-  display: flex;
-  justify-content: center;
-  background-color: black;
-}
-
-header > div {
-  display: flex;
-}
-
-.MainHeader {
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.container > div:nth-child(2) {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.MainHeader > a {
-  color: #d6ebff;
-  font-size: 25px;
-  font-weight: bolder;
+.un-login a {
   text-decoration: none;
 }
 
-.MainHeader .dropdown h1 {
-  color: #d6ebff;
-  font-size: 25px;
+.un-login a:hover {
+  text-decoration: none;
+}
+.LoggedIn a:hover {
   text-decoration: none;
 }
 
-header ul li {
-  display: inline-block;
-  margin-left: 20px;
-  font-size: 25px;
-  color: #d6ebff;
-}
-
-header ul li a {
+.userName {
   text-decoration: none;
-  color: #d6ebff;
 }

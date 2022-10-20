@@ -1,6 +1,4 @@
 import React, { useState, useContext } from "react";
-import { Button } from "../Button/Button";
-import { Input } from "../Input/Input";
 import { Link, useNavigate } from "react-router-dom";
 import "./SignIn.css";
 import { StoreContext } from "../../Redux/Store/Store";
@@ -46,23 +44,23 @@ export default function LogIn() {
         method: "POST",
         body: JSON.stringify(info),
       });
-      console.log(res.status);
       if (res.status === 200) {
         let dataUser = await res.json();
-        store.account.AccountDispatch({
-          type: "ACCOUNT",
-          payload: info.taiKhoan,
-        });
+
         const {
           token,
           data,
           expiresIn /*taiKhoan, maLoaiNguoiDung, ...authSignIn*/,
         } = dataUser;
+        console.log(data);
+        store.account.AccountDispatch({
+          type: "ACCOUNT",
+          payload: data.tentaiKhoan,
+        });
         // set localStorage
         //const maLichChieu = JSON.parse(localStorage.getItem("maLichChieu"));
         localStorage.setItem("token", JSON.stringify(token));
         //localStorage.setItem("taiKhoan", JSON.stringify(taiKhoan));
-        console.log(info);
         localStorage.setItem(
           "maLoaiNguoiDung",
           JSON.stringify(data.maLoaiNguoiDung)
@@ -93,45 +91,35 @@ export default function LogIn() {
       <div className="sign-in">
         <h1>ĐĂNG NHẬP</h1>
         <form>
-          <Input
-            type="text"
-            label="Tài Khoản"
-            name="account"
-            color="#d6ebff"
-            onChange={(event) =>
-              setAccount((previousAccount) => {
-                return { ...previousAccount, taiKhoan: event.target.value };
-              })
-            }
-            border="0px"
-            height="25px"
-            boxShadow="0px 2px 0px 0px rgba(0, 0, 0, 0.2)"
-          // disabled="false"
-          />
-          <Input
-            type="password"
-            label="Mật khẩu"
-            color="#d6ebff"
-            name="password"
-            onChange={(event) =>
-              setPassword((previousAccount) => {
-                return { ...previousAccount, matKhau: event.target.value };
-              })
-            }
-            border="0px"
-            height="25px"
-            boxShadow="0px 2px 0px 0px rgba(0, 0, 0, 0.2)"
-          // disabled="false"
-          />
-          <Button
-            border="0px"
-            background="#d6ebff"
-            color="black"
-            name="Đăng nhập"
-            fontWeight="bolder"
-            width="100%"
+          <div className="row-input">
+            <label className="lable-input">Email</label>
+            <input
+              className="input-field"
+              onChange={(event) =>
+                setAccount((previousAccount) => {
+                  return { ...previousAccount, taiKhoan: event.target.value };
+                })
+              }
+            />
+          </div>
+          <div className="row-input">
+            <label className="lable-input">Password</label>
+            <input
+              className="input-field"
+              type="password"
+              onChange={(event) =>
+                setPassword((previousAccount) => {
+                  return { ...previousAccount, matKhau: event.target.value };
+                })
+              }
+            />
+          </div>
+          <button
+            className="button-signin"
             onClick={(event) => UserSignIn(event, info)}
-          />
+          >
+            Đăng Nhập
+          </button>
           <Link to="/ForgotPassword"> Forgot password!</Link>
           <div>
             <span style={{ color: "#d6ebff" }}>Chưa có tài khoản? </span>

@@ -3,25 +3,23 @@ import { StoreContext } from "../../../Redux/Store/Store";
 import { API_MOVIE } from "../../../common/ApiController";
 import "./Menu.css";
 import HeaderAdmin from "../Header/HeaderAdmin";
-import "./MovieManage.css"
+import "./MovieManage.css";
 import { Button } from "../../../Components/Button/Button";
-import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css"
+import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import EditModalDialog from "../../../Components/Admin/EditFormModal/EditFormModal";
-import { NavLink } from "react-router-dom";
-
+import { Link, NavLink } from "react-router-dom";
 
 export default function AllMovies() {
   const store = useContext(StoreContext);
 
-
-  const [biDanh, setBiDanh] = React.useState()
-  const [isShow, setShow] = React.useState(false)
-  const [isComing, setIsComing] = React.useState(true)
-  console.log(">>ID in AllMovies", biDanh)
+  const [biDanh, setBiDanh] = React.useState();
+  const [isShow, setShow] = React.useState(false);
+  const [isComing, setIsComing] = React.useState(true);
+  console.log(">>ID in AllMovies", biDanh);
   const handleClick = (biDanh) => {
-    setBiDanh(biDanh)
-    setShow(isShow)
-  }
+    setBiDanh(biDanh);
+    setShow(isShow);
+  };
 
   useEffect(() => {
     if (isComing)
@@ -43,30 +41,43 @@ export default function AllMovies() {
             payload: dt.data,
           });
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isComing]);
 
-  let movies = isComing ? store.lsComingMovie.ComingMovie?.lsComingMovie : store.lsShowingMovie.ShowingMovie?.lsShowingMovie
-  console.log(">> MOVIES", movies)
+  let movies = isComing
+    ? store.lsComingMovie.ComingMovie?.lsComingMovie
+    : store.lsShowingMovie.ShowingMovie?.lsShowingMovie;
+  console.log(">> MOVIES", movies);
   return (
     <>
       <HeaderAdmin />
       <div className="general">
         <div className="vertical-menu">
-          <a href="#" className="active">Tất cả phim</a>
-          <NavLink end to="/Admin/movie">Tạo phim mới</NavLink>
-          <a href="#">Phim được yêu thích</a>
+          <Link to="#" className="active">
+            Tất cả phim
+          </Link>
+          <NavLink end to="/Admin/movie">
+            Tạo phim mới
+          </NavLink>
+          <Link to="#">Phim được yêu thích</Link>
         </div>
 
         <div className="row">
           <div className="col-md-4">
-            <Button width="60px" name="Phim sắp chiếu" onClick={() => setIsComing(true)} />
-
+            <Button
+              width="60px"
+              name="Phim sắp chiếu"
+              onClick={() => setIsComing(true)}
+            />
           </div>
           <div className="col-md-4">
-            <Button width="60px" name="Phim đang chiếu" onClick={() => setIsComing(false)} />
+            <Button
+              width="60px"
+              name="Phim đang chiếu"
+              onClick={() => setIsComing(false)}
+            />
           </div>
         </div>
-
 
         <div className="container-body">
           <table className="layout display responsive-table">
@@ -82,9 +93,15 @@ export default function AllMovies() {
               {movies?.map((item, index) => (
                 <tr>
                   <td className="organisationname number">{index + 1}</td>
-                  <td width="250px" className="organisationname">{item.tenPhim}</td>
-                  <td className="organisationname image"><img height="60px" width="50px" src={item.hinhAnh} /></td>
-                  <td width="900px" className="organisationname">{item.moTa}</td>
+                  <td width="250px" className="organisationname">
+                    {item.tenPhim}
+                  </td>
+                  <td className="organisationname image">
+                    <img height="60px" width="50px" src={item.hinhAnh} alt="" />
+                  </td>
+                  <td width="900px" className="organisationname">
+                    {item.moTa}
+                  </td>
 
                   <td width="250px" className="actions">
                     <EditModalDialog biDanh={item.biDanh} show={false} />
@@ -93,14 +110,12 @@ export default function AllMovies() {
                     {/* <a href="?" className="edit-item" title="Edit">Edit</a> ||
                  <a href="?" className="remove-item" title="Remove">Remove</a> */}
                   </td>
-
                 </tr>
-              ))
-              }
+              ))}
             </tbody>
           </table>
         </div>
       </div>
     </>
-  )
+  );
 }

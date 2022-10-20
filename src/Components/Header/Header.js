@@ -11,41 +11,78 @@ export default function Header() {
   }, [store.account]);
   return (
     <div>
-      <header>
-        <div className="container">
-          <div className="MainHeader">
-            <Link to="/">NP MOVIE-STAR</Link>
-          </div>
-          <div className="MainHeader">
-            {userName ? (
-              <div className="dropdown">
-                <h1>{userName}</h1>
-                <div className="dropdown-content">
-                  <Link to="/Account">TÀI KHOẢN</Link>
-                  <Link
-                    onClick={() =>
-                      store.account.AccountDispatch({
-                        type: "ACCOUNT",
-                        payload: null,
-                      })
-                    }
-                    to="/"
-                  >
-                    ĐĂNG XUẤT
+      <header style={{ paddingTop: "12px" }} id="header__run">
+        <div className="container-xl">
+          {/* navbar */}
+          <nav className="navbar navbar-expand-md navbar-dark">
+            {/* Brand */}
+            <Link className="navbar-brand" to="/">
+              <img onClick={() => {}} src="./img/logo.svg" alt="" />
+            </Link>
+
+            {/* Toggler/collapsibe Button */}
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#collapsibleNavbar"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
+
+            {/* Navbar links */}
+            <div className="collapse navbar-collapse" id="collapsibleNavbar">
+              <ul className="navbar-nav ml-auto text-nowrap">
+                <li className="nav-item">
+                  <Link className="nav-link" to="/">
+                    Home
                   </Link>
-                </div>
-              </div>
-            ) : (
-              <ul>
-                <li>
-                  <Link to="/SignUp">ĐĂNG KÝ</Link>
                 </li>
-                <li>
-                  <Link to="/SignIn">ĐĂNG NHẬP</Link>
+                <li className="nav-item">
+                  <Link className="nav-link" to="#">
+                    Movie
+                  </Link>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/Cinemas">
+                    Cinemas
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="#">
+                    News
+                  </Link>
+                </li>
+
+                {userName ? (
+                  <li className="nav-item LoggedIn">
+                    <div style={{ marginTop: "20px" }} className="dropdown ">
+                      <Link className="userName" to="/">
+                        {userName}
+                      </Link>
+                      <div className="dropdown-content">
+                        <Link
+                          onClick={() =>
+                            store.account.AccountDispatch({
+                              type: "ACCOUNT",
+                              payload: null,
+                            })
+                          }
+                          to="/"
+                        >
+                          LOG OUT
+                        </Link>
+                      </div>
+                    </div>
+                  </li>
+                ) : (
+                  <li className="nav-link un-login">
+                    <Link to="/SignIn">Log in</Link>
+                  </li>
+                )}
               </ul>
-            )}
-          </div>
+            </div>
+          </nav>
         </div>
       </header>
     </div>

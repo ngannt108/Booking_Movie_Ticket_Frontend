@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Button } from "../Button/Button";
-import { Input } from "../Input/Input";
 import { Link, useNavigate } from "react-router-dom";
-import "./SignUp.css";
+import "../SignIn/SignIn.css";
 import { API_ACCOUNTS } from "../../common/ApiController";
 
 export default function LogIn() {
@@ -84,6 +82,7 @@ export default function LogIn() {
     event.preventDefault();
     if (Validation(account)) {
       if (password.matKhau === passwordRetype.nhapLaiMatKhau) {
+        console.log(1);
         let res = await fetch(API_ACCOUNTS.SIGNUP, {
           headers: {
             //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json
@@ -92,6 +91,7 @@ export default function LogIn() {
           method: "POST",
           body: JSON.stringify(account),
         });
+        console.log(res.status);
         if (res.status === 201) {
           navigate("/SignIn");
         } else {
@@ -106,8 +106,8 @@ export default function LogIn() {
         alert("Vui lòng nhập đầy đủ");
         return false;
       }
-      return true;
     });
+    return true;
   };
   return (
     <div className="main">
@@ -116,119 +116,105 @@ export default function LogIn() {
         <form>
           <div className="sign-up-row">
             <div className="sign-up-col-5">
-              <Input
-                type="text"
-                label="Tài Khoản:"
-                name="account"
-                onChange={(event) =>
-                  setAccount((previousAccount) => {
-                    return { ...previousAccount, taiKhoan: event.target.value };
-                  })
-                }
-                border="0px"
-                color="#d6ebff"
-                height="25px"
-                width="100%"
-                boxShadow="0px 2px 0px 0px rgba(0, 0, 0, 0.2)"
-              />
-              <Input
-                type="password"
-                label="Mật khẩu:"
-                name="password"
-                onChange={(event) =>
-                  setPassword((previousAccount) => {
-                    return { ...previousAccount, matKhau: event.target.value };
-                  })
-                }
-                border="0px"
-                color="#d6ebff"
-                height="25px"
-                width="100%"
-                boxShadow="0px 2px 0px 0px rgba(0, 0, 0, 0.2)"
-              />
-              <Input
-                type="password"
-                label="Nhập lại mật khẩu:"
-                color="#d6ebff"
-                name="passwordRetype"
-                onChange={(event) =>
-                  setPassRetype((previousAccount) => {
-                    return {
-                      ...previousAccount,
-                      nhapLaiMatKhau: event.target.value,
-                    };
-                  })
-                }
-                border="0px"
-                height="25px"
-                width="100%"
-                boxShadow="0px 2px 0px 0px rgba(0, 0, 0, 0.2)"
-              />
+              <div className="row-input">
+                <label className="lable-input">Tài khoản</label>
+                <input
+                  className="input-field"
+                  onChange={(event) =>
+                    setAccount((previousAccount) => {
+                      return {
+                        ...previousAccount,
+                        taiKhoan: event.target.value,
+                      };
+                    })
+                  }
+                />
+              </div>
+              <div className="row-input">
+                <label className="lable-input">Mật khẩu</label>
+                <input
+                  className="input-field"
+                  type="password"
+                  onChange={(event) =>
+                    setPassword((previousAccount) => {
+                      return {
+                        ...previousAccount,
+                        matKhau: event.target.value,
+                      };
+                    })
+                  }
+                />
+              </div>
+              <div className="row-input">
+                <label className="lable-input">Nhập lại mật khẩu</label>
+                <input
+                  className="input-field"
+                  type="password"
+                  onChange={(event) =>
+                    setPassRetype((previousAccount) => {
+                      return {
+                        ...previousAccount,
+                        nhapLaiMatKhau: event.target.value,
+                      };
+                    })
+                  }
+                />
+              </div>
             </div>
             <div className="sign-up-col-5">
-              <Input
-                type="text"
-                label="Email:"
-                name="email"
-                color="#d6ebff"
-                onChange={(event) =>
-                  setEmail((previousAccount) => {
-                    return { ...previousAccount, email: event.target.value };
-                  })
-                }
-                border="0px"
-                height="25px"
-                width="100%"
-                boxShadow="0px 2px 0px 0px rgba(0, 0, 0, 0.2)"
-              />
-              <Input
-                type="text"
-                label="Số điện thoại:"
-                name="phoneNumber"
-                color="#d6ebff"
-                onChange={(event) =>
-                  setPhoneNumber((previousAccount) => {
-                    return { ...previousAccount, SDT: event.target.value };
-                  })
-                }
-                border="0px"
-                height="25px"
-                width="100%"
-                boxShadow="0px 2px 0px 0px rgba(0, 0, 0, 0.2)"
-              />
-              <Input
-                type="text"
-                label="Họ tên:"
-                name="fullname"
-                color="#d6ebff"
-                onChange={(event) =>
-                  setName((previousAccount) => {
-                    return { ...previousAccount, hoTen: event.target.value };
-                  })
-                }
-                border="0px"
-                height="25px"
-                width="100%"
-                boxShadow="0px 2px 0px 0px rgba(0, 0, 0, 0.2)"
-              />
+              <div className="row-input">
+                <label className="lable-input">Email</label>
+                <input
+                  className="input-field"
+                  onChange={(event) =>
+                    setEmail((previousAccount) => {
+                      return { ...previousAccount, email: event.target.value };
+                    })
+                  }
+                />
+              </div>
+              <div className="row-input">
+                <label className="lable-input">Số điện thoại</label>
+                <input
+                  className="input-field"
+                  onChange={(event) =>
+                    setPhoneNumber((previousAccount) => {
+                      return { ...previousAccount, SDT: event.target.value };
+                    })
+                  }
+                />
+              </div>
+              <div className="row-input">
+                <label className="lable-input">Họ và tên</label>
+                <input
+                  className="input-field"
+                  onChange={(event) =>
+                    setName((previousAccount) => {
+                      return { ...previousAccount, hoTen: event.target.value };
+                    })
+                  }
+                />
+              </div>
             </div>
           </div>
-          <Button
-            border="0px"
-            background="#d6ebff"
-            name="Đăng ký"
-            color="black"
-            fontWeight="bolder"
-            width="100%"
+          <button
+            className="button-signin"
             onClick={(event) => UserRegister(event, info)}
-          />
-          <span style={{ color: "#d6ebff" }}>Đã có tài khoản? </span>
-          <Link
-            to="/SignIn"
-            style={{ textDecoration: "underline", fontWeight: "bolder" }}
           >
-            Đăng nhập
-          </Link>
+            Đăng ký
+          </button>
+          <div>
+            <span style={{ color: "#d6ebff" }}>Đã có tài khoản? </span>
+            <Link
+              to="/SignIn"
+              style={{
+                textDecoration: "underline",
+                fontWeight: "bolder",
+              }}
+            >
+              Đăng nhập
+            </Link>
+          </div>
         </form>
       </div>
     </div>

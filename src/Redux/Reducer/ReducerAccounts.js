@@ -2,7 +2,7 @@ import { useReducer } from "react";
 function GetAccount(state, { type, payload }) {
   switch (type) {
     case "ACCOUNT":
-      return { ...state, account: payload };
+      return { account: payload };
     default:
       return state;
   }
