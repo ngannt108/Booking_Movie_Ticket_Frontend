@@ -20,11 +20,11 @@ function AddMovieForm(props) {
     const [genres, setGenres] = React.useState([]);
 
     let emptyMovie = {
-        tenPhim: "Phim mới luôn",
+        tenPhim: "",
         hinhAnh: "",
         moTa: "",
-        ngayKhoiChieu: "2022-10-20",
-        thoiLuong: "58",
+        ngayKhoiChieu: "",
+        thoiLuong: "",
         trailer: "",
         anhBia: "",
         theLoai: [],
@@ -50,30 +50,32 @@ function AddMovieForm(props) {
         for (let keyOfObj in detailMovie) {
             fd.append(keyOfObj, detailMovie[keyOfObj])
         }
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmRiN2Q3MDljMGQxZDA4NjA5ZjUzY2EiLCJtYUxvYWlOZ3VvaUR1bmciOiIwIiwiaWF0IjoxNjY1OTA1Njk1LCJleHAiOjE2NjU5MDkyOTV9.MF2qTRHcXRPx7kfGtXIL1vWDf4-XDz8kinF5dr3G2o8'
+        const token = JSON.parse(localStorage.getItem("token"))
 
-        let res = await fetch(API_MOVIE.ADD, {
+        fetch(API_MOVIE.ADD, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
             method: "POST",
             body: fd
+        }).then(res => {
+            if (res.status == 201) {
+                return swal({
+                    title: "Thêm phim thành công",
+                    text: "",
+                    icon: "success",
+                });
+            }
+            else return res.json()
+        }).then(response => {
+            console.log("response", response)
+            if (response != true)
+                return swal({
+                    title: "Thêm phim thất bại",
+                    text: response.error,
+                    icon: "error",
+                });
         })
-        if (res.status === 201) {
-            swal({
-                title: "Thêm phim thành công",
-                text: "",
-                icon: "success",
-            });
-            //  navigate("/Admin")
-        } else swal({
-            title: "Thêm phim mới thất bại",
-            text: "Hãy thử lại",
-            icon: "warning",
-            buttons: true,
-            // dangerMode: true,
-        })
-
     }
 
     const handleAdd = (e) => {
@@ -182,10 +184,6 @@ function AddMovieForm(props) {
                     <a href="#">Phim được yêu thích</a>
                 </div>
                 <div style={{ "marginLeft": "40px" }} className="container mt-4">
-                    {/* 
-            <Button variant="success" onClick={initModal}>
-                Open Modal
-            </Button> */}
                     <form>
                         <div style={{ "textAlign": "center", "width": "980px" }}><label >THÔNG TIN PHIM MỚI</label></div>
 
@@ -200,16 +198,9 @@ function AddMovieForm(props) {
                                     onClick={(event) => handleOnChange(event)} />
                                 <span style={{ color: 'red' }}>{validationMsg?.tenPhim}</span>
                             </div>
-                            <div className="col-md-4" style={{ "padding": "15px 12px" }} >
-                                Ngày khởi chiếu
-                                <input className="form-control"
+                            <div className="col-md-4" >
+                                <Input className="form-control"
                                     type="date"
-                                    style={{
-                                        "height": "25px",
-                                        "width": "100%",
-                                        "border": "1px solid lightgray",
-                                        "boxShadow": "none",
-                                    }}
                                     value={formattedDate(detailMovie?.ngayKhoiChieu)}
                                     min={formattedDate(Date())}
                                     label="Khởi chiếu"
@@ -234,16 +225,11 @@ function AddMovieForm(props) {
                         />
                         <br />
                         <div className="row">
-                            <div className="col-md-3" style={{ "padding": "15px 12px" }}>
-                                Thời lượng
-                                <input className="form-control"
+                            <div className="col-md-3">
+
+                                <Input className="form-control"
                                     type="number"
-                                    style={{
-                                        "height": "25px",
-                                        "width": "100%",
-                                        "border": "1px solid lightgray",
-                                        "boxShadow": "none",
-                                    }}
+                                    label="Thời lượng"
                                     value={detailMovie?.thoiLuong}
                                     onKeyDown={(e) => e.preventDefault()}
                                     name="thoiLuong"
@@ -254,7 +240,7 @@ function AddMovieForm(props) {
                                 />
                                 <div><span style={{ color: 'red' }}>{validationMsg?.thoiLuong}</span></div>
                             </div>
-                            <div className="col-md-3">
+                            <div className="col-md-3" style={{ margin: "0% 8%" }}>
                                 <Input type={"url"}
                                     value={detailMovie?.trailer}
                                     label="Trailer"
@@ -267,7 +253,7 @@ function AddMovieForm(props) {
 
                             </div>
                             <div className="row">
-                                <div className="col-md-4">
+                                <div className="col-md-4" style={{ marginBottom: "16px" }}>
                                     Thể loại
                                     <Multiselect
                                         isObject={false}

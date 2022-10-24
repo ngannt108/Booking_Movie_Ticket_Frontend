@@ -45,8 +45,8 @@ export default function AllMovies() {
   }, [isComing]);
 
   let movies = isComing
-    ? store.lsComingMovie.ComingMovie?.lsComingMovie
-    : store.lsShowingMovie.ShowingMovie?.lsShowingMovie;
+    ? store.lsComingMovie.ComingMovie?.listMovie
+    : store.lsShowingMovie.ShowingMovie?.listMovie;
   console.log(">> MOVIES", movies);
   return (
     <>
@@ -105,6 +105,7 @@ export default function AllMovies() {
 
                   <td width="250px" className="actions">
                     <EditModalDialog biDanh={item.biDanh} show={false} />
+
                     {/* <Button color='black' name="Detail" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" onClick={() => handleClick(item.biDanh)} /> */}
 
                     {/* <a href="?" className="edit-item" title="Edit">Edit</a> ||

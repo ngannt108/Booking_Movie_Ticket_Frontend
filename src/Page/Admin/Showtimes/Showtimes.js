@@ -1,15 +1,17 @@
 import HeaderAdmin from "../Header/HeaderAdmin";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import React, { useState } from 'react';
 import { API_MOVIE, API_THEATERS } from "../../../common/ApiController";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import { useEffect } from "react";
 import { useContext } from "react";
 import { StoreContext } from "../../../Redux/Store/Store";
+import AddShowtimeModalDialog from "../../../Components/Admin/AddShowtimeModal/AddShowtimeModal";
+import { Button } from "../../../Components/Button/Button";
 
 export default function Showtimes() {
     let slug = useParams()
@@ -21,7 +23,7 @@ export default function Showtimes() {
     const [expandState, setExpandState] = useState({});
 
 
-    const handleEpandRow = (event, theaterId) => {
+    const handleExpandRow = (event, theaterId) => {
         const currentExpandedRows = expandedRows;
         const isRowExpanded = currentExpandedRows.includes(theaterId);
 
@@ -83,30 +85,10 @@ export default function Showtimes() {
                     <a href="#" >Tạo phim mới</a>
                     <a href="#">Phim được yêu thích</a>
                 </div>
-                {/* <div style={{ "marginLeft": "40px" }} className="container mt-4">
-                    <form>
-                        <div style={{ "textAlign": "center", "width": "980px" }}><label >LỊCH CHIẾU CỦA PHIM: tenPhim</label></div>
-
-                        <div className="row">
-                            <div className="col-md-2">
-                                RẠP
-                            </div>
-                            <div className="col-md-4">
-                                LỊCH CHIẾU
-                            </div>
-                        </div>
-
-                        <div className="row">
-
-                        </div>
-
-                    </form>
-                </div> */}
-
                 <Container>
                     <Row>
                         <Col>
-                            THONG TIN PHIM: tenphim
+                            THÔNG TIN PHIM - {movieDetail?.tenPhim}
                         </Col>
                     </Row>
                     <Row>
@@ -114,14 +96,8 @@ export default function Showtimes() {
                             <Table responsive variant="info ">
                                 <thead>
                                     <tr>
-                                        <th>TEN CUM RAP</th>
+                                        <th>TÊN CỤM RẠP</th>
                                         <th></th>
-                                        <th></th>
-                                        <th></th>
-                                        {/* <th>Last Name</th>
-                                        <th>e-mail</th>
-                                        <th>Gender</th>
-                                        <th>Details</th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -133,97 +109,69 @@ export default function Showtimes() {
                                                         {theater.tenCumRap}
                                                     </td>
                                                     <td>
-                                                        <Button
-                                                            variant="link"
-                                                            onClick={event => handleEpandRow(event, theater._id)}>
+                                                        <div style={{ "display": "flex" }}>
                                                             {
                                                                 expandState[theater._id] ?
-                                                                    'Hide' : 'Show'
+                                                                    <Button color='rgb(31, 166, 245)' name="Thu gọn" background="pink" width="fit-content" borderRadius="10.2em" fontWeight="bold" onClick={event => handleExpandRow(event, theater._id)} />
+                                                                    :
+                                                                    <Button color='red' name="Hiển thị" background="pink" width="fit-content" borderRadius="10.2em" fontWeight="bold" onClick={event => handleExpandRow(event, theater._id)} />
                                                             }
-                                                        </Button>
+                                                            <AddShowtimeModalDialog clusterName={theater.tenCumRap} clusterID={theater._id} slug={slug.slug} show={false} />
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <>
                                                     {
-                                                        expandedRows.includes(theater._id) ?
-                                                            <tr>
-                                                                {/* colspan="6" */}
-                                                                <td>
+                                                        expandedRows.includes(theater._id) &&
+                                                        <tr>
+                                                            {/* colspan="6" */}
+                                                            <td>
+                                                                {
+
                                                                     <div style={{ backgroundColor: '#343A40', color: '#FFF', padding: '10px' }}>
-
-                                                                        {console.log(">> movieDetail", movieDetail.lichChieu)}
-
                                                                         {
-
                                                                             movieDetail?.lichChieu?.map(item => {
 
                                                                                 if (item.tenCumRap._id == theater._id) {
                                                                                     console.log(">> theater._id", theater._id)
                                                                                     console.log(">> item.tenCumRap._id", item.tenCumRap._id)
                                                                                     console.log(">> item.tenRap.tenRap", item.tenRap.tenRap)
+                                                                                    if (item)
+                                                                                        return (
+                                                                                            <><h5>{item.tenRap.tenRap}</h5>
+                                                                                                <li>
+                                                                                                    <span><b>Ngày chiếu:</b></span> {' '}
+                                                                                                    <span> {new Date(item.ngayChieu).toLocaleString()}</span>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                    <span><b>Giờ kết thúc:</b></span> {' '}
+                                                                                                    <span> {new Date(item.gioKetThuc).toLocaleString()}</span>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                    <span><b>Thời lượng:</b></span> {' '}
+                                                                                                    <span> {item.thoiLuong} phút</span>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                    <span><b>Giá vé:</b></span> {' '}
+                                                                                                    <span> {item.giaVe} VNĐ</span>
+                                                                                                </li>
+                                                                                                <li>
+                                                                                                    <span><b>Ghế:</b></span> {' '}
+                                                                                                    <span> {item.gheDaChon.length}/80 <Button color='white' name="Xóa" background="rgb(31, 166, 245)" width="fit-content" borderRadius="10.2em" fontWeight="bold" onClick={event => handleExpandRow(event, theater._id)} /></span>
+                                                                                                </li>
 
-                                                                                    return (
-                                                                                        <><h5>{item.tenRap.tenRap}</h5>
-                                                                                            <li>
-                                                                                                <span><b>Ngày chiếu:</b></span> {' '}
-                                                                                                <span> {item.ngayChieu}</span>
-                                                                                            </li>
-                                                                                            <li>
-                                                                                                <span><b>Giờ kết thúc:</b></span> {' '}
-                                                                                                <span> {item.gioKetThuc}</span>
-                                                                                            </li>
-                                                                                            <li>
-                                                                                                <span><b>Thời lượng:</b></span> {' '}
-                                                                                                <span> {item.thoiLuong} phút</span>
-                                                                                            </li>
-                                                                                            <li>
-                                                                                                <span><b>Giá vé:</b></span> {' '}
-                                                                                                <span> {item.giaVe} VNĐ</span>
-                                                                                            </li>
-                                                                                            <li>
-                                                                                                <span><b>Ghế:</b></span> {' '}
-                                                                                                <span> {item.gheDaChon.length}/80</span>
-                                                                                            </li>
-
-                                                                                        </>
-                                                                                    )
+                                                                                            </>
+                                                                                        )
 
                                                                                 }
 
                                                                             })
-
-
                                                                         }
-                                                                        <th>{ }</th>
-                                                                        <ul>
-                                                                            {/* <li>
-                                                                            <span><b>Full Name:</b></span> {' '}
-                                                                            <span> {user['first_name']} {' '} {user['last_name']} </span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <span><b>Company:</b></span> {' '}
-                                                                            <span> {user.company} </span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <span><b>Department:</b></span> {' '}
-                                                                            <span> {user.department} </span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <span><b>Ip:</b></span> {' '}
-                                                                            <span> {user['ip_address']} </span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <span><b>Best Movie:</b></span> {' '}
-                                                                            <span> {user.movies} </span>
-                                                                        </li>
-                                                                        <li>
-                                                                            <span><b>About:</b></span> {' '}
-                                                                            <span> {user.about} </span>
-                                                                        </li> */}
-                                                                        </ul>
                                                                     </div>
-                                                                </td>
-                                                            </tr> : null
+
+                                                                }
+                                                            </td>
+                                                        </tr>
                                                     }
                                                 </>
                                             </>

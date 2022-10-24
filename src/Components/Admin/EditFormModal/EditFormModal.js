@@ -83,7 +83,7 @@ function EditModalDialog(props) {
         for (let keyOfObj in detailMovie) {
             fd.append(keyOfObj, detailMovie[keyOfObj])
         }
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmRiN2Q3MDljMGQxZDA4NjA5ZjUzY2EiLCJtYUxvYWlOZ3VvaUR1bmciOiIwIiwiaWF0IjoxNjY2MDEzOTExLCJleHAiOjE2NjYwMTc1MTF9.L6-mSgOPaHuXGUjl8ILfOjXFa45uyn9hrb4vhjptL0U'
+        const token = JSON.parse(localStorage.getItem("token"))
         let res = await fetch(API_MOVIE.UPDATE + biDanh, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -220,12 +220,12 @@ function EditModalDialog(props) {
 
                         </div>
                     </div>
-                    <div className="col-md-12">
+                    <div >
                         Mô tả
                         <br />
                         <textarea className="col-md-12"
-                            // rows="4"
-                            //cols="100%"
+                            rows="4"
+                            cols="100%"
                             disabled={isEdit ? false : true}
                             name="moTa"
                             value={detailMovie?.moTa}
@@ -242,18 +242,13 @@ function EditModalDialog(props) {
                                 label={!isEdit ? "Ngày kết thúc" : ""}
                                 name="Ngày kết thúc" />
                         </div>
-                        <div className="col-md-5" style={{ "padding": "15px 0px" }}>
-                            Thời lượng
-                            <input className="form-control"
+                        <div className="col-md-5">
+
+                            <Input className="form-control"
                                 type="number"
-                                style={{
-                                    "height": "25px",
-                                    "width": "100%",
-                                    "border": "1px solid lightgray",
-                                    "boxShadow": "none",
-                                }}
                                 value={detailMovie?.thoiLuong}
                                 onKeyDown={(e) => e.preventDefault()}
+                                label="Thời lượng"
                                 name="thoiLuong"
                                 disabled={isEdit ? false : true}
                                 min={0}
@@ -305,7 +300,10 @@ function EditModalDialog(props) {
 
                         <div className="col-md-6">
                             {isEdit ?
-                                <input type="file" name="hinhAnh" onChange={(event) => { uploadImage(event) }} />
+                                <>
+                                    <div>Hình ảnh</div>
+                                    <input type="file" name="hinhAnh" onChange={(event) => { uploadImage(event) }} />
+                                </>
                                 :
                                 <div>Hình ảnh</div>
                             }
@@ -313,7 +311,10 @@ function EditModalDialog(props) {
 
                         <div className="col-md-6">
                             {isEdit ?
-                                <input type="file" name="anhBia" onChange={(event) => { uploadBanner(event) }} />
+                                <>
+                                    <div>Ảnh bìa</div>
+                                    <input type="file" name="anhBia" onChange={(event) => { uploadBanner(event) }} />
+                                </>
                                 :
                                 <div>Ảnh bìa</div>
                             }
