@@ -45,8 +45,8 @@ export default function AllMovies() {
   }, [isComing]);
 
   let movies = isComing
-    ? store.lsComingMovie.ComingMovie?.lsComingMovie
-    : store.lsShowingMovie.ShowingMovie?.lsShowingMovie;
+    ? store.lsComingMovie.ComingMovie?.listMovie
+    : store.lsShowingMovie.ShowingMovie?.listMovie;
   console.log(">> MOVIES", movies);
   return (
     <>
@@ -91,7 +91,7 @@ export default function AllMovies() {
             </thead>
             <tbody>
               {movies?.map((item, index) => (
-                <tr>
+                <tr key={index}>
                   <td className="organisationname number">{index + 1}</td>
                   <td width="250px" className="organisationname">
                     {item.tenPhim}
@@ -105,10 +105,6 @@ export default function AllMovies() {
 
                   <td width="250px" className="actions">
                     <EditModalDialog biDanh={item.biDanh} show={false} />
-                    {/* <Button color='black' name="Detail" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" onClick={() => handleClick(item.biDanh)} /> */}
-
-                    {/* <a href="?" className="edit-item" title="Edit">Edit</a> ||
-                 <a href="?" className="remove-item" title="Remove">Remove</a> */}
                   </td>
                 </tr>
               ))}

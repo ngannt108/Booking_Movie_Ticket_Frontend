@@ -19,7 +19,7 @@ export default function ComingMovies() {
   return (
     <div className="lsMovie">
       {console.log(store)}
-      {store.lsComingMovie.ComingMovie.lsComingMovie?.map((n, i) => (
+      {store.lsComingMovie.ComingMovie.lsMovie?.map((n, i) => (
         <div key={i} className="movie">
           <img src={n.hinhAnh} alt="movie.img" />
           <h3>{n.tenPhim}</h3>

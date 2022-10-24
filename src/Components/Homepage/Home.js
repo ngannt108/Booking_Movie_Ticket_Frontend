@@ -2,11 +2,13 @@ import React, { useEffect, useContext } from "react";
 import { StoreContext } from "../../Redux/Store/Store";
 import Carousel from "../Carousel/Carousel";
 import { API_MOVIE } from "../../common/ApiController";
+import NewIn from "../NewIn/NewIn";
+import Soon from "../Soon/Soon";
 
 export default function Home() {
   const store = useContext(StoreContext);
   useEffect(() => {
-    fetch(API_MOVIE.COMING)
+    fetch(API_MOVIE.SHOWING)
       .then((res) => res.json())
       .then((dt) => {
         store.lsShowingMovie.ShowingMovieDispatch({
@@ -27,6 +29,8 @@ export default function Home() {
   return (
     <div>
       <Carousel />
+      <NewIn />
+      <Soon />
     </div>
   );
 }

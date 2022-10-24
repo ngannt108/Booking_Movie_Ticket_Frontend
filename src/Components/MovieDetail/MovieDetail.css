@@ -1,0 +1,145 @@
+.movie-detail-container {
+  position: relative;
+  font-size: 28px;
+  font-family: "Roboto Condensed";
+}
+.movie-detail-main-content {
+  margin: -240px 0 0 290px;
+}
+.movie-detail-all-info {
+  display: flex;
+}
+/* .movie-detail-all-info .left-banner{
+
+} */
+.movie-detail-all-info .base-info {
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.91) 0%,
+    rgba(0, 0, 0, 0.06) 85%,
+    rgba(0, 0, 0, 0.01) 100%
+  );
+  color: white;
+  height: 240px;
+  width: 750px;
+  padding: 20px;
+}
+.movie-row {
+  display: block;
+  height: 24px;
+  width: 100%;
+}
+.movie-duaration {
+  font-size: 14px;
+  color: #fe7900;
+  margin: 0;
+}
+.movie-label {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 20px;
+  width: 88px;
+}
+.label-info {
+  color: lightgray;
+  display: inline;
+  font-weight: lighter;
+  font-size: 14px;
+}
+.movie-synopsis {
+  padding: 20px;
+}
+.synopsis-header,
+.movie-showtime-header,
+.movie-comment-header {
+  color: #fe7900;
+}
+.synopsis-content {
+  font-size: 14px;
+  width: 600px;
+}
+/* Movie Showtime */
+/* .movie-showtime {
+  margin: 60px 0 0 290px;
+}
+.movie-showtime-header {
+  font-weight: lighter;
+}
+.movie-dateTime-wrapper {
+  background: #f8f8f8;
+  width: 890px;
+}
+.movie-dateTime-item {
+  padding: 20px 0 20px 40px;
+}
+.movie-date {
+  letter-spacing: normal;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0;
+}
+.movie-time {
+  background: #dbdbdb;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 14px;
+  padding: 3px 10px;
+  margin-right: 8px;
+} */
+/* Movie Comment */
+/* .movie-comment {
+  margin: 60px 0 0 290px;
+  border: 1px solid lightgray;
+  border-radius: 15px;
+  width: 940px;
+  padding: 32px;
+}
+.movie-comment-field {
+  padding-right: 40px;
+  height: 700px;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  width: 907px;
+}
+.user-comment-wrapper {
+  margin: 40px 0 0px 0;
+  display: flex;
+}
+.user-comment {
+  background: #f8f8f8 none repeat scroll 0 0;
+  padding: 20px 0 0 20px;
+  margin: -20px 0 0 0px;
+  width: 810px;
+  padding: 20px;
+  height: fit-content;
+}
+.user-avatar {
+  border-radius: 50%;
+  margin-right: 20px;
+}
+.user-name {
+  font-size: 15px;
+  font-weight: bold;
+}
+.comment-day {
+  color: #999;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+.comment-content {
+  font-size: 15px;
+}
+
+.showtime-fields {
+  width: 940px;
+}
+
+.icon-cinemas {
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.icon-cinemas a {
+  display: inline-block;
+} */
