@@ -1,0 +1,7 @@
+.booking-btn:hover {
+  color: white;
+}
+.booking-btn:focus {
+  outline: none;
+  border: none;
+}

@@ -1,0 +1,9 @@
+.time:hover{
+    background-color: #000;
+    color:  #fbbd61;
+}
+.time:focus{
+    border-color: white !important;
+    box-shadow: none !important;
+    outline: none;
+}

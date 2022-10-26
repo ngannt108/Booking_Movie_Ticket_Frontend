@@ -35,22 +35,22 @@ export default function Header() {
               <ul className="navbar-nav ml-auto text-nowrap">
                 <li className="nav-item">
                   <Link className="nav-link" to="/">
-                    Home
+                    Trang chủ
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="#">
-                    Movie
+                    Phim
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/Cinemas">
-                    Cinemas
+                  <Link className="nav-link" to="/Theaters">
+                    Hệ thống rạp
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="#">
-                    News
+                    Khuyến mãi
                   </Link>
                 </li>
 
@@ -70,14 +70,14 @@ export default function Header() {
                           }
                           to="/"
                         >
-                          LOG OUT
+                          Đăng xuất
                         </Link>
                       </div>
                     </div>
                   </li>
                 ) : (
                   <li className="nav-link un-login">
-                    <Link to="/SignIn">Log in</Link>
+                    <Link to="/SignIn">Đăng nhập</Link>
                   </li>
                 )}
               </ul>

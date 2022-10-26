@@ -1,3 +1,7 @@
-.carousel-trailer{
-    display: flex;
+.carousel-trailer {
+  display: flex;
+}
+.carousel-indicators {
+  bottom: 60px !important;
+  left: -970px !important;
 }

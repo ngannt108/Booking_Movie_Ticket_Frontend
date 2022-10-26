@@ -49,7 +49,7 @@ export default function AllMovies() {
     : store.lsShowingMovie.ShowingMovie?.listMovie;
   console.log(">> MOVIES", movies);
   return (
-    <>
+    <div className="admin-page">
       <HeaderAdmin />
       <div className="general">
         <div className="vertical-menu">
@@ -112,6 +112,6 @@ export default function AllMovies() {
           </table>
         </div>
       </div>
-    </>
+    </div>
   );
 }

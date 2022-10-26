@@ -77,7 +77,7 @@ export default function NewIn() {
               {store.lsShowingMovie.ShowingMovie.listMovie?.map(
                 (movie, index1) => (
                   <div key={index1} className="comingsoon__top top-1 pt-5">
-                    <h1 className="container heading pt-4 pb-4">NOW SHOWING</h1>
+                    <h1 className="container heading pt-4 pb-4">Đang chiếu</h1>
                     <div className="container comingsoon__content px-0">
                       <div className="comingsoon__item" data-slick-index="0">
                         <div className="row">

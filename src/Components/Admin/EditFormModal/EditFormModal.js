@@ -83,7 +83,7 @@ function EditModalDialog(props) {
       fd.append(keyOfObj, detailMovie[keyOfObj]);
     }
     const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmRiN2Q3MDljMGQxZDA4NjA5ZjUzY2EiLCJtYUxvYWlOZ3VvaUR1bmciOiIwIiwiaWF0IjoxNjY2NjEyNzAzLCJleHAiOjE2NjY2MTYzMDN9.RPL4Oifzg0kD4ifjjCRGJNC5sSdd0_StHV_EzjNrkA0";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmRiN2Q3MDljMGQxZDA4NjA5ZjUzY2EiLCJtYUxvYWlOZ3VvaUR1bmciOiIwIiwiaWF0IjoxNjY2NjE4NTQzLCJleHAiOjE2NjY2MjIxNDN9.YSyVzXMf0hnDtQQHEsoA5SJgciJme9z-iBbbnxZTQZg";
     let res = await fetch(API_MOVIE.UPDATE + biDanh, {
       headers: {
         Authorization: `Bearer ${token}`,

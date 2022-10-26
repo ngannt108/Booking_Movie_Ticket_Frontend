@@ -4,7 +4,7 @@ import "./HeaderAdmin.css";
 export default function HeaderAdmin() {
   return (
     <>
-      <header>
+      <header style={{ marginTop: "100px" }}>
         <div className="nav">
           <ul>
             <li className="movies">

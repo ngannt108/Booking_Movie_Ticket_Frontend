@@ -41,7 +41,7 @@ export default function Soon() {
   return (
     // NEW IN
     <section id="newin" className="container">
-      <h6 className="title__heading">COMING SOON</h6>
+      <h6 className="title__heading">Phim sắp chiếu</h6>
       <div className="newin__content pt-4">
         <Slider {...setting} className="text-center">
           {store.lsComingMovie.ComingMovie.listMovie?.map((movie, index) => (
@@ -75,7 +75,7 @@ export default function Soon() {
                 </div>
                 <h1 className="movie-name">{movie.tenPhim}</h1>
                 <div className="movie-detail">
-                  <div className="movie-rating">{movie.thoiLuong} phút</div>
+                  <div className="movie-rating">{movie.thoiLuong + "'"}</div>
                 </div>
               </div>
             </div>
