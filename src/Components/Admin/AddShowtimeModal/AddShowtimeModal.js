@@ -50,11 +50,14 @@ function AddShowtimeModalDialog(props) {
             })
         }).then(res => {
             if (res.status == 201) {
-                return swal({
+                swal({
                     title: "Thêm lịch chiếu thành công",
                     text: "",
                     icon: "success",
                 });
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000);
             }
             else return res.json()
         }).then(response => {
@@ -91,7 +94,7 @@ function AddShowtimeModalDialog(props) {
     }
     const handleClick = (e) => {
         AddShowtimeAction(e)
-        setInvokeModal(true)
+        // setInvokeModal(true)
     }
 
     console.log(">> date ISOString", detailShowtime)

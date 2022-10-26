@@ -176,16 +176,11 @@ function AddMovieForm(props) {
     }
     return (
         <>
-            <HeaderAdmin />
+
             <div className="general">
-                <div className="vertical-menu">
-                    <NavLink end to="/Admin">Tất cả phim</NavLink>
-                    <a href="#" className="active">Tạo phim mới</a>
-                    <a href="#">Phim được yêu thích</a>
-                </div>
-                <div style={{ "marginLeft": "40px" }} className="container mt-4">
+                <div style={{ "marginLeft": "120px" }} className="container mt-4">
                     <form>
-                        <div style={{ "textAlign": "center", "width": "980px" }}><label >THÔNG TIN PHIM MỚI</label></div>
+                        <div style={{ "width": "980px" }}><label >THÔNG TIN PHIM MỚI</label></div>
 
                         <div className="row">
                             <div className="col-md-5">
@@ -206,6 +201,7 @@ function AddMovieForm(props) {
                                     label="Khởi chiếu"
                                     name="ngayKhoiChieu"
                                     disabled={false}
+                                    // marginLeft={"80px"}
                                     onChange={(event) => handleOnChange(event)}
                                     onClick={(event) => handleOnChange(event)}
                                 />

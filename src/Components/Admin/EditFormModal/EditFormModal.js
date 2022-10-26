@@ -62,7 +62,7 @@ function EditModalDialog(props) {
     }, [biDanh, isEdit]);
 
     data = store.movie?.DetailMovie
-    // console.log('>> detailMovie', detailMovie)
+    console.log('>> detailMovie', detailMovie)
     // console.log('>> ERROR', validationMsg)
 
     const initModal = () => {
@@ -96,9 +96,13 @@ function EditModalDialog(props) {
                 title: "Cập nhật thành công!",
                 text: "",
                 icon: "success",
-                buttons: true,
+                // buttons: true,
             });
-            setIsEdit(false)
+            // setIsEdit(false)
+            setTimeout(function () {
+                window.location.reload()
+            }, 1000);
+
         } else swal({
             title: "Cập nhật thất bại",
             text: "Hãy thử lại",
@@ -174,18 +178,6 @@ function EditModalDialog(props) {
                                 label="Tên phim"
                                 name="Tên phim" />
                         </div>
-                        {/* <Input type={isEdit ? "date" : "text"}
-                                    value={isEdit ? formattedDate(detailMovie?.ngayKhoiChieu) : new Date(data.detailMovie?.ngayKhoiChieu).toDateString()}
-                                    label="Khởi chiếu"
-                                    name="ngayKhoiChieu"
-                                    disabled={isEdit ? false : true}
-                                    onChange={(event) => {
-                                        validateAll(event)
-                                        setDetailMovie({ ...detailMovie, ngayKhoiChieu: event.target.value })
-                                    }
-                                    }
-                                    onClick={(event) => validateAll(event)}
-                                /> */}
                         <div className="col-md-5">
                             {!isEdit ?
                                 <Input type={"text"}
