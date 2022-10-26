@@ -20,6 +20,10 @@ export const API_THEATERS = {
   THEATERS: API_DOMAIN + "movies/movietheater",
 };
 
+export const API_SHOWTIME = {
+  CLUSTER: API_DOMAIN + "movies/cluster/",
+};
+
 export const API_ACCOUNTS = {
   SIGNIN: API_DOMAIN + "accounts/signin",
   SIGNUP: API_DOMAIN + "accounts/signUp",

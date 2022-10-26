@@ -17,11 +17,10 @@ export default function Carousel() {
       </ul>
       {/* The slideshow */}
       <div className="carousel-inner">
-        {store.lsComingMovie.ComingMovie.listMovie && (
+        {store.lsShowingMovie.ShowingMovie.listMovie && (
           <div
             style={{
-              // backgroundImage: `url(${store.lsComingMovie.ComingMovie.listMovie.BannerUrl})`,
-              background: "black",
+              backgroundImage: `url(${store.lsShowingMovie.ShowingMovie.listMovie[0].anhBia})`,
             }}
             className={`carousel-item item2 text-white active`}
           >
@@ -29,20 +28,21 @@ export default function Carousel() {
               <div className="row">
                 <div className="col-md-9">
                   <h3 className="carousel__h3">
-                    {store.lsComingMovie.ComingMovie.listMovie.ApiGenreName}
+                    {store.lsShowingMovie.ShowingMovie.listMovie[0].theLoai.join(
+                      ", "
+                    )}
                   </h3>
                   <h1 className="carousel__h1">
-                    {store.lsComingMovie.ComingMovie.listMovie.tenPhim}
+                    {store.lsShowingMovie.ShowingMovie.listMovie[0].tenPhim}
                   </h1>
                   <p className="carousel__p mb-4 movie-decription">
-                    {store.lsComingMovie.ComingMovie.listMovie.moTa}
+                    {store.lsShowingMovie.ShowingMovie.listMovie[0].moTa}
                   </p>
                   <div className="carousel-trailer">
-                    {/* <span className="carousel__span">
-                      {store.lsComingMovie.ComingMovie.listMovie.ApiRating}
-                    </span> */}
                     <VideoPopUp
-                      link={store.lsComingMovie.ComingMovie.listMovie.trailer}
+                      link={
+                        store.lsShowingMovie.ShowingMovie.listMovie[0].trailer
+                      }
                     />
                   </div>
                 </div>
@@ -50,27 +50,24 @@ export default function Carousel() {
             </div>
           </div>
         )}
-        {store.lsComingMovie.ComingMovie.listMovie &&
-          store.lsComingMovie.ComingMovie.listMovie
+        {store.lsShowingMovie.ShowingMovie.listMovie &&
+          store.lsShowingMovie.ShowingMovie.listMovie
             .slice(1, 4)
             .map((movie, index) => (
               <div
                 key={index}
-                style={{ backgroundImage: `url(${movie.BannerUrl})` }}
+                style={{ backgroundImage: `url(${movie.anhBia})` }}
                 className={`carousel-item item${index + 1} text-white`}
               >
                 <div className="container-xl px-5">
                   <div className="row">
                     <div className="col-md-9">
-                      {/* <h3 className="carousel__h3">{movie.ApiGenreName}</h3> */}
+                      <h3 className="carousel__h3">{movie.theLoai}</h3>
                       <h1 className="carousel__h1">{movie.tenPhim}</h1>
                       <p className="carousel__p mb-4 movie-decription">
                         {movie.moTa}
                       </p>
                       <div className="carousel-trailer">
-                        {/* <span className="carousel__span">
-                          {movie.ApiRating}
-                        </span> */}
                         <VideoPopUp link={movie.trailer} />
                       </div>
                     </div>

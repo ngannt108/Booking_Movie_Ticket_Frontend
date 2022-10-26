@@ -1,0 +1,11 @@
+/* .new-in-bg {
+  background-image: linear-gradient(to right, #434343 0%, black 100%);
+  color: white;
+  position: relative;
+} */
+.newin-popup{
+  position: absolute;
+  top: 420px;
+  right: 440px;
+  z-index: 2;
+}

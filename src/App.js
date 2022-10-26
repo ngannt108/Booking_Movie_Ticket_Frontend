@@ -19,7 +19,7 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        {/* <Header /> */}
+        <Header />
         <Routes>
           {/* Content động */}
           <Route path="/" element={<Home />} />
@@ -33,7 +33,7 @@ function App() {
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/Movie/*" element={<Movies />}></Route>
         </Routes>
-        {/* <Footer /> */}
+        <Footer />
       </BrowserRouter>
     </div>
   );

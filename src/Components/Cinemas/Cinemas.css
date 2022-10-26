@@ -1,0 +1,103 @@
+.tab-content {
+  display: flex;
+}
+.cinema-address {
+  margin: 0 28px 28px 28px;
+}
+.cinemas-list {
+  border-top: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+  display: flex;
+  flex-direction: column;
+  padding: 48px 0 0 0px;
+  width: 300px;
+}
+.cinemas-list-search {
+  border-radius: 4px;
+  border: 1px solid lightgray;
+  margin: 0 0 20px 20px;
+  padding: 4px;
+  width: 80%;
+}
+.cinemas-list-search:focus-visible {
+  outline: none;
+}
+.onClick-cinema {
+  border-bottom: 1px solid lightgray;
+  display: flex;
+  justify-content: flex-start;
+  padding: 12px 0 12px 12px;
+}
+.onClick-cinema:hover {
+  background-color: #fff0f6;
+}
+.onClick-cinema img {
+  margin-right: 16px;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  padding: 2px;
+}
+.onClick-cinema p {
+  font-size: 14px;
+  margin: 6px 0;
+}
+.message-empty {
+  text-align: center;
+  padding-bottom: 20px;
+}
+.show-more-btn {
+  background-color: #fff0f6;
+  border-radius: 16px;
+  border: 1px solid lightgray;
+  color: #dc4196;
+  margin: 16px 62px 16px 62px;
+  padding: 4px;
+  width: 60%;
+}
+.show-more-btn:hover {
+  background-color: #ffe6ef;
+}
+.show-more-btn:focus {
+  outline: none;
+}
+.week {
+  border-top: 1px solid lightgray;
+  display: flex;
+  justify-content: space-around;
+  width: 838px;
+}
+.day-wrapper {
+  border: 1px solid lightgrey;
+  border-radius: 12px;
+  margin: 16px 0;
+  padding: 8px;
+}
+.day-wrapper:hover {
+  background: linear-gradient(to right, #fbbd61, #ec7532);
+}
+.dayInText,
+.dayInNumber {
+  text-align: center;
+}
+.rating-row {
+  display: flex;
+  margin: 24px 0;
+}
+/* .cinemas-wallpaper {
+  background-image: url("https://wallpapercave.com/wp/wp4016023.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+} */
+.cinemas {
+  background-color: white;
+}
+.no-schedule-mess {
+  text-align: center;
+  font-size: 28px;
+  margin-top: 40px;
+}
+
+.active-cinemas{
+  background: linear-gradient(to right, #fbbd61, #ec7532);
+}
