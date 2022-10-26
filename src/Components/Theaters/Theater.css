@@ -58,7 +58,6 @@
   outline: none;
 }
 .week {
-  border-top: 1px solid lightgray;
   display: flex;
   justify-content: space-around;
   width: 838px;
@@ -81,13 +80,13 @@
   margin: 24px 0;
 }
 /* .cinemas-wallpaper {
-    background-image: url("https://wallpapercave.com/wp/wp4016023.jpg");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-  } */
-.cinemas {
-  background-color: white;
+  background-image: url("https://png.pngtree.com/background/20210711/original/pngtree-leisure-time-film-festival-psd-layering-picture-image_1094505.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+} */
+.cinemas-field {
+  margin-bottom: 80px;
 }
 .no-schedule-mess {
   text-align: center;
@@ -113,4 +112,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.showtime-detail {
+  height: 800px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.showtime-detail::-webkit-scrollbar {
+  width: 0px;
+}
+
+.film-duration {
+  background-color: #000;
+  border-radius: 12px;
+  color: #ec7532;
+  font-size: 16px;
+  text-align: right;
+  padding: 10px;
+  margin-right: 20px;
+  outline: none;
+  width: 56px;
 }

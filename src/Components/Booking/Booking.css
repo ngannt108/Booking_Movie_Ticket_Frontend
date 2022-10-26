@@ -1,0 +1,132 @@
+/* .booking-wallpaper{
+    background-image: url(https://wallpapercave.com/wp/wp2081147.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+} */
+.booking-wrapper {
+  background: linear-gradient(to right, #380db1, #ec7532);
+  display: flex;
+  flex-direction: column;
+}
+.booking-header {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 20px;
+  padding: 20px 0;
+  height: 800px;
+  width: 100%;
+}
+.booking-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 64px;
+}
+.booking-movie-banner {
+  border-radius: 16px;
+  margin: 0 20px 20px 0;
+}
+.booking-info div {
+  margin: 8px 8px 8px 0;
+}
+.booking-movie-name {
+  font-size: 28px;
+  font-weight: bold;
+}
+.booking-seat {
+  display: flex;
+  flex-direction: column;
+}
+.booking-screen {
+  text-align: center;
+  width: 600px;
+  background-color: #969696;
+  border-radius: 12px;
+  margin-bottom: 48px;
+}
+.seat-wrapper {
+  display: flex;
+}
+.seat-left {
+  width: 400px;
+}
+.seat-right {
+  width: 200px;
+}
+.seat {
+  background: #ededed
+    url(https://cinestar.com.vn/catalog/view/theme/default/images/single-chair.png)
+    no-repeat center top;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  box-sizing: border-box;
+  text-align: center;
+  padding: 8px 8px;
+  margin: 4px 4px 0 0;
+  width: 43px;
+  transition: all 0.3s ease-in-out;
+  height: 46px;
+  display: inline-block;
+}
+.seat:hover {
+  background: #ededed
+    url(https://cinestar.com.vn/catalog/view/theme/default/images/single-chair.png)
+    no-repeat center -46px;
+}
+.selected {
+  background: #ededed
+    url(https://cinestar.com.vn/catalog/view/theme/default/images/single-chair.png)
+    no-repeat center -46px !important;
+}
+.booking-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cinema-note {
+  background-color: transparent;
+  color: white;
+  display: block;
+  font-size: 16px;
+  list-style: none;
+  margin: 0 0 30px 0;
+}
+.cinema-note div {
+  margin-top: 12px;
+}
+.cinema-note .single {
+  background: url(https://cinestar.com.vn/catalog/view/theme/default/images/single-chair.png)
+    no-repeat left top;
+  padding-left: 50px;
+}
+.cinema-note .choosing {
+  background: url(https://cinestar.com.vn/catalog/view/theme/default/images/single-chair.png)
+    no-repeat left -46px;
+  padding-left: 50px;
+}
+.cinema-note .busy {
+  background: url(https://cinestar.com.vn/catalog/view/theme/default/images/single-chair.png)
+    no-repeat left -94px;
+  padding-left: 50px;
+}
+.booking-btn {
+  padding: 4px 8px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(to right, #fbbd61, #ec7532);
+}
+.noClick {
+  pointer-events: none;
+}
+
+.room-name {
+  width: 68px;
+  border-radius: 8px;
+  text-align: center;
+  background: linear-gradient(to right, #fbbd61, #ec7532);
+  margin-bottom: 20px;
+}

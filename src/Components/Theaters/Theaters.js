@@ -49,24 +49,18 @@ export default function Theaters() {
 
   useEffect(() => {
     if (currentDate && cinemaId) {
-      GetShowtimeOfCluster(currentDate, cinemaId);
+      fetch(API_SHOWTIME.CLUSTER + cinemaId, {
+        headers: {
+          //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ ngayDaChon: currentDate }),
+      })
+        .then((res) => res.json())
+        .then((dt) => setFilms(dt.data));
     }
   }, [currentDate, cinemaId]);
-
-  const GetShowtimeOfCluster = async (date, cinemaId) => {
-    let time = { ngayDaChon: date };
-    let res = await fetch(API_SHOWTIME.CLUSTER + cinemaId, {
-      headers: {
-        //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(time),
-    });
-    console.log(res.status);
-    let data = await res.json();
-    setFilms(data.data);
-  };
 
   const checkOnClick = (e, className) => {
     [...document.getElementsByClassName(className)].forEach((element) => {
@@ -79,16 +73,16 @@ export default function Theaters() {
   };
 
   return (
-    <div>
-      {/* {console.log(store)} */}
+    <>
       <div className="cinemas-wallpaper">
         <img
           width={"100%"}
           alt="cinemas wallpaper"
-          src="https://png.pngtree.com/thumb_back/fh260/back_our/20190621/ourmid/pngtree-leisure-time-cinema-watching-movie-background-image_195506.jpg?fbclid=IwAR3vi9xD-j841wN_7OhyoyVQpoYqMS42q0wlc7TfLTY80LMATSHpCglQGVw"
+          src="https://www.ascottproductions.com/wp-content/uploads/2020/02/as_production_banner-1.png"
         />
       </div>
-      <section id="date" className="container">
+
+      <section id="date" className="container cinemas-field">
         <div className="row">
           {/* Nav pills */}
           <div style={{ padding: "0" }}>
@@ -112,7 +106,6 @@ export default function Theaters() {
                       key={i}
                       className="onClick-cinema"
                       onClick={(e) => {
-                        // setCineplex(cinema.Cineplex);
                         setCinemaId(cinema._id);
                         setCinemaName(cinema.tenCumRap);
                         checkOnClick(e, "onClick-cinema");
@@ -161,57 +154,64 @@ export default function Theaters() {
                     currentDate.slice(5, 7)}
                 </h3>
               )}
-              <div className="date__item row">
-                <Link
-                  // to={"/Movie/" + film.ApiFilmId}
-                  className="col-md-2"
-                  to=""
-                >
-                  <img
-                    className="img-fluid"
-                    src="http://res.cloudinary.com/debmcaerj/image/upload/v1666607967/BookingTicket/Graphic_BlackAdam_baavpg.jpg"
-                    alt=""
-                  />
-                </Link>
-                <div className="col-md-10">
-                  <h1>Hành Động</h1>
-                  <h2>Black Adam</h2>
-                  <p>
-                    Dwayne Johnson sẽ góp mặt trong tác phẩm hành động - phiêu
-                    lưu mới của New Line Cinema, mang tên BLACK ADAM. Đây là bộ
-                    phim đầu tiên trên màn ảnh rộng khai thác câu chuyện của
-                    siêu anh hùng DC này, dưới sự sáng tạo của đạo diễn Jaume
-                    Collet-Serra (đạo diễn của Jungle Cruise). Gần 5.000 năm sau
-                    khi bị cầm tù với quyền năng tối thượng từ những vị thần cổ
-                    đại, Black Adam (Dwayne Johnson) sẽ được giải phóng khỏi nấm
-                    mồ chết chóc của mình, mang tới thế giới hiện đại một kiểu
-                    nhận thức về công lý hoàn toàn mới.
-                  </p>
-                  <div className="rating-row">
-                    <div className="film-rating">18+</div>
-                    <div className="film-trailer">
-                      <VideoPopUp link="https://www.youtube.com/embed/ucqg5k5vSVU" />
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="date__time col-md-10">
-                      <i className="far fa-clock"></i>
-                      <span>VIEWING TIMES</span>
-                      <div>
-                        <div style={{ display: "inline-block" }}>
-                          <ModalBookingPopUp
-                            info={["CGV", "Black Adam", "16h30"]}
-                          />
+              <div className="showtime-detail">
+                {films ? (
+                  films.map((movie, index) => (
+                    <div key={index} className="date__item row">
+                      <Link to={"/Movie/" + movie.biDanh} className="col-md-2">
+                        <img className="img-fluid" src={movie.hinhAnh} alt="" />
+                      </Link>
+                      <div className="col-md-10">
+                        <h1>{movie.theLoai}</h1>
+                        <h2>{movie.tenPhim}</h2>
+                        <p className="movie-decription">{movie.moTa}</p>
+                        <div className="rating-row">
+                          <div className="film-duration">
+                            {movie.thoiLuong}p
+                          </div>
+                          <div className="film-trailer">
+                            <VideoPopUp link={movie.trailer} />
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="date__time col-md-10">
+                            <i className="far fa-clock"></i>
+                            <span>VIEWING TIMES</span>
+                            <div>
+                              {movie.lichChieu.map((showtime, index) => (
+                                <div
+                                  key={index}
+                                  style={{ display: "inline-block" }}
+                                >
+                                  <ModalBookingPopUp
+                                    info={[
+                                      cinemaName,
+                                      movie.tenPhim,
+                                      `${showtime.ngayChieu.slice(
+                                        11,
+                                        16
+                                      )} - ${showtime.gioKetThuc.slice(
+                                        11,
+                                        16
+                                      )}`,
+                                    ]}
+                                  />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
+                  ))
+                ) : (
+                  <div className="no-schedule-mess">No schedule yet</div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }
