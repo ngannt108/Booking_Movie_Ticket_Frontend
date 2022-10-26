@@ -2,12 +2,10 @@ import React, { useEffect, useContext } from "react";
 import { StoreContext } from "../../../Redux/Store/Store";
 import { API_MOVIE } from "../../../common/ApiController";
 import "./Menu.css";
-import HeaderAdmin from "../Header/HeaderAdmin";
 import "./MovieManage.css";
 import { Button } from "../../../Components/Button/Button";
 import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import EditModalDialog from "../../../Components/Admin/EditFormModal/EditFormModal";
-import { Link, NavLink } from "react-router-dom";
 
 export default function AllMovies() {
   const store = useContext(StoreContext);
@@ -45,41 +43,32 @@ export default function AllMovies() {
   }, [isComing]);
 
   let movies = isComing
-    ? store.lsComingMovie.ComingMovie?.lsComingMovie
-    : store.lsShowingMovie.ShowingMovie?.lsShowingMovie;
+    ? store.lsComingMovie.ComingMovie?.listMovie
+    : store.lsShowingMovie.ShowingMovie?.listMovie;
   console.log(">> MOVIES", movies);
   return (
     <>
-      <HeaderAdmin />
       <div className="general">
-        <div className="vertical-menu">
-          <Link to="#" className="active">
-            Tất cả phim
-          </Link>
-          <NavLink end to="/Admin/movie">
-            Tạo phim mới
-          </NavLink>
-          <Link to="#">Phim được yêu thích</Link>
-        </div>
-
-        <div className="row">
-          <div className="col-md-4">
-            <Button
-              width="60px"
-              name="Phim sắp chiếu"
-              onClick={() => setIsComing(true)}
-            />
-          </div>
-          <div className="col-md-4">
-            <Button
-              width="60px"
-              name="Phim đang chiếu"
-              onClick={() => setIsComing(false)}
-            />
-          </div>
-        </div>
-
         <div className="container-body">
+          <div className="row">
+            <div className="col-md-4">
+              <Button
+                width="160px"
+                height="40px"
+                name="Phim sắp chiếu"
+                onClick={() => setIsComing(true)}
+              />
+            </div>
+            <div className="col-md-4">
+              <Button
+                width="160px"
+                height="40px"
+                name="Phim đang chiếu"
+                onClick={() => setIsComing(false)}
+              />
+            </div>
+          </div>
+
           <table className="layout display responsive-table">
             <thead>
               <tr>
@@ -97,14 +86,17 @@ export default function AllMovies() {
                     {item.tenPhim}
                   </td>
                   <td className="organisationname image">
-                    <img height="60px" width="50px" src={item.hinhAnh} alt="" />
+                    <img height="80px" width="60px" src={item.hinhAnh} alt="" />
                   </td>
-                  <td width="900px" className="organisationname">
-                    {item.moTa}
+                  <td width="900px" >
+                    <div className="organisationname-description">
+                      {item.moTa}
+                    </div>
                   </td>
 
                   <td width="250px" className="actions">
                     <EditModalDialog biDanh={item.biDanh} show={false} />
+
                     {/* <Button color='black' name="Detail" background="pink" width="fit-content" borderRadius="0.2em" fontWeight="bold" onClick={() => handleClick(item.biDanh)} /> */}
 
                     {/* <a href="?" className="edit-item" title="Edit">Edit</a> ||

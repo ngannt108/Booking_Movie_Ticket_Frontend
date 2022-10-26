@@ -11,9 +11,10 @@ export const Button = ({
   margin = "0px",
   onClick,
   disabled,
-  textAlign
+  textAlign,
+  ...rest
 }) => (
-  <button className="on-hover" style={{ border, borderRadius, color, background, fontWeight, width, margin, textAlign }} onClick={onClick} disabled={disabled} >
+  <button className="on-hover" style={{ border, borderRadius, color, background, fontWeight, width, margin, textAlign, ...rest }} onClick={onClick} disabled={disabled} >
     {name}
   </button >
 );
