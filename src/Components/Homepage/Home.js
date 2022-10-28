@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { StoreContext } from "../../Redux/Store/Store";
 import Carousel from "../Carousel/Carousel";
-import { API_MOVIE } from "../../common/ApiController";
+import { API_MOVIE, API_ROOMS } from "../../common/ApiController";
 import NewIn from "../NewIn/NewIn";
 import Soon from "../Soon/Soon";
 
@@ -21,6 +21,14 @@ export default function Home() {
       .then((dt) => {
         store.lsComingMovie.ComingMovieDispatch({
           type: "GETCOMINGMOVIES",
+          payload: dt.data,
+        });
+      });
+    fetch(API_ROOMS.GET)
+      .then((res) => res.json())
+      .then((dt) => {
+        store.lsRooms.GetRoomsDispatch({
+          type: "GETROOMS",
           payload: dt.data,
         });
       });

@@ -2,7 +2,7 @@ import React, { createContext } from "react";
 import ReducerMovies from "../Reducer/ReducerMovies";
 import ReducerAccounts from "../Reducer/ReducerAccounts";
 import ReducerTheaters from "../Reducer/ReducerTheaters";
-import BookingReducer from "../Reducer/BookingReducer";
+import ReducerBooking from "../Reducer/ReducerBooking";
 import RecducerShowtimes from "../Reducer/ReducerShowtimes";
 export const StoreContext = createContext(null);
 const Store = ({ children }) => {
@@ -14,7 +14,7 @@ const Store = ({ children }) => {
   const [updateMovie, DispatchUpdateMovie] = ReducerMovies();
   const [addMovie, DispatchAddMovie] = ReducerMovies();
   const [rooms, DispatchGetRooms] = RecducerShowtimes();
-  const [booking, DispatchBooking] = BookingReducer(null);
+  const [booking, DispatchBooking] = ReducerBooking(null);
   const store = {
     lsComingMovie: {
       ComingMovie: comingMovie,

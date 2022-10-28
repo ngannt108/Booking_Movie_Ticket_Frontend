@@ -194,7 +194,14 @@ export default function Theaters() {
                                         11,
                                         16
                                       )}`,
+                                      currentDate.slice(8, 10) +
+                                        "/" +
+                                        currentDate.slice(5, 7) +
+                                        "/" +
+                                        currentDate.slice(0, 4),
+                                      movie.hinhAnh,
                                     ]}
+                                    showtimeDetail={showtime}
                                   />
                                 </div>
                               ))}
