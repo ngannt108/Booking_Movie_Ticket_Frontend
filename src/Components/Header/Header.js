@@ -5,10 +5,19 @@ import "./Header.css";
 
 export default function Header() {
   const store = useContext(StoreContext);
-  const [userName, setUserName] = useState();
+  const accountName = store.account.userAccount.account
+  const sessionName = sessionStorage.getItem("taiKhoan")
+
   useEffect(() => {
-    setUserName(store.account.userAccount.account);
-  }, [store.account]);
+    if (accountName) {
+      return
+    }
+    store.account.AccountDispatch({
+      type: "INITIAL",
+      payload: sessionName ? JSON.parse(sessionName) : null,
+    })
+  }, [accountName]);
+
   return (
     <div>
       <header style={{ paddingTop: "12px" }} id="header__run">
@@ -17,7 +26,7 @@ export default function Header() {
           <nav className="navbar navbar-expand-md navbar-dark">
             {/* Brand */}
             <Link className="navbar-brand" to="/">
-              <img onClick={() => {}} src="./img/logo.svg" alt="" />
+              <img onClick={() => { }} src="./img/logo.svg" alt="" />
             </Link>
 
             {/* Toggler/collapsibe Button */}
@@ -54,19 +63,21 @@ export default function Header() {
                   </Link>
                 </li>
 
-                {userName ? (
+                {accountName ? (
                   <li className="nav-item LoggedIn">
                     <div style={{ marginTop: "20px" }} className="dropdown ">
                       <Link className="userName" to="/">
-                        {userName}
+                        {accountName}
                       </Link>
                       <div className="dropdown-content">
                         <Link
-                          onClick={() =>
+                          onClick={() => {
+                            sessionStorage.clear();
                             store.account.AccountDispatch({
                               type: "ACCOUNT",
                               payload: null,
                             })
+                          }
                           }
                           to="/"
                         >
@@ -84,7 +95,7 @@ export default function Header() {
             </div>
           </nav>
         </div>
-      </header>
-    </div>
+      </header >
+    </div >
   );
 }

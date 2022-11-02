@@ -1,5 +1,5 @@
 .container-body {
-    padding: 1em;
+    padding: 0em 3em 3em 3em;
     overflow-y: scroll;
     max-height: 600px;
     max-width: 1200px;
@@ -8,8 +8,6 @@
 a {
     color: #739931;
 }
-
-
 
 table th,
 table td {

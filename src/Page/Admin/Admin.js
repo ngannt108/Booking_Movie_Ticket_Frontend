@@ -7,6 +7,8 @@ import "../../App.css";
 import Footer from "../../Components/Footer/Footer";
 import HeaderAdmin from "./Header/HeaderAdmin";
 import { Link, NavLink } from "react-router-dom";
+import EditFormModal from "../../Components/Admin/EditFormModal/EditFormModal";
+
 
 export default function Admin() {
   return (
@@ -26,6 +28,8 @@ export default function Admin() {
           <Route path="/" element={<AllMovies />} />
           <Route path="/movie" element={<AddMovieForm />} />
           <Route path="/:slug/showtimes" element={<Showtimes />} />
+
+          <Route path="/edit" element={<EditFormModal />} />
         </Routes>
       </div>
       {/* <div className="vertical-menu">

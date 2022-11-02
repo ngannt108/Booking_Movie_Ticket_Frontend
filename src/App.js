@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header/Header";
 import Home from "./Components/Homepage/Home";
@@ -12,7 +12,9 @@ import Footer from "./Components/Footer/Footer";
 import Admin from "./Page/Admin/Admin";
 
 function App() {
+
   return (
+
     <div>
       <BrowserRouter>
         <Header />

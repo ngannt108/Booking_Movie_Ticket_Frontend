@@ -12,42 +12,28 @@ import { useContext } from "react";
 import { StoreContext } from "../../../Redux/Store/Store";
 import AddShowtimeModalDialog from "../../../Components/Admin/AddShowtimeModal/AddShowtimeModal";
 import { Button } from "../../../Components/Button/Button";
+import swal from "sweetalert";
+import AddShowtimeModalDialog2 from "../../../Components/Admin/AddShowtimeModal/AddShowtimeModal2";
 
 export default function Showtimes() {
     let slug = useParams()
-    console.log(">> bis Danh:", slug)
     const store = useContext(StoreContext);
     const [expandedRows, setExpandedRows] = useState([]);
     const [temp, setTemp] = useState();
 
     const [expandState, setExpandState] = useState({});
 
-
     const handleExpandRow = (event, theaterId) => {
         const currentExpandedRows = expandedRows;
         const isRowExpanded = currentExpandedRows.includes(theaterId);
-
         let obj = {};
         isRowExpanded ? (obj[theaterId] = false) : (obj[theaterId] = true);
         setExpandState(obj);
-
-        // If the row is expanded, we are here to hide it. Hence remove
-        // it from the state variable. Otherwise add to it.
         const newExpandedRows = isRowExpanded ?
             currentExpandedRows.filter(id => id !== theaterId) :
             currentExpandedRows.concat(theaterId);
 
         setExpandedRows(newExpandedRows);
-
-
-        // const newTemp = isRowExpanded ?
-        // movieDetail?.lichChieu?.forEach(item => {
-
-        //     if (item.tenCumRap._id == theaterId) {
-
-        //     }}) :
-        //     currentExpandedRows.concat(theaterId);
-
         setExpandedRows(newExpandedRows);
     }
     useEffect(() => {
@@ -76,19 +62,64 @@ export default function Showtimes() {
     }, [temp]);
     const theaters = store.lsTheater.Theater?.lsTheater
     const movieDetail = store.movie?.DetailMovie?.detailMovie
-    console.log(">> movie?", movieDetail)
+    const handleDelete = () => {
+        swal("Bạn chắc chắn muốn xóa suất chiếu này?", {
+            buttons: {
+                cancel: "Hủy",
+                confirm: "Đồng ý",
+            },
+        })
+            .then((value) => {
+                switch (value) {
+                    case "Hủy":
+                        break;
+                    default:
+
+                        swal("Got away safely!");
+                }
+            });
+    }
+    // const DeleteShowtimeAction = () => {
+    //     fetch("http://localhost:5000/admin/movie/" + props.slug + "/showtime/" + , {
+    //         headers: {
+    //           Authorization: `Bearer ${token}`,
+    //           "Content-Type": "application/json",
+    //         },
+    //         method: "POST",
+    //         body: JSON.stringify({
+    //           ngayChieu: formatDateTime,
+    //           tenRap: detailShowtime.tenRap,
+    //           tenCumRap: props.clusterID,
+    //           giaVe: "70000",
+    //         }),
+    //       })
+    //         .then((res) => {
+    //           if (res.status == 201) {
+    //             swal({
+    //               title: "Thêm lịch chiếu thành công",
+    //               text: "",
+    //               icon: "success",
+    //             });
+    //             setTimeout(function () {
+    //               window.location.reload();
+    //             }, 1000);
+    //           } else return res.json();
+    //         })
+    //         .then((response) => {
+    //           if (response != true)
+    //             return swal({
+    //               title: "Thêm lịch chiếu thất bại",
+    //               text: response.error,
+    //               icon: "error",
+    //             });
+    //         });
+    // }
     return (
         <>
-            {/* <HeaderAdmin /> */}
             <div className="general" style={{ marginLeft: "40px", width: "100%" }}>
-                {/* <div className="vertical-menu">
-                    <a href="#" className="active">Tất cả phim</a>
-                    <a href="#" >Tạo phim mới</a>
-                    <a href="#">Phim được yêu thích</a>
-                </div> */}
                 <Container>
                     <Row>
-                        <Col>
+                        <Col style={{ color: "white" }}>
                             THÔNG TIN PHIM - {movieDetail?.tenPhim}
                         </Col>
                     </Row>
@@ -113,11 +144,28 @@ export default function Showtimes() {
                                                         <div style={{ "display": "flex" }}>
                                                             {
                                                                 expandState[theater._id] ?
-                                                                    <Button color='rgb(31, 166, 245)' name="Thu gọn" background="pink" width="fit-content" borderRadius="10.2em" fontWeight="bold" onClick={event => handleExpandRow(event, theater._id)} />
+                                                                    <Button
+                                                                        color='rgb(31, 166, 245)'
+                                                                        name="Thu gọn"
+                                                                        background="pink"
+                                                                        width="fit-content"
+                                                                        borderRadius="10.2em"
+                                                                        fontWeight="bold"
+                                                                        onClick={event => handleExpandRow(event, theater._id)} />
                                                                     :
-                                                                    <Button color='red' name="Hiển thị" background="pink" width="fit-content" borderRadius="10.2em" fontWeight="bold" onClick={event => handleExpandRow(event, theater._id)} />
+                                                                    <Button
+                                                                        color='red'
+                                                                        name="Hiển thị"
+                                                                        background="pink"
+                                                                        width="fit-content"
+                                                                        borderRadius="10.2em"
+                                                                        fontWeight="bold"
+                                                                        onClick={event => handleExpandRow(event, theater._id)} />
                                                             }
-                                                            <AddShowtimeModalDialog clusterName={theater.tenCumRap} clusterID={theater._id} slug={slug.slug} show={false} />
+                                                            <AddShowtimeModalDialog2
+                                                                clusterName={theater.tenCumRap}
+                                                                clusterID={theater._id}
+                                                                slug={slug.slug} show={false} />
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -140,10 +188,14 @@ export default function Showtimes() {
 
                                                                                             <><h5>{item.tenRap.tenRap}</h5>
                                                                                                 <div className="row">
-                                                                                                    <div className="col-md-4">
+                                                                                                    <div className="col-md-5">
                                                                                                         <li>
-                                                                                                            <span><b>Ngày chiếu:</b></span> {' '}
-                                                                                                            <span> {new Date(item.ngayChieu).toLocaleString()}</span>
+                                                                                                            <span>
+                                                                                                                <b>Ngày chiếu:</b>
+                                                                                                            </span> {' '}
+                                                                                                            <span>
+                                                                                                                {new Date(item.ngayChieu).toLocaleString()}
+                                                                                                            </span>
                                                                                                         </li>
                                                                                                     </div>
                                                                                                     <div className="col-md-4">
@@ -156,22 +208,33 @@ export default function Showtimes() {
                                                                                                 </div>
                                                                                                 <div className="row">
 
-                                                                                                    <div className="col-md-4">
+                                                                                                    <div className="col-md-5">
                                                                                                         <li>
                                                                                                             <span><b>Giờ kết thúc:</b></span> {' '}
-                                                                                                            <span> {new Date(item.gioKetThuc).toLocaleString()}</span>
+                                                                                                            <span>
+                                                                                                                {new Date(item.gioKetThuc).toLocaleString()}
+                                                                                                            </span>
                                                                                                         </li>
                                                                                                     </div>
                                                                                                     <div className="col-md-4">
                                                                                                         <li>
                                                                                                             <span><b>Giá vé:</b></span> {' '}
-                                                                                                            <span> {item.giaVe.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}/ ghế</span>
+                                                                                                            <span>
+                                                                                                                {item.giaVe.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
+                                                                                                                / ghế
+                                                                                                            </span>
                                                                                                         </li>
                                                                                                     </div>
                                                                                                     <div className="col-md-4">
                                                                                                         <li>
                                                                                                             <span><b>Ghế:</b></span> {' '}
-                                                                                                            <span> {item.gheDaChon.length}/80 <Button color='white' name="Xóa" background="rgb(31, 166, 245)" width="fit-content" borderRadius="10.2em" fontWeight="bold" onClick={event => handleExpandRow(event, theater._id)} /></span>
+                                                                                                            <span> {item.gheDaChon.length}/80
+                                                                                                                <Button
+                                                                                                                    color='white' name="Xóa"
+                                                                                                                    background="rgb(31, 166, 245)"
+                                                                                                                    width="fit-content" borderRadius="10.2em"
+                                                                                                                    fontWeight="bold"
+                                                                                                                    onClick={e => handleDelete(e)} /></span>
                                                                                                         </li>
                                                                                                     </div>
                                                                                                 </div>
