@@ -92,7 +92,7 @@ export default function LogIn() {
         <h1>ĐĂNG NHẬP</h1>
         <form>
           <div className="row-input">
-            <label className="lable-input">Email</label>
+            <label className="lable-input">Tài khoản</label>
             <input
               className="input-field"
               onChange={(event) =>
@@ -103,7 +103,7 @@ export default function LogIn() {
             />
           </div>
           <div className="row-input">
-            <label className="lable-input">Password</label>
+            <label className="lable-input">Mật khẩu</label>
             <input
               className="input-field"
               type="password"

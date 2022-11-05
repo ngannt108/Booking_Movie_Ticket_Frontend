@@ -7,22 +7,21 @@ import {
 } from "../../../common/ApiController";
 import { Col, FloatingLabel, Modal, Row } from "react-bootstrap";
 import { Button } from "../../Button/Button";
-import { Input } from "../../Input/Input.js";
 import isEmpty from "validator/lib/isEmpty";
 import swal from "sweetalert";
 import { NavLink } from "react-router-dom";
 import { Form } from "react-bootstrap";
-import { useRef } from "react";
+
 
 function AddShowtimeModalDialog2(props) {
   const [isShow, setInvokeModal] = useState(false);
-  const [isInvalid, setInvalid] = useState(false);
+  const [isInvalid, setInvalid] = useState(true);
   const store = useContext(StoreContext);
   // const [validationMsg, setValidationMsg] = React.useState({
   //   ngayChieu: "Vui lòng chọn ngày chiếu cho phim",
   // });
 
-  const [validated, setValidated] = useState(false);
+  const [validated, setValidated] = useState(true);
   let emptyShowtime = {
     ngayChieu: "",
     gioChieu: "",
@@ -42,10 +41,11 @@ function AddShowtimeModalDialog2(props) {
         });
       });
   }, []);
-  const token = JSON.parse(localStorage.getItem("token"));
+  const token = JSON.parse(sessionStorage.getItem("token"));
   const AddShowtimeAction = async (e) => {
     e.preventDefault();
     let formatDateTime = `${detailShowtime.ngayChieu} ${detailShowtime.gioChieu}:${detailShowtime.phutChieu}`;
+    // console.log(">> formatDateTime", formatDateTime)
     fetch(API_SHOWTIMES.ADD + props.slug + "/showtime", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -80,11 +80,11 @@ function AddShowtimeModalDialog2(props) {
           });
       });
   };
-  var rooms = store.lsRooms?.Rooms?.rooms;
+  let rooms = store.lsRooms?.Rooms?.rooms;
   const initModal = () => {
     setInvokeModal(!isShow);
     setDetailShowtime(emptyShowtime);
-
+    rooms = rooms.sort((a, b) => a.tenRap.localeCompare(b.tenRap))
   };
   const formattedDate = (dateInput) => {
     let today = new Date(dateInput);
@@ -104,17 +104,34 @@ function AddShowtimeModalDialog2(props) {
   };
   const checkValid = (event) => {
     let temp = document.getElementsByName(event.target.name).item(0)
-    console.log(">> temp", temp)
-    if ((isEmpty(temp.value) || temp.value == null) && temp.required) {
+    if ((isEmpty(temp.value) || temp.value.toString() === "") && temp.required) {
       event.preventDefault();
-      //temp.className += " is-invalid";
-      //  temp.className = "is-invalid";
-      // setInvalid(true)
+      //temp.className = "is-invalid form-select";
+      temp.classList.add("is-invalid")
     }
-    else temp.className = "form-control";
+    else {
+      //temp.className = "form-select";
+      temp.classList.remove("is-invalid")
+    }
+    // Check and rerender if needed
+    checkInvalidAndRerender()
   };
 
-  console.log(">> date ISOString", detailShowtime);
+  const checkInvalidAndRerender = () => {
+    //console.log(isInvalid === undefined)
+    if (document.getElementsByClassName("is-invalid").length > 0) {
+      // If needed
+      if (isInvalid || isInvalid === undefined) {
+        setInvalid(true)
+      }
+    } else {
+      // Should be rerender
+      if (isInvalid || isInvalid === undefined) {
+        setInvalid(false)
+      }
+    }
+  }
+
   return (<div style={{ display: "flex" }}>
     <Button
       color="black"
@@ -125,7 +142,7 @@ function AddShowtimeModalDialog2(props) {
       fontWeight="bold"
       onClick={initModal}
     />
-    <Form id="edit-form" style={{ maxWidth: "800px" }} noValidate validated={validated} onSubmit={handleClick}>
+    <Form id="edit-form" style={{ maxWidth: "800px" }} onSubmit={handleClick}>
       <Modal size="lg" show={isShow}>
         <Modal.Header closeButton onClick={initModal}>
           <Modal.Title>
@@ -137,9 +154,8 @@ function AddShowtimeModalDialog2(props) {
           <div style={{ background: "white", maxWidth: "800px" }}>
             <Form style={{ maxWidth: "800px" }} onSubmit={handleClick}>
               <Row className="mb-3">
-                <Form.Group as={Col} md="4" controlId="validationCustom01">
+                <Form.Group as={Col} md="4" >
                   <FloatingLabel
-
                     controlId="floatingInput"
                     label="Ngày chiếu"
                     className="mb-3"
@@ -162,33 +178,39 @@ function AddShowtimeModalDialog2(props) {
                     </Form.Control.Feedback>
                   </FloatingLabel>
                 </Form.Group>
-                <Form.Group as={Col} md="4" controlId="validationCustom02">
-                  <Form.Select
-                    className="is-invalid"
-                    name="rapChieu"
-                    aria-label="Default select example"
-                    style={{ margin: "8px 0px 0px 0px" }}
-                    onChange={(e) => {
-                      checkValid(e)
-                      detailShowtime.tenRap = e.target.value
-                    }}
+                <Form.Group as={Col} md="4">
+                  <FloatingLabel
+                    controlId="floatingInput"
+                    label="Rạp"
+                    className="mb-3"
                   >
-                    <option>Chọn rạp chiếu</option>
-                    {rooms?.map((item, index) => {
-                      return (
-                        <option key={index} value={item._id}>
-                          {item.tenRap}
-                        </option>
-                      );
-                    })}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    Chọn rạp chiếu phim
-                  </Form.Control.Feedback>
+                    <Form.Select
+                      className="is-invalid"
+                      required
+                      name="rapChieu"
+                      style={{ margin: "8px 0px 0px 0px" }}
+                      onChange={(e) => {
+                        checkValid(e)
+                        detailShowtime.tenRap = e.target.value
+                      }}
+                    >
+                      <option value="">Chọn rạp chiếu</option>
+                      {rooms?.map((item, index) => {
+                        return (
+                          <option key={index} value={item._id}>
+                            {item.tenRap}
+                          </option>
+                        );
+                      })}
+                    </Form.Select>
+                    <Form.Control.Feedback type="invalid">
+                      Chọn rạp chiếu phim
+                    </Form.Control.Feedback>
+                  </FloatingLabel>
                 </Form.Group>
               </Row>
               <Row className="mb-3">
-                <Form.Group as={Col} md="4" controlId="validationCustom01">
+                <Form.Group as={Col} md="4">
                   <FloatingLabel
 
                     controlId="floatingInput"
@@ -200,11 +222,11 @@ function AddShowtimeModalDialog2(props) {
                       name="gioChieu"
                       onChange={(e) => {
                         checkValid(e)
-                        detailShowtime.phutChieu = e.target.value
+                        detailShowtime.gioChieu = e.target.value
                       }}
                       required
                     >
-                      <option>Chọn giờ chiếu</option>
+                      <option value="">Chọn giờ chiếu</option>
                       {Array.from(Array(15).keys())?.map((item, index) => {
                         return (
                           <option key={index} value={item + 9}>
@@ -220,7 +242,7 @@ function AddShowtimeModalDialog2(props) {
 
                 </Form.Group>
 
-                <Form.Group as={Col} md="4" controlId="validationCustom01">
+                <Form.Group as={Col} md="4">
                   <FloatingLabel
                     controlId="floatingInput"
                     label="Phút"
@@ -235,7 +257,7 @@ function AddShowtimeModalDialog2(props) {
                         detailShowtime.phutChieu = e.target.value
                       }}
                     >
-                      <option value={null}>Chọn phút chiếu</option>
+                      <option value="">Chọn phút chiếu</option>
                       {Array.from(Array(12).keys())?.map((item, index) => {
                         return (
                           <option key={index} value={item * 5}>
@@ -257,15 +279,14 @@ function AddShowtimeModalDialog2(props) {
           {/* <EditForm /> */}
         </Modal.Body>
 
-
         <Modal.Footer>
-          <div class="d-grid gap-2 col-6 mx-auto">
+          <div className="d-grid gap-2 col-6 mx-auto">
             <Button
               color="white"
               background="green"
               name="Đồng ý"
               borderRadius="0.4em"
-              disabled={document.getElementsByClassName('form-control is-invalid').length > 0}
+              disabled={isInvalid === undefined ? true : isInvalid}
               onClick={(e, movie) => handleClick(e, movie)}
             />
             <Button

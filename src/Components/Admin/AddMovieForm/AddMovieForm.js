@@ -15,7 +15,7 @@ function AddMovieForm(props) {
   const [fileImage, setFileImage] = useState(null);
   const [banner, setDisplayBanner] = useState();
   const [fileBanner, setFileBanner] = useState(null);
-  const [isInvalid, setInvalid] = useState(true);
+  const [isInvalid, setInvalid] = useState();
   const navigate = useNavigate()
   let emptyMovie = {
     tenPhim: "",
@@ -112,23 +112,38 @@ function AddMovieForm(props) {
       setDisplayBanner(url);
     }
   };
-  console.log(">> Loop");
-  console.log(">> detailMovie", detailMovie);
-  console.log("-----------**----------");
   const checkValid = (event) => {
     let temp = document.getElementsByName(event.target.name).item(0)
+    console.log(">> temp.checkValidity()", temp.checkValidity())
     console.log(">> temp", temp)
-    if (isEmpty(temp.value) && temp.required) {
-      event.preventDefault();
-      //temp.className += " is-invalid";
-      //  temp.className = "form-control is-invalid";
-      // setInvalid(true)
+    if (temp.name === 'banner' || temp.name === "image" && detailMovie[temp.name]) {
+      return temp.classList.remove("is-invalid")
     }
-    else temp.className = "form-control";
+    if ((isEmpty(temp.value) || temp.checkValidity() == false) && temp.required) {
+      event.preventDefault();
+      temp.classList.add("is-invalid")
+    }
+    else temp.classList.remove("is-invalid");
+    checkInvalidAndRerender()
   };
+
+  const checkInvalidAndRerender = () => {
+    //console.log(isInvalid === undefined)
+    if (document.getElementsByClassName("is-invalid").length > 0) {
+      // If needed
+      if (isInvalid || isInvalid === undefined) {
+        setInvalid(true)
+      }
+    } else {
+      // Should be rerender
+      if (isInvalid || isInvalid === undefined) {
+        setInvalid(false)
+      }
+    }
+  }
   return (
-    <div style={{ marginLeft: "40px", background: "white", maxWidth: "880px", paddingLeft: "20px" }}>
-      <Form id="create-form" validated /*onSubmit={handleEdit}*/>
+    <div style={{ marginLeft: "40px", background: "white", maxWidth: "880px", paddingLeft: "20px", marginBottom: "20px" }}>
+      <Form id="create-form" >
         <Form.Label>THÔNG TIN PHIM MỚI</Form.Label>
         <div style={{ background: "white", maxWidth: "800px" }}>
           {/* <Form style={{ maxWidth: "800px" }} noValidate validated={validated} onSubmit={handleEdit}> */}
@@ -140,7 +155,7 @@ function AddMovieForm(props) {
                 className="mb-3"
               >
                 <Form.Control
-                  className="form-control is-invalid"
+                  className="is-invalid"
                   required
                   type="text"
                   name='tenPhim'
@@ -162,7 +177,7 @@ function AddMovieForm(props) {
                 className="mb-3">
 
                 <Form.Control
-                  className="form-control is-invalid"
+                  className="is-invalid"
                   required
                   type="date"
                   name='ngayKhoiChieu'
@@ -186,7 +201,7 @@ function AddMovieForm(props) {
                 className="mb-3"
               >
                 <Form.Control
-                  className="form-control is-invalid"
+                  className="is-invalid"
                   type="number"
                   name='thoiLuong'
                   min={"1"}
@@ -249,8 +264,7 @@ function AddMovieForm(props) {
               <div className="col-md-5">
                 Quốc gia
                 <Form.Select
-                  // aria-label="Default select example"
-                  isValid={'true'}
+                  // aria-label="Default select example"              
                   onChange={(e) =>
                     detailMovie.quocGia = e.target.value
                     // setDetailMovie({ ...detailMovie, quocGia: e.target.value })
@@ -275,9 +289,9 @@ function AddMovieForm(props) {
             <Form.Group style={{ width: '20rem' }} controlId="validationCustom05">
               <Form.Label>Ảnh bìa</Form.Label>
               <Form.Control
-                className="form-control is-invalid"
+                className="is-invalid"
                 type="file"
-                isValid={isInvalid}
+
                 ////// isInvalid={isInvalid}
                 onChange={(event) => {
                   checkValid(event)
@@ -298,10 +312,10 @@ function AddMovieForm(props) {
             <Form.Group style={{ width: '18rem' }} controlId="validationCustom05">
               <Form.Label>Hình ảnh</Form.Label>
               <Form.Control
-                className="form-control is-invalid"
+                className="is-invalid"
                 type="file"
                 required
-                isValid={isInvalid}
+
                 name="image"
                 onChange={(event) => {
                   checkValid(event)
@@ -317,13 +331,13 @@ function AddMovieForm(props) {
             </Form.Group>
           </Row>
         </div>
-        <div class="d-grid gap-2 col-6 mx-auto">
+        <div className="d-grid gap-2 col-6 mx-auto">
           <Button
             color="black"
             background="yellow"
             name="Tạo phim"
             borderRadius="0.4em"
-            disabled={document.getElementsByClassName('form-control is-invalid').length > 0}
+            disabled={isInvalid === undefined ? true : false}
             onClick={(e) => handleAdd(e)}
           />
           <Button

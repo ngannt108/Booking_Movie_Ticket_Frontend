@@ -227,7 +227,9 @@ function EditFormModal(props) {
                         (<Form.Control
                           required
                           type="date"
-                          readOnly={!isEdit}
+                          readOnly={(!isEdit || formattedDate(detailMovie?.ngayKhoiChieu) < formattedDate(
+                            new Date()
+                          ))}
                           value={formattedDate(detailMovie?.ngayKhoiChieu)}
                           min={formattedDate(Date())}
                           onChange={(event) => {
@@ -284,16 +286,18 @@ function EditFormModal(props) {
                     >
                       <Form.Control
                         type="number"
-                        min={"0"}
+                        min={"1"}
                         isInvalid={isInvalid}
                         value={detailMovie?.thoiLuong}
                         required
-                        readOnly={!isEdit}
+                        readOnly={(!isEdit || formattedDate(detailMovie?.ngayKhoiChieu) < formattedDate(
+                          new Date()
+                        ))}
                         onChange={(event) => {
                           checkValid(event)
                           setDetailMovie({
                             ...detailMovie,
-                            thoiLuong: event.target.value == "-0" || event.target.value == "0" ? "-1" : event.target.value,
+                            thoiLuong: event.target.value,
                           });
                         }}
                       />

@@ -14,12 +14,13 @@ import AddShowtimeModalDialog from "../../../Components/Admin/AddShowtimeModal/A
 import { Button } from "../../../Components/Button/Button";
 import swal from "sweetalert";
 import AddShowtimeModalDialog2 from "../../../Components/Admin/AddShowtimeModal/AddShowtimeModal2";
+import { List } from "react-content-loader";
 
 export default function Showtimes() {
     let slug = useParams()
     const store = useContext(StoreContext);
     const [expandedRows, setExpandedRows] = useState([]);
-    const [temp, setTemp] = useState();
+    const [loading, setLoading] = useState(false);
 
     const [expandState, setExpandState] = useState({});
 
@@ -49,6 +50,7 @@ export default function Showtimes() {
     }, []);
 
     useEffect(() => {
+        setLoading(true)
         if (!slug) return
         fetch(API_MOVIE.DETAIL + slug.slug)
             .then((res) => res.json())
@@ -57,11 +59,13 @@ export default function Showtimes() {
                     type: "GETDETAILMOVIE",
                     payload: dt.data[0],
                 });
+                setLoading(false)
             });
+    }, [slug.slug]);
 
-    }, [temp]);
     const theaters = store.lsTheater.Theater?.lsTheater
     const movieDetail = store.movie?.DetailMovie?.detailMovie
+    console.log(">> movieDetail?.lichChieu?.tenRap", movieDetail?.lichChieu.sort((a, b) => a.tenRap.tenRap.localeCompare(b.tenRap.tenRap)))
     const handleDelete = () => {
         swal("Bạn chắc chắn muốn xóa suất chiếu này?", {
             buttons: {
@@ -125,25 +129,26 @@ export default function Showtimes() {
                     </Row>
                     <Row>
                         <Col sm={12}>
-                            <Table responsive variant="info ">
-                                <thead>
-                                    <tr>
-                                        <th>TÊN CỤM RẠP</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        theaters?.map((theater) =>
-                                            <>
-                                                <tr key={theater._id}>
-                                                    <td width={"20%"}>
-                                                        {theater.tenCumRap}
-                                                    </td>
-                                                    <td>
-                                                        <div style={{ "display": "flex" }}>
-                                                            {
-                                                                expandState[theater._id] ?
+                            {
+                                !loading
+                                    ?
+                                    <Table responsive variant="info ">
+                                        <thead>
+                                            <tr>
+                                                <th>TÊN CỤM RẠP</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {theaters?.map((theater) =>
+                                                <>
+                                                    <tr key={theater._id}>
+                                                        <td width={"20%"}>
+                                                            {theater.tenCumRap}
+                                                        </td>
+                                                        <td>
+                                                            <div style={{ "display": "flex" }}>
+                                                                {expandState[theater._id] ?
                                                                     <Button
                                                                         color='rgb(31, 166, 245)'
                                                                         name="Thu gọn"
@@ -160,100 +165,91 @@ export default function Showtimes() {
                                                                         width="fit-content"
                                                                         borderRadius="10.2em"
                                                                         fontWeight="bold"
-                                                                        onClick={event => handleExpandRow(event, theater._id)} />
-                                                            }
-                                                            <AddShowtimeModalDialog2
-                                                                clusterName={theater.tenCumRap}
-                                                                clusterID={theater._id}
-                                                                slug={slug.slug} show={false} />
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <>
-                                                    {
-                                                        expandedRows.includes(theater._id) &&
-                                                        <tr>
-                                                            <td></td>
-                                                            {/* colspan="6" */}
-                                                            <td>
-                                                                {
-                                                                    <div className="showtime-admin">
-                                                                        {
-                                                                            movieDetail?.lichChieu?.map(item => {
+                                                                        onClick={event => handleExpandRow(event, theater._id)} />}
+                                                                <AddShowtimeModalDialog2
+                                                                    clusterName={theater.tenCumRap}
+                                                                    clusterID={theater._id}
+                                                                    slug={slug.slug} show={false} />
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <>
+                                                        {expandedRows.includes(theater._id) &&
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>
+                                                                    <div className="showtime-admin" style={{ height: 'fit-content' }}>
+                                                                        {movieDetail?.lichChieu?.map(item => {
+                                                                            if (item.tenCumRap._id == theater._id) {
+                                                                                return (
+                                                                                    <>
+                                                                                        <h5>{item.tenRap.tenRap}</h5>
+                                                                                        <div className="row">
+                                                                                            <div className="col-md-7">
+                                                                                                <li>
+                                                                                                    <span>
+                                                                                                        <b>Ngày chiếu:</b>
+                                                                                                    </span> {' '}
+                                                                                                    <span>
+                                                                                                        {new Date(item.ngayChieu).toLocaleString()}
+                                                                                                    </span>
+                                                                                                </li>
+                                                                                            </div>
+                                                                                            <div className="col-md-4">
+                                                                                                <li>
+                                                                                                    <span><b>Thời lượng:</b></span> {' '}
+                                                                                                    <span> {movieDetail?.thoiLuong} phút</span>
+                                                                                                </li>
+                                                                                            </div>
 
-                                                                                if (item.tenCumRap._id == theater._id) {
-                                                                                    console.log(">> item", item)
-                                                                                    if (item)
-                                                                                        return (
+                                                                                        </div>
+                                                                                        <div className="row">
 
-                                                                                            <><h5>{item.tenRap.tenRap}</h5>
-                                                                                                <div className="row">
-                                                                                                    <div className="col-md-5">
-                                                                                                        <li>
-                                                                                                            <span>
-                                                                                                                <b>Ngày chiếu:</b>
-                                                                                                            </span> {' '}
-                                                                                                            <span>
-                                                                                                                {new Date(item.ngayChieu).toLocaleString()}
-                                                                                                            </span>
-                                                                                                        </li>
-                                                                                                    </div>
-                                                                                                    <div className="col-md-4">
-                                                                                                        <li>
-                                                                                                            <span><b>Thời lượng:</b></span> {' '}
-                                                                                                            <span> {movieDetail?.thoiLuong} phút</span>
-                                                                                                        </li>
-                                                                                                    </div>
-
-                                                                                                </div>
-                                                                                                <div className="row">
-
-                                                                                                    <div className="col-md-5">
-                                                                                                        <li>
-                                                                                                            <span><b>Giờ kết thúc:</b></span> {' '}
-                                                                                                            <span>
-                                                                                                                {new Date(item.gioKetThuc).toLocaleString()}
-                                                                                                            </span>
-                                                                                                        </li>
-                                                                                                    </div>
-                                                                                                    <div className="col-md-4">
-                                                                                                        <li>
-                                                                                                            <span><b>Giá vé:</b></span> {' '}
-                                                                                                            <span>
-                                                                                                                {item.giaVe.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
-                                                                                                                / ghế
-                                                                                                            </span>
-                                                                                                        </li>
-                                                                                                    </div>
-                                                                                                    <div className="col-md-4">
-                                                                                                        <li>
-                                                                                                            <span><b>Ghế:</b></span> {' '}
-                                                                                                            <span> {item.gheDaChon.length}/80
-                                                                                                                <Button
-                                                                                                                    color='white' name="Xóa"
-                                                                                                                    background="rgb(31, 166, 245)"
-                                                                                                                    width="fit-content" borderRadius="10.2em"
-                                                                                                                    fontWeight="bold"
-                                                                                                                    onClick={e => handleDelete(e)} /></span>
-                                                                                                        </li>
-                                                                                                    </div>
-                                                                                                </div>
-
-                                                                                            </>
-                                                                                        )
-                                                                                }
-                                                                            })
-                                                                        }
+                                                                                            <div className="col-md-7">
+                                                                                                <li>
+                                                                                                    <span><b>Giờ kết thúc:</b></span> {' '}
+                                                                                                    <span>
+                                                                                                        {new Date(item.gioKetThuc).toLocaleString()}
+                                                                                                    </span>
+                                                                                                </li>
+                                                                                            </div>
+                                                                                            <div className="col-md-4">
+                                                                                                <li>
+                                                                                                    <span><b>Giá vé:</b></span> {' '}
+                                                                                                    <span>
+                                                                                                        {item.giaVe.toLocaleString('it-IT', { style: 'currency', currency: 'VND' })}
+                                                                                                        / ghế
+                                                                                                    </span>
+                                                                                                </li>
+                                                                                            </div>
+                                                                                            <div className="col-md-4">
+                                                                                                <li>
+                                                                                                    <span><b>Ghế:</b></span> {' '}
+                                                                                                    <span> {item.gheDaChon.length}/80
+                                                                                                        <Button
+                                                                                                            color='white' name="Xóa"
+                                                                                                            background="rgb(31, 166, 245)"
+                                                                                                            width="fit-content" borderRadius="10.2em"
+                                                                                                            fontWeight="bold"
+                                                                                                            onClick={e => handleDelete(e)} /></span>
+                                                                                                </li>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </>
+                                                                                )
+                                                                            }
+                                                                        })}
                                                                     </div>
-                                                                }
-                                                            </td>
-                                                        </tr>
-                                                    }
-                                                </>
-                                            </>
-                                        )}
-                                </tbody>
-                            </Table>
+                                                                </td>
+                                                            </tr>}
+                                                    </>
+                                                </>)}
+                                        </tbody>
+                                    </Table>
+                                    :
+                                    <List style={{ padding: "16px" }} />
+                            }
+
                         </Col>
                     </Row>
                 </Container>
