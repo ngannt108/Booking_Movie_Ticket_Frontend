@@ -120,8 +120,8 @@ export default function Showtimes() {
     // }
     return (
         <>
-            <div className="general" style={{ marginLeft: "40px", width: "100%" }}>
-                <Container>
+            <div className="general" style={{ marginLeft: "3em", width: "100%" }}>
+                <div style={{ width: "98em" }}>
                     <Row>
                         <Col style={{ color: "white" }}>
                             THÔNG TIN PHIM - {movieDetail?.tenPhim}
@@ -252,7 +252,7 @@ export default function Showtimes() {
 
                         </Col>
                     </Row>
-                </Container>
+                </div>
             </div >
         </>
     )

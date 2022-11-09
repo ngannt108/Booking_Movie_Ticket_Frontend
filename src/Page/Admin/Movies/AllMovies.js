@@ -5,8 +5,9 @@ import "./Menu.css";
 import "./MovieManage.css";
 import { Button } from "../../../Components/Button/Button";
 import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import EditModalDialog from "../../../Components/Admin/EditFormModal/EditFormModal";
+import { FixedSizeList } from 'react-window';
 import { List } from 'react-content-loader'
+import ItemMovie from "../../../Components/Admin/ItemMovie/ItemMovie";
 
 export default function AllMovies() {
   const store = useContext(StoreContext);
@@ -48,7 +49,7 @@ export default function AllMovies() {
   if (movies) {
     return (
       <>
-        <div style={{ maxWidth: "900px" }}>
+        <div style={{ minWidth: "98em" }}>
           <div style={{ padding: "0em 3em 3em 3em" }}>
             <div className="row">
               <div className="col-md-4">
@@ -68,41 +69,29 @@ export default function AllMovies() {
                 />
               </div>
             </div>
-            <div className="container-body">
-              <table className="layout display responsive-table">
-                <thead>
-                  <tr>
-                    <th>Số thứ tự</th>
-                    <th>Tên phim</th>
-                    <th>Hình ảnh</th>
-                    <th colSpan={2}>Mô tả</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {movies.map((item, index) => (
-                    <tr key={index}>
-                      <td className="organisationname number">{index + 1}</td>
-                      <td width="250px" className="organisationname">
-                        {item.tenPhim}
-                      </td>
-                      <td className="organisationname image">
-                        <img height="80px" width="60px" src={item.hinhAnh} alt="" />
-                      </td>
-                      <td width="900px">
-                        <div className="organisationname-description">
-                          {item.moTa}
-                        </div>
-                      </td>
+            {
+              movies.length == 0 ? <div style={{ color: "white", marginTop: "1em" }}>Hiện chưa có thông tin phim!</div> :
+                (
+                  <div className="container-body">
+                    <table className="layout display responsive-table">
+                      <thead>
+                        <tr>
+                          <th>Số thứ tự</th>
+                          <th>Tên phim</th>
+                          <th>Hình ảnh</th>
+                          <th colSpan={2}>Mô tả</th>
+                        </tr>
+                      </thead>
+                      <tbody>
 
-                      <td width="250px" className="actions">
-                        <EditModalDialog biDanh={item.biDanh} show={false} />
-
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                        {movies.map((item, index) => (
+                          <ItemMovie movie={item} index={index} />
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )
+            }
           </div>
         </div>
       </>

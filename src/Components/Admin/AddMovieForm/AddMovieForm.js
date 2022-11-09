@@ -119,7 +119,7 @@ function AddMovieForm(props) {
     if (temp.name === 'banner' || temp.name === "image" && detailMovie[temp.name]) {
       return temp.classList.remove("is-invalid")
     }
-    if ((isEmpty(temp.value) || temp.checkValidity() == false) && temp.required) {
+    if ((isEmpty(temp.value) || temp.checkValidity() == false || temp.value.trim() == 0) && temp.required) {
       event.preventDefault();
       temp.classList.add("is-invalid")
     }
@@ -142,10 +142,10 @@ function AddMovieForm(props) {
     }
   }
   return (
-    <div style={{ marginLeft: "40px", background: "white", maxWidth: "880px", paddingLeft: "20px", marginBottom: "20px" }}>
+    <div style={{ marginLeft: "40px", background: "white", paddingLeft: "20px", marginBottom: "20px" }}>
       <Form id="create-form" >
         <Form.Label>THÔNG TIN PHIM MỚI</Form.Label>
-        <div style={{ background: "white", maxWidth: "800px" }}>
+        <div style={{ background: "white", width: "98em" }}>
           {/* <Form style={{ maxWidth: "800px" }} noValidate validated={validated} onSubmit={handleEdit}> */}
           <Row className="mb-3">
             <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -286,7 +286,7 @@ function AddMovieForm(props) {
           </Row>
           <Row className="mb-3">
 
-            <Form.Group style={{ width: '20rem' }} controlId="validationCustom05">
+            <Form.Group as={Col} md="3" style={{ width: '20rem' }} controlId="validationCustom05">
               <Form.Label>Ảnh bìa</Form.Label>
               <Form.Control
                 className="is-invalid"
@@ -308,8 +308,7 @@ function AddMovieForm(props) {
               </Form.Control.Feedback>
 
             </Form.Group>
-
-            <Form.Group style={{ width: '18rem' }} controlId="validationCustom05">
+            <Form.Group as={Col} md="3" style={{ width: '18rem' }} controlId="validationCustom05">
               <Form.Label>Hình ảnh</Form.Label>
               <Form.Control
                 className="is-invalid"
@@ -348,9 +347,9 @@ function AddMovieForm(props) {
           />
         </div>
 
-      </Form>
+      </Form >
       {/* </div> */}
-    </div>
+    </div >
   );
 }
 export default AddMovieForm;
