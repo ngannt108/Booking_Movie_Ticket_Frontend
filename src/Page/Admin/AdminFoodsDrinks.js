@@ -6,8 +6,8 @@ import Showtimes from "./Showtimes/Showtimes";
 import "../../App.css";
 import HeaderAdmin from "./Header/HeaderAdmin";
 import { Link, NavLink } from "react-router-dom";
-import EditFormModal from "../../Components/Admin/EditFormModal/EditFormModal";
 import AllFoodsDrinks from "./FoodsDrinks/AllFoodsDrinks";
+import EditMovieModal from "../../Components/Admin/EditMovieModal/EditMovieModal";
 
 
 export default function AdminFoodsDrinks() {
@@ -19,17 +19,17 @@ export default function AdminFoodsDrinks() {
                 <NavLink end to="/Admin/Foods">
                     Tất cả đồ ăn
                 </NavLink>
-                <NavLink end to="/Admin/Foods">
+                <NavLink end to="/Admin/Foods/Add">
                     Tạo nước uống/ đồ ăn
                 </NavLink>
                 <Link to="#">Phim được yêu thích</Link>
             </div>
             <Routes>
-                <Route path="/" element={<AllFoodsDrinks />} />
-                <Route path="/movie" element={<AddMovieForm />} />
+                <Route path="/Foods" element={<AllFoodsDrinks />} />
+                <Route path="/Foods/add" element={<AddMovieForm />} />
                 <Route path="/:slug/showtimes" element={<Showtimes />} />
 
-                <Route path="/edit" element={<EditFormModal />} />
+                <Route path="/edit" element={<EditMovieModal />} />
             </Routes>
         </div>
         /* <div className="vertical-menu">

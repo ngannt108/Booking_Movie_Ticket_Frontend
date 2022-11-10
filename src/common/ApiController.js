@@ -28,3 +28,7 @@ export const API_ACCOUNTS = {
   SIGNIN: API_DOMAIN + "accounts/signin",
   SIGNUP: API_DOMAIN + "accounts/signUp",
 };
+export const API_FOODDRINKS = {
+  GETALL: API_DOMAIN + "users/food_drink/",
+  DETAIL: API_DOMAIN + "users/food_drink/"
+};

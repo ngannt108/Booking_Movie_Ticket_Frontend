@@ -6,8 +6,7 @@ import Showtimes from "./Showtimes/Showtimes";
 import "../../App.css";
 import HeaderAdmin from "./Header/HeaderAdmin";
 import { Link, NavLink } from "react-router-dom";
-import EditFormModal from "../../Components/Admin/EditFormModal/EditFormModal";
-
+import EditMovieModal from "../../Components/Admin/EditMovieModal/EditMovieModal";
 
 export default function AdminMovies() {
   return (
@@ -15,7 +14,7 @@ export default function AdminMovies() {
     //   <HeaderAdmin />
     <div className="general" style={{ marginTop: "1em" }}>
       <div className="vertical-menu">
-        <NavLink end to="/Admin">
+        <NavLink defaultValue end to="/Admin">
           Tất cả phim
         </NavLink>
         <NavLink end to="/Admin/movie">
@@ -24,11 +23,11 @@ export default function AdminMovies() {
         <Link to="#">Phim được yêu thích</Link>
       </div>
       <Routes>
-        <Route path="/" element={<AllMovies />} />
+        <Route index path="/" element={<AllMovies />} />
         <Route path="/movie" element={<AddMovieForm />} />
         <Route path="/:slug/showtimes" element={<Showtimes />} />
 
-        <Route path="/edit" element={<EditFormModal />} />
+        <Route path="/edit" element={<EditMovieModal />} />
       </Routes>
       {/* </div> */}
       {/* <div className="vertical-menu">

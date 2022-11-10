@@ -5,8 +5,9 @@ import AdminMovies from "../AdminMovies";
 import Admin from "../AdminMovies";
 import "./HeaderAdmin.css";
 import '../Movies/Menu.css'
-
+import { useNavigate } from "react-router-dom";
 export default function HeaderAdmin() {
+  const navigate = useNavigate()
   return (
     <>
       {/* <header> */}

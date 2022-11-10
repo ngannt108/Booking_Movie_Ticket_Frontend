@@ -11,7 +11,7 @@ import { Multiselect } from "multiselect-react-dropdown";
 import { useNavigate } from "react-router-dom";
 import { List } from 'react-content-loader'
 
-function EditFormModal(props) {
+function EditMovieModal(props) {
   const [isShow, setInvokeModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const store = useContext(StoreContext);
@@ -471,4 +471,4 @@ function EditFormModal(props) {
   </div >)
 }
 /*className="container mt-3"*/
-export default EditFormModal;
+export default EditMovieModal;

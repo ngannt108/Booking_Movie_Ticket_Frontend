@@ -9,6 +9,7 @@ import { FixedSizeList } from 'react-window';
 import { List } from 'react-content-loader'
 import ItemMovie from "../../../Components/Admin/ItemMovie/ItemMovie";
 
+
 export default function AllMovies() {
   const store = useContext(StoreContext);
   const [biDanh, setBiDanh] = useState();

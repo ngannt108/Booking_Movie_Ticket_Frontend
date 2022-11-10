@@ -1,5 +1,5 @@
+import EditFormModal from "../EditMovieModal/EditFormModal";
 import List from 'react-content-loader'
-import EditMovieModal from "../EditMovieModal/EditMovieModal";
 const ItemMovie = ({ index, movie }) => {
     // console.log(">> data", itemData)
     // return (
@@ -24,7 +24,7 @@ const ItemMovie = ({ index, movie }) => {
                 </div>
             </td>
             <td width="250px" className="actions">
-                <EditMovieModal biDanh={movie.biDanh} show={false} />
+                <EditFormModal biDanh={movie.biDanh} show={false} />
             </td>
         </tr>
     )
