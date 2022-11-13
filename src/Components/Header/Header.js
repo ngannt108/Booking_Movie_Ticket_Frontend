@@ -5,7 +5,8 @@ import "./Header.css";
 
 export default function Header() {
   const store = useContext(StoreContext);
-  const [userName, setUserName] = useState();
+  const [userName, setUserName] = useState(null);
+
   useEffect(() => {
     setUserName(store.account.userAccount.account?.slice(1, -1));
   }, [store.account]);

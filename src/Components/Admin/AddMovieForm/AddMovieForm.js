@@ -1,24 +1,22 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { StoreContext } from "../../../Redux/Store/Store";
 import { API_MOVIE } from "../../../common/ApiController";
-import HeaderAdmin from "../../../Page/Admin/Header/HeaderAdmin";
 import { Button } from "../../Button/Button";
-import { Input } from "../../Input/Input.js";
 import isEmpty from "validator/lib/isEmpty";
 import swal from "sweetalert";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Col, Form } from "react-bootstrap";
+import { Card, Col, FloatingLabel, Form, Modal, Row } from "react-bootstrap";
 import { Multiselect } from "multiselect-react-dropdown";
+import "../../../Page/Admin/Movies/MovieManage.css"
 
 function AddMovieForm(props) {
   const store = useContext(StoreContext);
-  const [validationMsg, setValidationMsg] = React.useState({});
-  const [image, setDisplayImage] = React.useState();
-  const [fileImage, setFileImage] = React.useState(null);
-  const [banner, setDisplayBanner] = React.useState();
-  const [fileBanner, setFileBanner] = React.useState(null);
-  const [genres, setGenres] = React.useState([]);
-
+  const [image, setDisplayImage] = useState();
+  const [fileImage, setFileImage] = useState(null);
+  const [banner, setDisplayBanner] = useState();
+  const [fileBanner, setFileBanner] = useState(null);
+  const [isInvalid, setInvalid] = useState();
+  const navigate = useNavigate()
   let emptyMovie = {
     tenPhim: "",
     hinhAnh: "",
@@ -37,7 +35,7 @@ function AddMovieForm(props) {
   const initModal = () => {
     setDetailMovie(emptyMovie);
     setDisplayImage();
-    setValidationMsg({});
+
   };
   const AddMovieAction = async (e) => {
     console.log(">> into AddAction");
@@ -48,7 +46,7 @@ function AddMovieForm(props) {
     for (let keyOfObj in detailMovie) {
       fd.append(keyOfObj, detailMovie[keyOfObj]);
     }
-    const token = JSON.parse(localStorage.getItem("token"));
+    const token = JSON.parse(sessionStorage.getItem("token"));
 
     fetch(API_MOVIE.ADD, {
       headers: {
@@ -64,6 +62,9 @@ function AddMovieForm(props) {
             text: "",
             icon: "success",
           });
+          setTimeout(function () {
+            navigate(0)
+          }, 1000);
         } else return res.json();
       })
       .then((response) => {
@@ -78,39 +79,10 @@ function AddMovieForm(props) {
   };
 
   const handleAdd = (e) => {
-    if (validateAll(e)) AddMovieAction(e);
-    else return;
+    e.preventDefault()
+    AddMovieAction(e);
   };
-  console.log(">> file banner", fileBanner);
-  console.log(">> file image", fileImage);
-  const validateAll = (e) => {
-    let msg = {};
-    const labelOfField = {
-      tenPhim: "tên phim",
-      ngayKhoiChieu: "ngày khởi chiếu",
-      thoiLuong: "thời lượng",
-    };
-    delete detailMovie.hinhAnh;
-    delete detailMovie.anhBia;
-    for (let keyOfObj in labelOfField) {
-      console.log(keyOfObj, ":", detailMovie[keyOfObj]);
-      if (
-        isEmpty(detailMovie[keyOfObj]) ||
-        detailMovie[keyOfObj].trim() === 0
-      ) {
-        // if (keyOfObj == "hinhAnh")
-        //     msg[keyOfObj] = `Vui lòng chọn ${labelOfField[keyOfObj]} `
-        // if (keyOfObj == "anhBia")
-        //     msg[keyOfObj] = `Vui lòng chọn ${labelOfField[keyOfObj]} `
-        msg[keyOfObj] = `Vui lòng điền ${labelOfField[keyOfObj]} `;
-      }
-    }
-    if (image == null) msg.hinhAnh = "Chọn hình đại diện cho phim";
-    if (banner == null) msg.anhBia = "Chọn ảnh bìa cho phim";
-    setValidationMsg(msg);
-    if (Object.keys(msg).length > 0) return false;
-    return true;
-  };
+
   const formattedDate = (dateInput) => {
     let today = new Date(dateInput);
     const yyyy = today.getFullYear();
@@ -122,32 +94,6 @@ function AddMovieForm(props) {
 
     return yyyy + "-" + mm + "-" + dd;
   };
-  const validateField = (event) => {
-    const msg = { ...validationMsg };
-    const labelOfField = {
-      tenPhim: "tên phim",
-      ngayKhoiChieu: "ngày khởi chiếu",
-      thoiLuong: "thời lượng",
-      trailer: "trailer",
-      hinhAnh: "hình ảnh",
-      anhBia: "ảnh bìa",
-    };
-    if (fileImage == null) msg.hinhAnh = "Chọn hình đại diện cho phim";
-    if (fileBanner == null) msg.anhBia = "Chọn ảnh bìa cho phim";
-    if (event.target.value == "hinhAnh" && fileImage != null)
-      delete msg["hinhAnh"];
-    if (event.target.value == "anhBia" && fileBanner != null)
-      delete msg["anhBia"];
-    if (isEmpty(event.target.value) || event.target.value.trim() == 0) {
-      msg[event.target.name] = `Vui lòng điền ${
-        labelOfField[event.target.name]
-      } `;
-    } else delete msg[event.target.name];
-
-    setValidationMsg(msg);
-    if (Object.keys(msg).length > 0) return false;
-    return true;
-  };
 
   const uploadImage = async (event) => {
     if (event.target.files[0] != null) {
@@ -156,6 +102,7 @@ function AddMovieForm(props) {
       let url = URL.createObjectURL(event.target.files[0]);
       setDisplayImage(url);
     }
+
   };
   const uploadBanner = async (event) => {
     if (event.target.files[0] != null) {
@@ -165,138 +112,165 @@ function AddMovieForm(props) {
       setDisplayBanner(url);
     }
   };
-  console.log(">> Error", validationMsg);
-  const handleOnChange = (event) => {
-    if (
-      ["tenPhim", "ngayKhoiChieu", "thoiLuong", "trailer"].includes(
-        event.target.name
-      )
-    )
-      validateField(event);
-    console.log(">> in handleOnChange", event.target.name);
-    setDetailMovie({ ...detailMovie, [event.target.name]: event.target.value });
+  const checkValid = (event) => {
+    let temp = document.getElementsByName(event.target.name).item(0)
+    console.log(">> temp.checkValidity()", temp.checkValidity())
+    console.log(">> temp", temp)
+    if (temp.name === 'banner' || temp.name === "image" && detailMovie[temp.name]) {
+      return temp.classList.remove("is-invalid")
+    }
+    if ((isEmpty(temp.value) || temp.checkValidity() == false) && temp.required) {
+      event.preventDefault();
+      temp.classList.add("is-invalid")
+    }
+    else temp.classList.remove("is-invalid");
+    checkInvalidAndRerender()
   };
+
+  const checkInvalidAndRerender = () => {
+    //console.log(isInvalid === undefined)
+    if (document.getElementsByClassName("is-invalid").length > 0) {
+      // If needed
+      if (isInvalid || isInvalid === undefined) {
+        setInvalid(true)
+      }
+    } else {
+      // Should be rerender
+      if (isInvalid || isInvalid === undefined) {
+        setInvalid(false)
+      }
+    }
+  }
   return (
-    <div className="general" style={{ background: "white" }}>
-      <div style={{ marginLeft: "120px" }} className="container mt-4">
-        <form>
-          <div style={{ width: "980px" }}>
-            <label>THÔNG TIN PHIM MỚI</label>
-          </div>
-          <div className="row">
-            <div className="col-md-5">
-              <Input
-                type="text"
-                value={detailMovie?.tenPhim}
-                disabled={false}
+    <div style={{ marginLeft: "40px", background: "white", maxWidth: "880px", paddingLeft: "20px", marginBottom: "20px" }}>
+      <Form id="create-form" >
+        <Form.Label>THÔNG TIN PHIM MỚI</Form.Label>
+        <div style={{ background: "white", maxWidth: "800px" }}>
+          {/* <Form style={{ maxWidth: "800px" }} noValidate validated={validated} onSubmit={handleEdit}> */}
+          <Row className="mb-3">
+            <Form.Group as={Col} md="4" controlId="validationCustom01">
+              <FloatingLabel
+                controlId="floatingInput"
                 label="Tên phim"
-                name="tenPhim"
-                onChange={(event) => handleOnChange(event)}
-                onClick={(event) => handleOnChange(event)}
-              />
-              <span style={{ color: "red" }}>{validationMsg?.tenPhim}</span>
-            </div>
-            <div className="col-md-4">
-              <Input
-                className="form-control"
-                type="date"
-                value={formattedDate(detailMovie?.ngayKhoiChieu)}
-                min={formattedDate(Date())}
-                label="Khởi chiếu"
-                name="ngayKhoiChieu"
-                disabled={false}
-                // marginLeft={"80px"}
-                onChange={(event) => handleOnChange(event)}
-                onClick={(event) => handleOnChange(event)}
-              />
-              <div>
-                <span style={{ color: "red" }}>
-                  {validationMsg?.ngayKhoiChieu}
-                </span>
-              </div>
-            </div>
-          </div>
-          Mô tả
-          <br />
-          <textarea
-            className="col-md-9"
-            rows="4"
-            // cols="96"
-            disabled={false}
-            name="moTa"
-            value={detailMovie?.moTa}
-            onChange={(event) => handleOnChange(event)}
-            onClick={(event) => handleOnChange(event)}
-          />
-          <br />
-          <div className="row">
-            <div className="col-md-3">
-              <Input
-                className="form-control"
-                type="number"
+                className="mb-3"
+              >
+                <Form.Control
+                  className="is-invalid"
+                  required
+                  type="text"
+                  name='tenPhim'
+                  // isInvalid={isInvalid}
+                  onChange={(e) => {
+                    checkValid(e)
+                    detailMovie.tenPhim = e.target.value
+                  }}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Nhập tên cho phim
+                </Form.Control.Feedback>
+              </FloatingLabel>
+            </Form.Group>
+            <Form.Group as={Col} md="4" controlId="validationCustom02">
+              <FloatingLabel
+                controlId="floatingInput"
+                label="Ngày khởi chiếu"
+                className="mb-3">
+
+                <Form.Control
+                  className="is-invalid"
+                  required
+                  type="date"
+                  name='ngayKhoiChieu'
+                  // isInvalid={isInvalid}
+                  min={formattedDate(Date())}
+                  onChange={(event) => {
+                    checkValid(event)
+                    detailMovie.ngayKhoiChieu = event.target.value
+                  }}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Chọn ngày khởi chiếu cho phim
+                </Form.Control.Feedback>
+              </FloatingLabel>
+
+            </Form.Group>
+            <Form.Group as={Col} md="3" controlId="validationCustom04">
+              <FloatingLabel
+                controlId="floatingInput"
                 label="Thời lượng"
-                value={detailMovie?.thoiLuong}
-                onKeyDown={(e) => e.preventDefault()}
-                name="thoiLuong"
-                disabled={false}
-                min={0}
-                onChange={(event) => handleOnChange(event)}
-                onClick={(event) => handleOnChange(event)}
-              />
-              <div>
-                <span style={{ color: "red" }}>{validationMsg?.thoiLuong}</span>
-              </div>
-            </div>
-            <div className="col-md-3" style={{ margin: "0% 8%" }}>
-              <Input
-                type={"url"}
-                value={detailMovie?.trailer}
-                label="Trailer"
-                name="trailer"
-                disabled={false}
-                onChange={(event) => handleOnChange(event)}
-                onClick={(event) => handleOnChange(event)}
-              />
-              <div>
-                <span style={{ color: "red" }}>{validationMsg?.trailer}</span>
-              </div>
-            </div>
+                className="mb-3"
+              >
+                <Form.Control
+                  className="is-invalid"
+                  type="number"
+                  name='thoiLuong'
+                  min={"1"}
+                  // isInvalid={isInvalid}
+                  required
+                  onChange={(event) => {
+                    checkValid(event)
+                    detailMovie.thoiLuong = event.target.value //== "-0" || event.target.value == "0" ? "-1" : event.target.value,
+                  }}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Nhập thời lượng lớn hơn 0
+                </Form.Control.Feedback>
+              </FloatingLabel>
+            </Form.Group>
+
+          </Row>
+          <Form.Group className="mb-3" >
+            <Form.Label>Mô tả</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={4}
+              onChange={(event) => {
+                detailMovie.moTa = event.target.value
+              }}
+            />
+
+          </Form.Group>
+          <Row className="mb-3">
+
             <div className="row">
-              <div className="col-md-4" style={{ marginBottom: "16px" }}>
+              <div className="col-md-5">
                 Thể loại
                 <Multiselect
                   isObject={false}
                   onRemove={(event) => {
-                    setDetailMovie({ ...detailMovie, theLoai: event });
+                    checkValid(event)
+                    // setDetailMovie({ ...detailMovie, theLoai: event });
+                    detailMovie.theLoai = event
                   }}
                   onSelect={(event) => {
-                    setDetailMovie({ ...detailMovie, theLoai: event });
+                    checkValid(event)
+                    // setDetailMovie({ ...detailMovie, theLoai: event });
+                    detailMovie.theLoai = event
                   }}
                   options={[
                     "Kinh dị",
-                    " Hài hước",
+                    "Hài hước",
                     "Lãng mạn",
                     "Hành động",
                     "Hoạt hình",
                     "Viễn tưởng",
                   ]}
-                  // selectedValues={genres}
+                  selectedValues={detailMovie.theLoai}
                   showCheckbox
                   hidePlaceholder
                   placeholder="Nhấp để chọn"
                 />
               </div>
-              <div className="col-md-4">
+              <div className="col-md-5">
                 Quốc gia
                 <Form.Select
-                  aria-label="Default select example"
+                  // aria-label="Default select example"              
                   onChange={(e) =>
-                    setDetailMovie({
-                      ...detailMovie,
-                      quocGia: e.target.value,
-                    })
+                    detailMovie.quocGia = e.target.value
+                    // setDetailMovie({ ...detailMovie, quocGia: e.target.value })
                   }
                 >
+                  <option>Chọn quốc gia</option>
                   <option value="Mỹ">Mỹ</option>
                   <option value="Việt Nam">Việt Nam</option>
                   <option value="Anh">Anh</option>
@@ -309,73 +283,73 @@ function AddMovieForm(props) {
               </div>
               <div className="col-md-6"></div>
             </div>
-          </div>
-          <div className="row">
-            <div className="col-md-4">
-              Hình ảnh
-              <br />
-              <input
-                type="file"
-                name="hinhAnh"
-                onChange={(event) => {
-                  uploadImage(event);
-                  validateField(event);
-                }}
-              />
-              <div>
-                <span style={{ color: "red" }}>{validationMsg?.hinhAnh}</span>
-              </div>
-            </div>
-            <div className="col-md-4">
-              Ảnh bìa
-              <br />
-              <input
-                type="file"
-                name="anhBia"
-                onChange={(event) => {
-                  uploadBanner(event);
-                  validateField(event);
-                }}
-              />
-              <div>
-                <span style={{ color: "red" }}>{validationMsg?.anhBia}</span>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-4">
-              <img src={image || detailMovie?.hinhAnh} height="80px"></img>
-            </div>
+          </Row>
+          <Row className="mb-3">
 
-            <div className="col-md-4">
-              <img src={banner || detailMovie?.anhBia} height="80px"></img>
-            </div>
-          </div>
-          <div
-            className="row"
-            style={{ marginTop: "24px", marginLeft: "78px" }}
-          >
-            <div className="col-md-4">
-              <Button
-                color="white"
-                background="green"
-                name="Đồng ý"
-                borderRadius="0.4em"
-                disabled={Object.keys(validationMsg).length > 0}
-                onClick={(e) => handleAdd(e)}
+            <Form.Group style={{ width: '20rem' }} controlId="validationCustom05">
+              <Form.Label>Ảnh bìa</Form.Label>
+              <Form.Control
+                className="is-invalid"
+                type="file"
+
+                ////// isInvalid={isInvalid}
+                onChange={(event) => {
+                  checkValid(event)
+                  uploadBanner(event);
+                }}
+                name="banner"
+                required
+                md="6" />
+              <Card style={{ alignItems: 'center' }} >
+                <Card.Img style={{ maxHeight: '8rem', maxWidth: 'fit-content' }} variant="top" src={banner || detailMovie?.anhBia} />
+              </Card>
+              <Form.Control.Feedback type="invalid">
+                Vui lòng chọn ảnh bìa cho phim
+              </Form.Control.Feedback>
+
+            </Form.Group>
+
+            <Form.Group style={{ width: '18rem' }} controlId="validationCustom05">
+              <Form.Label>Hình ảnh</Form.Label>
+              <Form.Control
+                className="is-invalid"
+                type="file"
+                required
+
+                name="image"
+                onChange={(event) => {
+                  checkValid(event)
+                  uploadImage(event);
+                }}
               />
-            </div>
-            <div className="col-md-4">
-              <Button
-                color="danger"
-                name="Hủy"
-                borderRadius="0.4em"
-                onClick={initModal}
-              />
-            </div>
-          </div>
-        </form>
-      </div>
+              <Card style={{ alignItems: 'center' }} >
+                <Card.Img style={{ maxHeight: '8rem', maxWidth: 'fit-content' }} variant="top" src={image || detailMovie?.hinhAnh} />
+              </Card>
+              <Form.Control.Feedback type="invalid">
+                Vui lòng chọn ảnh đại diện cho phim
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Row>
+        </div>
+        <div className="d-grid gap-2 col-6 mx-auto">
+          <Button
+            color="black"
+            background="yellow"
+            name="Tạo phim"
+            borderRadius="0.4em"
+            disabled={isInvalid === undefined ? true : false}
+            onClick={(e) => handleAdd(e)}
+          />
+          <Button
+            color="danger"
+            name="Hủy"
+            borderRadius="0.4em"
+            onClick={initModal}
+          />
+        </div>
+
+      </Form>
+      {/* </div> */}
     </div>
   );
 }
