@@ -257,14 +257,14 @@ header nav ul li:hover::after {
   position: absolute;
   bottom: 0;
   animation-name: move;
-  animation-duration: 1.5s;
+  animation-duration: 1s;
   animation-iteration-count: infinite;
   animation-timing-function: ease;
 }
 .carousel__arrow2 {
   position: absolute;
   animation-name: move;
-  animation-duration: 1.5s;
+  animation-duration: 1s;
   animation-iteration-count: infinite;
   animation-timing-function: ease;
   bottom: 394px;

@@ -25,11 +25,6 @@ export default function Booking() {
     }
   }, [store.bookingRoom.Booking.booking.showtime, store.lsRooms.Rooms.rooms]);
 
-  // const date = `${store.Booking.booking[2]} - ${store.Booking.booking[3]}/2022`;
-  // const arrSeat = [];
-  // // const arrSeatLeftNum = "1 2 3 4 5 6 7 ".split(" ");
-  // // console.log(arrSeat);
-  // const arrSeatRightNum = "8 9 10".split(" ");
   var [arrSelectedSeat, setArr] = useState([]);
 
   useEffect(() => {

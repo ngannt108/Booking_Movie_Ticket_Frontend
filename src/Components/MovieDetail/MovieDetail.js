@@ -21,6 +21,7 @@ export default function MovieDetail() {
       fetch(`${API_MOVIE.DETAIL + biDanh}`)
         .then((res) => res.json())
         .then((dt) => {
+          console.log(dt.data[0]);
           store.movie.DetailMovieDispatch({
             type: "GETDETAILMOVIE",
             payload: dt.data[0],

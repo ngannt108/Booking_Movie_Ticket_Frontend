@@ -7,7 +7,7 @@ export default function Header() {
   const store = useContext(StoreContext);
   const [userName, setUserName] = useState();
   useEffect(() => {
-    setUserName(store.account.userAccount.account);
+    setUserName(store.account.userAccount.account?.slice(1, -1));
   }, [store.account]);
   return (
     <div>
@@ -62,12 +62,13 @@ export default function Header() {
                       </Link>
                       <div className="dropdown-content">
                         <Link
-                          onClick={() =>
+                          onClick={() => {
                             store.account.AccountDispatch({
                               type: "ACCOUNT",
                               payload: null,
-                            })
-                          }
+                            });
+                            sessionStorage.clear();
+                          }}
                           to="/"
                         >
                           Đăng xuất

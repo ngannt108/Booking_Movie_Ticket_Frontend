@@ -3,7 +3,6 @@ import { StoreContext } from "../../Redux/Store/Store";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router-dom";
-import Store from "../../Redux/Store/Store";
 import "./ModalBookingPopUp.css";
 
 export default function ModalPopUp(props) {

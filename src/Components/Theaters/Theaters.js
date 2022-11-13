@@ -183,26 +183,38 @@ export default function Theaters() {
                                   key={index}
                                   style={{ display: "inline-block" }}
                                 >
-                                  <ModalBookingPopUp
-                                    info={[
-                                      cinemaName,
-                                      movie.tenPhim,
-                                      `${showtime.ngayChieu.slice(
+                                  {store.account.userAccount.account ? (
+                                    <ModalBookingPopUp
+                                      info={[
+                                        cinemaName,
+                                        movie.tenPhim,
+                                        `${showtime.ngayChieu.slice(
+                                          11,
+                                          16
+                                        )} - ${showtime.gioKetThuc.slice(
+                                          11,
+                                          16
+                                        )}`,
+                                        currentDate.slice(8, 10) +
+                                          "/" +
+                                          currentDate.slice(5, 7) +
+                                          "/" +
+                                          currentDate.slice(0, 4),
+                                        movie.hinhAnh,
+                                      ]}
+                                      showtimeDetail={showtime}
+                                    />
+                                  ) : (
+                                    <ModalSignInPopUp
+                                      info={`${showtime.ngayChieu.slice(
                                         11,
                                         16
                                       )} - ${showtime.gioKetThuc.slice(
                                         11,
                                         16
-                                      )}`,
-                                      currentDate.slice(8, 10) +
-                                        "/" +
-                                        currentDate.slice(5, 7) +
-                                        "/" +
-                                        currentDate.slice(0, 4),
-                                      movie.hinhAnh,
-                                    ]}
-                                    showtimeDetail={showtime}
-                                  />
+                                      )}`}
+                                    />
+                                  )}
                                 </div>
                               ))}
                             </div>
