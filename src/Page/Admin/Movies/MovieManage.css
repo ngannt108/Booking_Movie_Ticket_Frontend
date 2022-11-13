@@ -1,8 +1,9 @@
 .container-body {
     margin-top: 1em;
     overflow-y: scroll;
-    max-height: 600px;
-    max-width: 1200px;
+    max-height: 44em;
+    max-width: 98em;
+    /* max-width: 1200px; */
 }
 
 a {

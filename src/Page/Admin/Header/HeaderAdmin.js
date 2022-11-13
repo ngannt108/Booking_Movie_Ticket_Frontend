@@ -1,9 +1,13 @@
 import { Nav, Tab, Tabs } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
-import Admin from "../Admin";
+import AdminFoodsDrinks from "../AdminFoodsDrinks";
+import AdminMovies from "../AdminMovies";
+import Admin from "../AdminMovies";
 import "./HeaderAdmin.css";
-
+import '../Movies/Menu.css'
+import { useNavigate } from "react-router-dom";
 export default function HeaderAdmin() {
+  const navigate = useNavigate()
   return (
     <>
       {/* <header> */}
@@ -22,7 +26,8 @@ export default function HeaderAdmin() {
           </li>
         </ul>
       </div> */}
-      <div style={{ margin: "20px 0px" }}>
+      <div className="admin-page">
+
         <Tabs
           defaultActiveKey="home"
           id="fill-tab-example"
@@ -30,10 +35,10 @@ export default function HeaderAdmin() {
           fill
         >
           <Tab eventKey="home" title=" Quản lý phim" id="tab0">
-            {/* <Admin /> */}
+            <AdminMovies />
           </Tab>
           <Tab eventKey="profile" title="Quản lý đồ ăn">
-            Quản lý phim
+            <AdminFoodsDrinks />
           </Tab>
           <Tab eventKey="longer-tab" title="Quản lý thông tin">
             Quản lý phim

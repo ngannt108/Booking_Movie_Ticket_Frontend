@@ -10,7 +10,9 @@ import Movies from "./Components/Movies/Movies";
 import Booking from "./Components/Booking/Booking";
 import "./App.css";
 import Footer from "./Components/Footer/Footer";
-import Admin from "./Page/Admin/Admin";
+import AdminMovies from "./Page/Admin/AdminMovies";
+import HeaderAdmin from "./Page/Admin/Header/HeaderAdmin";
+import AdminFoodsDrinks from "./Page/Admin/AdminFoodsDrinks";
 import Payment from "./Components/Payment/Payment";
 
 function App() {
@@ -28,7 +30,9 @@ function App() {
         <Routes>
           {/* Content động */}
           <Route path="/" element={<Home />} />
-          <Route path="/Admin/*" element={<Admin />} />
+          {/* <Route path="/Admin/Foods" element={<AdminFoodsDrinks />} /> */}
+          <Route path="/Admin/*" element={<HeaderAdmin />} />
+
           {/* <Route path="/Admin/movie" element={<AddMovieForm />} />
           <Route path="/Admin/:slug/showtimes" element={<Showtimes />} /> */}
           <Route path="/SignIn" element={<SignIn />} />

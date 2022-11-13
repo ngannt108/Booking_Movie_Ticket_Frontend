@@ -67,6 +67,11 @@
     */
 }
 
+.admin-page {
+  padding-top: 8em;
+  background: black;
+}
+
 
 .nav-fill .nav-link:hover {
   background-color: #005f5f !important;
@@ -76,6 +81,13 @@
   background-color: rgb(31, 166, 245);
   color: #444;
   cursor: default;
+  font-size: xx-large;
+}
+
+.nav-tabs .nav-link.active {
+  color: white;
+  background-color: black;
+  border-color: var(--bs-nav-tabs-link-active-border-color);
 }
 
 .nav-fill .nav-item .nav-link {
