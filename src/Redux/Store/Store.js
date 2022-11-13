@@ -2,7 +2,7 @@ import React, { createContext } from "react";
 import ReducerMovies from "../Reducer/ReducerMovies";
 import ReducerAccounts from "../Reducer/ReducerAccounts";
 import ReducerTheaters from "../Reducer/ReducerTheaters";
-import BookingReducer from "../Reducer/BookingReducer";
+import ReducerBooking from "../Reducer/ReducerBooking";
 import RecducerShowtimes from "../Reducer/ReducerShowtimes";
 import ReducerFoodDrinks from '../Reducer/ReducerFoodDrinks';
 import AllFoodsDrinks from "../../Page/Admin/FoodsDrinks/AllFoodsDrinks";
@@ -19,6 +19,7 @@ const Store = ({ children }) => {
   const [booking, DispatchBooking] = BookingReducer(null);
   const [lsFDs, DispatchGetAllFDs] = ReducerFoodDrinks(null);
   const [detailFD, DispatchGetDetailFDDispatch] = ReducerFoodDrinks(null);
+
   const store = {
     lsComingMovie: {
       ComingMovie: comingMovie,

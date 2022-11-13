@@ -12,7 +12,7 @@
   color: white;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  /* align-items: center; */
   justify-content: space-evenly;
   font-size: 20px;
   padding: 20px 0;
@@ -51,10 +51,10 @@
   display: flex;
 }
 .seat-left {
-  width: 400px;
+  width: 370px;
 }
 .seat-right {
-  width: 200px;
+  width: 180px;
 }
 .seat {
   background: #ededed
@@ -72,11 +72,11 @@
   height: 46px;
   display: inline-block;
 }
-.seat:hover {
+/* .seat:hover {
   background: #ededed
     url(https://cinestar.com.vn/catalog/view/theme/default/images/single-chair.png)
     no-repeat center -46px;
-}
+} */
 .selected {
   background: #ededed
     url(https://cinestar.com.vn/catalog/view/theme/default/images/single-chair.png)
@@ -128,5 +128,5 @@
   border-radius: 8px;
   text-align: center;
   background: linear-gradient(to right, #fbbd61, #ec7532);
-  margin-bottom: 20px;
+  margin: 20px 0px;
 }

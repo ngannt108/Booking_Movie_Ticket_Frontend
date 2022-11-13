@@ -40,7 +40,7 @@ export default function Soon() {
   };
   return (
     // NEW IN
-    <section id="newin" className="container">
+    <section id="newin" className="container cinemas-field">
       <h6 className="title__heading">Phim sắp chiếu</h6>
       <div className="newin__content pt-4">
         <Slider {...setting} className="text-center">

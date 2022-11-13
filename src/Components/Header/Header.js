@@ -5,19 +5,11 @@ import "./Header.css";
 
 export default function Header() {
   const store = useContext(StoreContext);
-  const accountName = store.account.userAccount.account
-  const sessionName = sessionStorage.getItem("taiKhoan")
+  const [userName, setUserName] = useState(null);
 
   useEffect(() => {
-    if (accountName) {
-      return
-    }
-    store.account.AccountDispatch({
-      type: "INITIAL",
-      payload: sessionName ? JSON.parse(sessionName) : null,
-    })
-  }, [accountName]);
-
+    setUserName(store.account.userAccount.account?.slice(1, -1));
+  }, [store.account]);
   return (
     <div>
       <header style={{ paddingTop: "12px" }} id="header__run">
@@ -26,7 +18,7 @@ export default function Header() {
           <nav className="navbar navbar-expand-md navbar-dark">
             {/* Brand */}
             <Link className="navbar-brand" to="/">
-              <img onClick={() => { }} src="./img/logo.svg" alt="" />
+              <img onClick={() => {}} src="./img/logo.svg" alt="" />
             </Link>
 
             {/* Toggler/collapsibe Button */}
@@ -63,22 +55,21 @@ export default function Header() {
                   </Link>
                 </li>
 
-                {accountName ? (
+                {userName ? (
                   <li className="nav-item LoggedIn">
                     <div style={{ marginTop: "20px" }} className="dropdown ">
                       <Link className="userName" to="/">
-                        {accountName}
+                        {userName}
                       </Link>
                       <div className="dropdown-content">
                         <Link
                           onClick={() => {
-                            sessionStorage.clear();
                             store.account.AccountDispatch({
                               type: "ACCOUNT",
                               payload: null,
-                            })
-                          }
-                          }
+                            });
+                            sessionStorage.clear();
+                          }}
                           to="/"
                         >
                           Đăng xuất
@@ -95,7 +86,7 @@ export default function Header() {
             </div>
           </nav>
         </div>
-      </header >
-    </div >
+      </header>
+    </div>
   );
 }

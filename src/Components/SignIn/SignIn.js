@@ -14,22 +14,22 @@ export default function LogIn() {
     matKhau: "",
     messError: "",
   });
-  const REGEX_LIST = [
-    {
-      nameInput: "account",
-      inputValue: "taiKhoan",
-      error: "messError",
-      pattern: /^.+$/,
-      messError: "Vui lòng nhập tên tài khoản!",
-    },
-    {
-      nameInput: "password",
-      inputValue: "matKhau",
-      error: "messError",
-      pattern: /^.+$/,
-      messError: "Vui lòng nhập mật khẩu!",
-    },
-  ];
+  // const REGEX_LIST = [
+  //   {
+  //     nameInput: "account",
+  //     inputValue: "taiKhoan",
+  //     error: "messError",
+  //     pattern: /^.+$/,
+  //     messError: "Vui lòng nhập tên tài khoản!",
+  //   },
+  //   {
+  //     nameInput: "password",
+  //     inputValue: "matKhau",
+  //     error: "messError",
+  //     pattern: /^.+$/,
+  //     messError: "Vui lòng nhập mật khẩu!",
+  //   },
+  // ];
   const info = { taiKhoan: account.taiKhoan, matKhau: password.matKhau };
   const navigate = useNavigate();
 
@@ -52,11 +52,6 @@ export default function LogIn() {
           data,
           expiresIn /*taiKhoan, maLoaiNguoiDung, ...authSignIn*/,
         } = dataUser;
-        console.log(data);
-        store.account.AccountDispatch({
-          type: "ACCOUNT",
-          payload: data.tentaiKhoan,
-        });
         // set localStorage
         //const maLichChieu = JSON.parse(localStorage.getItem("maLichChieu"));
         sessionStorage.setItem("token", JSON.stringify(token));
@@ -66,6 +61,10 @@ export default function LogIn() {
           JSON.stringify(data.maLoaiNguoiDung)
         );
         sessionStorage.setItem("taiKhoan", JSON.stringify(data.tentaiKhoan));
+        store.account.AccountDispatch({
+          type: "ACCOUNT",
+          payload: sessionStorage.getItem("taiKhoan"),
+        });
         sessionStorage.setItem("thoiHan", JSON.stringify(expiresIn));
         if (JSON.parse(sessionStorage.getItem("maLoaiNguoiDung")) === "0") {
           navigate("/Admin");

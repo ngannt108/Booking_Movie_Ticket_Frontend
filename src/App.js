@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
+import { StoreContext } from "./Redux/Store/Store";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header/Header";
 import Home from "./Components/Homepage/Home";
@@ -12,11 +13,17 @@ import Footer from "./Components/Footer/Footer";
 import AdminMovies from "./Page/Admin/AdminMovies";
 import HeaderAdmin from "./Page/Admin/Header/HeaderAdmin";
 import AdminFoodsDrinks from "./Page/Admin/AdminFoodsDrinks";
+import Payment from "./Components/Payment/Payment";
 
 function App() {
-
+  const store = useContext(StoreContext);
+  useEffect(() => {
+    store.account.AccountDispatch({
+      type: "ACCOUNT",
+      payload: sessionStorage.getItem("taiKhoan"),
+    });
+  }, [store.account]);
   return (
-
     <div>
       <BrowserRouter>
         <Header />
@@ -33,6 +40,7 @@ function App() {
           <Route path="/Movie/*" element={<Movies />}></Route>
           <Route path="/Theaters" element={<Theaters />} />
           <Route path="/Booking" element={<Booking />}></Route>
+          <Route path="/Payment" element={<Payment />}></Route>
         </Routes>
         <Footer />
       </BrowserRouter>
