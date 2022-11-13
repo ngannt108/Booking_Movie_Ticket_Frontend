@@ -233,7 +233,7 @@ function AddShowtimeModalDialog(props) {
         </Modal.Body>
         <Modal.Footer>
           {
-            <div class="d-grid gap-2 col-6 mx-auto">
+            <div className="d-grid gap-2 col-6 mx-auto">
               <Button
                 color="black"
                 background="yellow"

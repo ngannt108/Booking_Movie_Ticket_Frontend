@@ -78,14 +78,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="about__bottom container-xl text-left">
-          <p>
-            2017 © Movie Star /
-            <Link to="https://www.klevermedia.co.uk/">
-              Web design by Klever media
-            </Link>
-          </p>
-        </div>
+
       </div>
     </footer>
   );

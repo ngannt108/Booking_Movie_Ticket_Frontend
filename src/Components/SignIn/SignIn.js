@@ -59,15 +59,15 @@ export default function LogIn() {
         });
         // set localStorage
         //const maLichChieu = JSON.parse(localStorage.getItem("maLichChieu"));
-        localStorage.setItem("token", JSON.stringify(token));
+        sessionStorage.setItem("token", JSON.stringify(token));
         //localStorage.setItem("taiKhoan", JSON.stringify(taiKhoan));
-        localStorage.setItem(
+        sessionStorage.setItem(
           "maLoaiNguoiDung",
           JSON.stringify(data.maLoaiNguoiDung)
         );
-        localStorage.setItem("taiKhoan", JSON.stringify(data.tentaiKhoan));
-        localStorage.setItem("thoiHan", JSON.stringify(expiresIn));
-        if (JSON.parse(localStorage.getItem("maLoaiNguoiDung")) === "0") {
+        sessionStorage.setItem("taiKhoan", JSON.stringify(data.tentaiKhoan));
+        sessionStorage.setItem("thoiHan", JSON.stringify(expiresIn));
+        if (JSON.parse(sessionStorage.getItem("maLoaiNguoiDung")) === "0") {
           navigate("/Admin");
         } else {
           navigate("/");
@@ -92,7 +92,7 @@ export default function LogIn() {
         <h1>ĐĂNG NHẬP</h1>
         <form>
           <div className="row-input">
-            <label className="lable-input">Email</label>
+            <label className="lable-input">Tài khoản</label>
             <input
               className="input-field"
               onChange={(event) =>
@@ -103,7 +103,7 @@ export default function LogIn() {
             />
           </div>
           <div className="row-input">
-            <label className="lable-input">Password</label>
+            <label className="lable-input">Mật khẩu</label>
             <input
               className="input-field"
               type="password"

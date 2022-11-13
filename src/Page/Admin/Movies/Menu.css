@@ -16,9 +16,10 @@
   background-color: #ccc;
   color: black;
   display: block;
-  padding: 12px;
+  padding: 8px;
   text-decoration: none;
-  font-size: larger;
+  font-size: large;
+
 }
 
 .vertical-menu a:hover {
