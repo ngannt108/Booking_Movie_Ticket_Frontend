@@ -95,7 +95,7 @@ export default function NewIn() {
                               {movie.moTa}
                             </p>
                             <Link to={"/Movie/" + movie.biDanh}>
-                              More info{" "}
+                              Xem thêm...
                             </Link>
                           </div>
                           <div

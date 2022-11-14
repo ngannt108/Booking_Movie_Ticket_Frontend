@@ -24,6 +24,10 @@ export const API_SHOWTIME = {
   CLUSTER: API_DOMAIN + "movies/cluster/",
 };
 
+export const API_USER = {
+  PROFILE: API_DOMAIN + "users",
+};
+
 export const API_ACCOUNTS = {
   SIGNIN: API_DOMAIN + "accounts/signin",
   SIGNUP: API_DOMAIN + "accounts/signUp",

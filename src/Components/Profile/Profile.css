@@ -1,0 +1,60 @@
+.profile {
+  display: flex;
+}
+
+.profile-item {
+  padding: 30px;
+  width: 28%;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 20px 10px rgba(248, 145, 10, 0.2);
+}
+
+.profile-img {
+  display: flex;
+  justify-content: center;
+}
+
+.profile-img img {
+  border-radius: 50%;
+}
+
+.profile-info {
+  margin-top: 30px;
+}
+
+.profile-info p {
+  margin-bottom: 20px;
+}
+
+.ticket-history {
+  flex-grow: 1;
+}
+
+.profile-menu {
+  display: flex;
+  border-bottom: 1px solid lightgray;
+}
+
+.menu {
+  padding: 15px;
+}
+
+.menu:hover {
+  background: linear-gradient(to right, #380db1, #ec7532);
+  color: white;
+}
+
+.update-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  border-right: 1px solid lightgray;
+}
+
+.history {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}

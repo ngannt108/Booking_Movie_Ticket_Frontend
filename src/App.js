@@ -14,6 +14,8 @@ import AdminMovies from "./Page/Admin/AdminMovies";
 import HeaderAdmin from "./Page/Admin/Header/HeaderAdmin";
 import AdminFoodsDrinks from "./Page/Admin/AdminFoodsDrinks";
 import Payment from "./Components/Payment/Payment";
+import Profile from "./Components/Profile/Profile";
+import { API_USER } from "./common/ApiController";
 
 function App() {
   const store = useContext(StoreContext);
@@ -22,7 +24,28 @@ function App() {
       type: "ACCOUNT",
       payload: sessionStorage.getItem("taiKhoan"),
     });
-  }, [store.account]);
+  }, [sessionStorage.getItem("taiKhoan")]);
+
+  useEffect(() => {
+    if (store.account.userAccount.account) {
+      let token = JSON.parse(sessionStorage.getItem("token"));
+      fetch(API_USER.PROFILE, {
+        headers: {
+          //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json
+          "Content-Type": "application/json",
+          Authorization: `Basic ${token}`,
+        },
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((dt) =>
+          store.account.ProfileDispatch({
+            type: "PROFILE",
+            payload: dt.data[0],
+          })
+        );
+    }
+  }, [store.account.userAccount.account]);
   return (
     <div>
       <BrowserRouter>
@@ -41,6 +64,7 @@ function App() {
           <Route path="/Theaters" element={<Theaters />} />
           <Route path="/Booking" element={<Booking />}></Route>
           <Route path="/Payment" element={<Payment />}></Route>
+          <Route path="/Profile" element={<Profile />}></Route>
         </Routes>
         <Footer />
       </BrowserRouter>

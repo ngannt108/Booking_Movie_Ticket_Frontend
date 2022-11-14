@@ -5,10 +5,9 @@ import "./Menu.css";
 import "./MovieManage.css";
 import { Button } from "../../../Components/Button/Button";
 import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import { FixedSizeList } from 'react-window';
-import { List } from 'react-content-loader'
+// import { FixedSizeList } from 'react-window';
+import { List } from "react-content-loader";
 import ItemMovie from "../../../Components/Admin/ItemMovie/ItemMovie";
-
 
 export default function AllMovies() {
   const store = useContext(StoreContext);
@@ -27,9 +26,7 @@ export default function AllMovies() {
             payload: dt.data,
           });
         });
-
-    }
-    else {
+    } else {
       fetch(API_MOVIE.SHOWING)
         .then((res) => res.json())
         .then((dt) => {
@@ -38,7 +35,6 @@ export default function AllMovies() {
             payload: dt.data,
           });
         });
-
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isComing]);
@@ -72,39 +68,38 @@ export default function AllMovies() {
                 />
               </div>
             </div>
-            {
-              movies.length == 0 ? <div style={{ color: "white", marginTop: "1em", width:"925px" }}>Hiện chưa có thông tin phim!</div> :
-                (
-                  <div className="container-body">
-                    <table className="layout display responsive-table">
-                      <thead>
-                        <tr>
-                          <th>Số thứ tự</th>
-                          <th>Tên phim</th>
-                          <th>Hình ảnh</th>
-                          <th colSpan={2}>Mô tả</th>
-                        </tr>
-                      </thead>
-                      <tbody>                   
-                        {movies.map((item, index) => (
-                          <ItemMovie movie={item} index={index} />
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )
-            }
+            {movies.length == 0 ? (
+              <div style={{ color: "white", marginTop: "1em" }}>
+                Hiện chưa có thông tin phim!
+              </div>
+            ) : (
+              <div className="container-body">
+                <table className="layout display responsive-table">
+                  <thead>
+                    <tr>
+                      <th>Số thứ tự</th>
+                      <th>Tên phim</th>
+                      <th>Hình ảnh</th>
+                      <th colSpan={2}>Mô tả</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {movies.map((item, index) => (
+                      <ItemMovie movie={item} index={index} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
       </>
     );
-  }
-  else {
+  } else {
     return (
       // <div style={{ padding: "48px" }}>
-      <List style={{ padding: "48px", width:"925px" }} />
+      <List style={{ padding: "48px", width: "925px" }} />
       //</div>
-    )
+    );
   }
-
 }

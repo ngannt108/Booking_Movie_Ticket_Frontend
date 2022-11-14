@@ -5,11 +5,11 @@ import "./Header.css";
 
 export default function Header() {
   const store = useContext(StoreContext);
-  const [userName, setUserName] = useState(null);
+  const [userName, setUserName] = useState();
 
   useEffect(() => {
     setUserName(store.account.userAccount.account?.slice(1, -1));
-  }, [store.account]);
+  }, [store.account.userAccount.account]);
   return (
     <div>
       <header style={{ paddingTop: "12px" }} id="header__run">
@@ -62,6 +62,9 @@ export default function Header() {
                         {userName}
                       </Link>
                       <div className="dropdown-content">
+                        <Link onClick={() => {}} to="/Profile">
+                          Trang cá nhân
+                        </Link>
                         <Link
                           onClick={() => {
                             store.account.AccountDispatch({

@@ -12,11 +12,13 @@ const Store = ({ children }) => {
   const [showingMovie, DispatchShowingMovie] = ReducerMovies();
   const [theaters, DispatchTheater] = ReducerTheaters();
   const [userAcc, DispatchAccount] = ReducerAccounts(null);
+  const [profile, DispatchProfile] = ReducerAccounts(null);
   const [detailMovie, DispatchDetailMovie] = ReducerMovies();
   const [updateMovie, DispatchUpdateMovie] = ReducerMovies();
   const [addMovie, DispatchAddMovie] = ReducerMovies();
   const [rooms, DispatchGetRooms] = RecducerShowtimes();
   const [booking, DispatchBooking] = ReducerBooking(null);
+  const [payment, DispatchPayment] = ReducerBooking(null);
   const [lsFDs, DispatchGetAllFDs] = ReducerFoodDrinks(null);
   const [detailFD, DispatchGetDetailFD] = ReducerFoodDrinks(null);
   const [addFD, DispatchAddFD] = ReducerFoodDrinks(null);
@@ -61,10 +63,14 @@ const Store = ({ children }) => {
     account: {
       userAccount: userAcc,
       AccountDispatch: DispatchAccount,
+      Profile: profile,
+      ProfileDispatch: DispatchProfile,
     },
     bookingRoom: {
       Booking: booking,
       BookingDispatch: DispatchBooking,
+      Payment: payment,
+      PaymentDisPatch: DispatchPayment,
     },
   };
   return (
