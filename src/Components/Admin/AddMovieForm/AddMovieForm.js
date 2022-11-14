@@ -7,7 +7,7 @@ import swal from "sweetalert";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Card, Col, FloatingLabel, Form, Modal, Row } from "react-bootstrap";
 import { Multiselect } from "multiselect-react-dropdown";
-import "../../../Page/Admin/Movies/MovieManage.css"
+import "../../../Page/Admin/Movies/MovieManage.css";
 
 function AddMovieForm(props) {
   const store = useContext(StoreContext);
@@ -16,7 +16,7 @@ function AddMovieForm(props) {
   const [banner, setDisplayBanner] = useState();
   const [fileBanner, setFileBanner] = useState(null);
   const [isInvalid, setInvalid] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   let emptyMovie = {
     tenPhim: "",
     hinhAnh: "",
@@ -35,7 +35,6 @@ function AddMovieForm(props) {
   const initModal = () => {
     setDetailMovie(emptyMovie);
     setDisplayImage();
-
   };
   const AddMovieAction = async (e) => {
     console.log(">> into AddAction");
@@ -57,13 +56,13 @@ function AddMovieForm(props) {
     })
       .then((res) => {
         if (res.status == 201) {
-          return swal({
+          swal({
             title: "Thêm phim thành công",
             text: "",
             icon: "success",
           });
           setTimeout(function () {
-            navigate(0)
+            navigate(0);
           }, 1000);
         } else return res.json();
       })
@@ -79,7 +78,7 @@ function AddMovieForm(props) {
   };
 
   const handleAdd = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     AddMovieAction(e);
   };
 
@@ -102,7 +101,6 @@ function AddMovieForm(props) {
       let url = URL.createObjectURL(event.target.files[0]);
       setDisplayImage(url);
     }
-
   };
   const uploadBanner = async (event) => {
     if (event.target.files[0] != null) {
@@ -113,18 +111,25 @@ function AddMovieForm(props) {
     }
   };
   const checkValid = (event) => {
-    let temp = document.getElementsByName(event.target.name).item(0)
-    console.log(">> temp.checkValidity()", temp.checkValidity())
-    console.log(">> temp", temp)
-    if (temp.name === 'banner' || temp.name === "image" && detailMovie[temp.name]) {
-      return temp.classList.remove("is-invalid")
+    let temp = document.getElementsByName(event.target.name).item(0);
+    console.log(">> temp.checkValidity()", temp.checkValidity());
+    console.log(">> temp", temp);
+    if (
+      temp.name === "banner" ||
+      (temp.name === "image" && detailMovie[temp.name])
+    ) {
+      return temp.classList.remove("is-invalid");
     }
-    if ((isEmpty(temp.value) || temp.checkValidity() == false || temp.value.trim() == 0) && temp.required) {
+    if (
+      (isEmpty(temp.value) ||
+        temp.checkValidity() == false ||
+        temp.value.trim() == 0) &&
+      temp.required
+    ) {
       event.preventDefault();
-      temp.classList.add("is-invalid")
-    }
-    else temp.classList.remove("is-invalid");
-    checkInvalidAndRerender()
+      temp.classList.add("is-invalid");
+    } else temp.classList.remove("is-invalid");
+    checkInvalidAndRerender();
   };
 
   const checkInvalidAndRerender = () => {
@@ -132,20 +137,28 @@ function AddMovieForm(props) {
     if (document.getElementsByClassName("is-invalid").length > 0) {
       // If needed
       if (isInvalid || isInvalid === undefined) {
-        setInvalid(true)
+        setInvalid(true);
       }
     } else {
       // Should be rerender
       if (isInvalid || isInvalid === undefined) {
-        setInvalid(false)
+        setInvalid(false);
       }
     }
-  }
+  };
+
   return (
-    <div style={{ marginLeft: "40px", background: "white", paddingLeft: "20px", marginBottom: "20px" }}>
-      <Form id="create-form" >
+    <div
+      style={{
+        marginLeft: "40px",
+        background: "white",
+        paddingLeft: "20px",
+        marginBottom: "20px",
+      }}
+    >
+      <Form id="create-form">
         <Form.Label>THÔNG TIN PHIM MỚI</Form.Label>
-        <div style={{ background: "white", width: "98em" }}>
+        <div style={{ background: "white", width: "925px" }}>
           {/* <Form style={{ maxWidth: "800px" }} noValidate validated={validated} onSubmit={handleEdit}> */}
           <Row className="mb-3">
             <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -158,11 +171,11 @@ function AddMovieForm(props) {
                   className="is-invalid"
                   required
                   type="text"
-                  name='tenPhim'
+                  name="tenPhim"
                   // isInvalid={isInvalid}
                   onChange={(e) => {
-                    checkValid(e)
-                    detailMovie.tenPhim = e.target.value
+                    checkValid(e);
+                    detailMovie.tenPhim = e.target.value;
                   }}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -174,25 +187,24 @@ function AddMovieForm(props) {
               <FloatingLabel
                 controlId="floatingInput"
                 label="Ngày khởi chiếu"
-                className="mb-3">
-
+                className="mb-3"
+              >
                 <Form.Control
                   className="is-invalid"
                   required
                   type="date"
-                  name='ngayKhoiChieu'
+                  name="ngayKhoiChieu"
                   // isInvalid={isInvalid}
                   min={formattedDate(Date())}
                   onChange={(event) => {
-                    checkValid(event)
-                    detailMovie.ngayKhoiChieu = event.target.value
+                    checkValid(event);
+                    detailMovie.ngayKhoiChieu = event.target.value;
                   }}
                 />
                 <Form.Control.Feedback type="invalid">
                   Chọn ngày khởi chiếu cho phim
                 </Form.Control.Feedback>
               </FloatingLabel>
-
             </Form.Group>
             <Form.Group as={Col} md="3" controlId="validationCustom04">
               <FloatingLabel
@@ -203,13 +215,13 @@ function AddMovieForm(props) {
                 <Form.Control
                   className="is-invalid"
                   type="number"
-                  name='thoiLuong'
+                  name="thoiLuong"
                   min={"1"}
                   // isInvalid={isInvalid}
                   required
                   onChange={(event) => {
-                    checkValid(event)
-                    detailMovie.thoiLuong = event.target.value //== "-0" || event.target.value == "0" ? "-1" : event.target.value,
+                    checkValid(event);
+                    detailMovie.thoiLuong = event.target.value; //== "-0" || event.target.value == "0" ? "-1" : event.target.value,
                   }}
                 />
                 <Form.Control.Feedback type="invalid">
@@ -217,35 +229,32 @@ function AddMovieForm(props) {
                 </Form.Control.Feedback>
               </FloatingLabel>
             </Form.Group>
-
           </Row>
-          <Form.Group className="mb-3" >
+          <Form.Group className="mb-3">
             <Form.Label>Mô tả</Form.Label>
             <Form.Control
               as="textarea"
               rows={4}
               onChange={(event) => {
-                detailMovie.moTa = event.target.value
+                detailMovie.moTa = event.target.value;
               }}
             />
-
           </Form.Group>
           <Row className="mb-3">
-
             <div className="row">
               <div className="col-md-5">
                 Thể loại
                 <Multiselect
                   isObject={false}
                   onRemove={(event) => {
-                    checkValid(event)
+                    checkValid(event);
                     // setDetailMovie({ ...detailMovie, theLoai: event });
-                    detailMovie.theLoai = event
+                    detailMovie.theLoai = event;
                   }}
                   onSelect={(event) => {
-                    checkValid(event)
+                    checkValid(event);
                     // setDetailMovie({ ...detailMovie, theLoai: event });
-                    detailMovie.theLoai = event
+                    detailMovie.theLoai = event;
                   }}
                   options={[
                     "Kinh dị",
@@ -264,9 +273,9 @@ function AddMovieForm(props) {
               <div className="col-md-5">
                 Quốc gia
                 <Form.Select
-                  // aria-label="Default select example"              
-                  onChange={(e) =>
-                    detailMovie.quocGia = e.target.value
+                  // aria-label="Default select example"
+                  onChange={
+                    (e) => (detailMovie.quocGia = e.target.value)
                     // setDetailMovie({ ...detailMovie, quocGia: e.target.value })
                   }
                 >
@@ -285,44 +294,59 @@ function AddMovieForm(props) {
             </div>
           </Row>
           <Row className="mb-3">
-
-            <Form.Group as={Col} md="3" style={{ width: '20rem' }} controlId="validationCustom05">
+            <Form.Group
+              as={Col}
+              md="3"
+              style={{ width: "20rem" }}
+              controlId="validationCustom05"
+            >
               <Form.Label>Ảnh bìa</Form.Label>
               <Form.Control
                 className="is-invalid"
                 type="file"
-
                 ////// isInvalid={isInvalid}
                 onChange={(event) => {
-                  checkValid(event)
+                  checkValid(event);
                   uploadBanner(event);
                 }}
                 name="banner"
                 required
-                md="6" />
-              <Card style={{ alignItems: 'center' }} >
-                <Card.Img style={{ maxHeight: '8rem', maxWidth: 'fit-content' }} variant="top" src={banner || detailMovie?.anhBia} />
+                md="6"
+              />
+              <Card style={{ alignItems: "center" }}>
+                <Card.Img
+                  style={{ maxHeight: "8rem", maxWidth: "fit-content" }}
+                  variant="top"
+                  src={banner || detailMovie?.anhBia}
+                />
               </Card>
               <Form.Control.Feedback type="invalid">
                 Vui lòng chọn ảnh bìa cho phim
               </Form.Control.Feedback>
-
             </Form.Group>
-            <Form.Group as={Col} md="3" style={{ width: '18rem' }} controlId="validationCustom05">
+            <Form.Group
+              as={Col}
+              md="3"
+              style={{ width: "18rem" }}
+              controlId="validationCustom05"
+            >
               <Form.Label>Hình ảnh</Form.Label>
               <Form.Control
                 className="is-invalid"
                 type="file"
                 required
-
                 name="image"
                 onChange={(event) => {
-                  checkValid(event)
+                  checkValid(event);
                   uploadImage(event);
                 }}
               />
-              <Card style={{ alignItems: 'center' }} >
-                <Card.Img style={{ maxHeight: '8rem', maxWidth: 'fit-content' }} variant="top" src={image || detailMovie?.hinhAnh} />
+              <Card style={{ alignItems: "center" }}>
+                <Card.Img
+                  style={{ maxHeight: "8rem", maxWidth: "fit-content" }}
+                  variant="top"
+                  src={image || detailMovie?.hinhAnh}
+                />
               </Card>
               <Form.Control.Feedback type="invalid">
                 Vui lòng chọn ảnh đại diện cho phim
@@ -336,7 +360,7 @@ function AddMovieForm(props) {
             background="yellow"
             name="Tạo phim"
             borderRadius="0.4em"
-            disabled={isInvalid === undefined ? true : false}
+            disabled={isInvalid === undefined ? true : isInvalid}
             onClick={(e) => handleAdd(e)}
           />
           <Button
@@ -346,10 +370,9 @@ function AddMovieForm(props) {
             onClick={initModal}
           />
         </div>
-
-      </Form >
+      </Form>
       {/* </div> */}
-    </div >
+    </div>
   );
 }
 export default AddMovieForm;

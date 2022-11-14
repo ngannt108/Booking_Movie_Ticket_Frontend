@@ -12,8 +12,8 @@ export const API_SHOWTIMES = {
   ADD: API_DOMAIN + `admins/movie/`,
 };
 export const API_ROOMS = {
-  GET: API_DOMAIN + 'admins/movie/room'
-}
+  GET: API_DOMAIN + "admins/movie/room",
+};
 
 export const API_THEATERS = {
   SHOWING: API_DOMAIN + "movies/showing",
@@ -30,5 +30,7 @@ export const API_ACCOUNTS = {
 };
 export const API_FOODDRINKS = {
   GETALL: API_DOMAIN + "users/food_drink/",
-  DETAIL: API_DOMAIN + "users/food_drink/"
+  DETAIL: API_DOMAIN + "users/food_drink/",
+  UPDATE: API_DOMAIN + "admins/food_drink/",
+  ADD: API_DOMAIN + "admins/food_drink",
 };

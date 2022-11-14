@@ -4,8 +4,8 @@ import ReducerAccounts from "../Reducer/ReducerAccounts";
 import ReducerTheaters from "../Reducer/ReducerTheaters";
 import ReducerBooking from "../Reducer/ReducerBooking";
 import RecducerShowtimes from "../Reducer/ReducerShowtimes";
-import ReducerFoodDrinks from '../Reducer/ReducerFoodDrinks';
-import AllFoodsDrinks from "../../Page/Admin/FoodsDrinks/AllFoodsDrinks";
+import ReducerFoodDrinks from "../Reducer/ReducerFoodDrinks";
+import AllFoodDrinks from "../../Page/Admin/FoodDrinks/AllFoodDrinks";
 export const StoreContext = createContext(null);
 const Store = ({ children }) => {
   const [comingMovie, DispatchComingMovie] = ReducerMovies();
@@ -16,9 +16,10 @@ const Store = ({ children }) => {
   const [updateMovie, DispatchUpdateMovie] = ReducerMovies();
   const [addMovie, DispatchAddMovie] = ReducerMovies();
   const [rooms, DispatchGetRooms] = RecducerShowtimes();
-  const [booking, DispatchBooking] = BookingReducer(null);
+  const [booking, DispatchBooking] = ReducerBooking(null);
   const [lsFDs, DispatchGetAllFDs] = ReducerFoodDrinks(null);
-  const [detailFD, DispatchGetDetailFDDispatch] = ReducerFoodDrinks(null);
+  const [detailFD, DispatchGetDetailFD] = ReducerFoodDrinks(null);
+  const [addFD, DispatchAddFD] = ReducerFoodDrinks(null);
 
   const store = {
     lsComingMovie: {
@@ -44,7 +45,10 @@ const Store = ({ children }) => {
       GetAllDispatch: DispatchGetAllFDs,
 
       DetailFD: detailFD,
-      GetDetailFDDispatch: DispatchGetDetailFDDispatch
+      GetDetailFDDispatch: DispatchGetDetailFD,
+
+      AddFD: addFD,
+      AddFDDispatch: DispatchAddFD,
     },
     lsRooms: {
       Rooms: rooms,

@@ -31,7 +31,7 @@ export default function AllFoodDrinks() {
     if (fooddrinks) {
         return (
             <>
-                <div style={{ minWidth: "98em" }}>
+                <div style={{ minWidth: "925px" }}>
                     <div style={{ padding: "0em 3em 3em 3em" }}>
                         {
                             fooddrinks.length == 0 ? <div style={{ color: "white", marginTop: "1em" }}>Hiện chưa có thông tin đồ ăn và thức uống!</div> :
@@ -64,7 +64,7 @@ export default function AllFoodDrinks() {
     else {
         return (
             // <div style={{ padding: "48px" }}>
-            <List style={{ padding: "48px" }} />
+            <List style={{ padding: "48px", width:"925px" }} />
             //</div>
         )
     }

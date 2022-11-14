@@ -50,11 +50,12 @@ export default function AllMovies() {
   if (movies) {
     return (
       <>
-        <div style={{ minWidth: "98em" }}>
+        <div>
           <div style={{ padding: "0em 3em 3em 3em" }}>
             <div className="row">
               <div className="col-md-4">
                 <Button
+                  disabled={isComing ? true : false}
                   width="160px"
                   height="40px"
                   name="Phim sắp chiếu"
@@ -63,6 +64,7 @@ export default function AllMovies() {
               </div>
               <div className="col-md-4">
                 <Button
+                  disabled={!isComing ? true : false}
                   width="160px"
                   height="40px"
                   name="Phim đang chiếu"
@@ -71,7 +73,7 @@ export default function AllMovies() {
               </div>
             </div>
             {
-              movies.length == 0 ? <div style={{ color: "white", marginTop: "1em" }}>Hiện chưa có thông tin phim!</div> :
+              movies.length == 0 ? <div style={{ color: "white", marginTop: "1em", width:"925px" }}>Hiện chưa có thông tin phim!</div> :
                 (
                   <div className="container-body">
                     <table className="layout display responsive-table">
@@ -83,8 +85,7 @@ export default function AllMovies() {
                           <th colSpan={2}>Mô tả</th>
                         </tr>
                       </thead>
-                      <tbody>
-
+                      <tbody>                   
                         {movies.map((item, index) => (
                           <ItemMovie movie={item} index={index} />
                         ))}
@@ -101,7 +102,7 @@ export default function AllMovies() {
   else {
     return (
       // <div style={{ padding: "48px" }}>
-      <List style={{ padding: "48px" }} />
+      <List style={{ padding: "48px", width:"925px" }} />
       //</div>
     )
   }
