@@ -188,13 +188,16 @@ export default function Theaters() {
                                       info={[
                                         cinemaName,
                                         movie.tenPhim,
-                                        `${showtime.ngayChieu.slice(
-                                          11,
-                                          16
-                                        )} - ${showtime.gioKetThuc.slice(
-                                          11,
-                                          16
-                                        )}`,
+                                        `${
+                                          showtime.ngayChieu.slice(11, 13) * 1 +
+                                          7 +
+                                          showtime.ngayChieu.slice(13, 16)
+                                        }  - ${
+                                          showtime.gioKetThuc.slice(11, 13) *
+                                            1 +
+                                          7 +
+                                          showtime.gioKetThuc.slice(13, 16)
+                                        }`,
                                         currentDate.slice(8, 10) +
                                           "/" +
                                           currentDate.slice(5, 7) +

@@ -4,7 +4,9 @@ function GetAccount(state, { type, payload }) {
     case "ACCOUNT":
       return { account: payload };
     case "INITIAL":
-      return { account: payload }
+      return { account: payload };
+    case "PROFILE":
+      return { profile: payload };
     default:
       return state;
   }

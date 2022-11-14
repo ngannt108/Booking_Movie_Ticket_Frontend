@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import "./Booking.css";
 import { StoreContext } from "../../Redux/Store/Store";
 import PaymentPopUp from "../ModalPaymentPopUp/ModalPaymentPopUp";
+import ModalFoodAndDrink from "../FoodAndDrink/ModalFoodAndDrink";
 
 export default function Booking() {
   const store = useContext(StoreContext);
@@ -109,6 +110,20 @@ export default function Booking() {
                     <div className="single">Casual seat</div>
                     <div className="choosing">Seat selecting</div>
                     <div className="busy">Seat have been selected</div>
+                    {arrSelectedSeat.length > 0 ? (
+                      <div style={{ paddingLeft: "12px" }}>
+                        <div>Các ghế được chọn là:</div>
+                        {arrSelectedSeat.map((n, i) => (
+                          <p key={i}>
+                            {n}:{" "}
+                            {store.bookingRoom.Booking.booking.showtime.giaVe}
+                          </p>
+                        ))}
+                      </div>
+                    ) : (
+                      <div>Quý khách vui lòng chọn ghế!</div>
+                    )}
+
                     <div style={{ paddingLeft: "12px" }}>
                       {count} ticket/{" "}
                       {(
@@ -121,19 +136,33 @@ export default function Booking() {
                     </div>
                     {count === 0 ? (
                       <div className="noClick" style={{ paddingLeft: "12px" }}>
-                        <PaymentPopUp />
+                        <ModalFoodAndDrink />
                       </div>
                     ) : (
                       <div
                         onClick={() => {
-                          // store.PaymentDisPatch({
-                          //   type: "PAYMENT",
-                          //   payload: [arrSelectedSeat, date],
-                          // });
+                          store.bookingRoom.PaymentDisPatch({
+                            type: "PAYMENT",
+                            payload: {
+                              tentaiKhoan: store.account.Profile.profile._id,
+                              danhSachVe: arrSelectedSeat.map((n) => {
+                                return {
+                                  maGhe: n,
+                                  giaGhe:
+                                    store.bookingRoom.Booking.booking.showtime
+                                      .giaVe,
+                                };
+                              }),
+                              maLichChieu:
+                                store.bookingRoom.Booking.booking.showtime._id,
+                              thoiGianDat: new Date().toISOString(),
+                              // phim:
+                            },
+                          });
                         }}
                         style={{ paddingLeft: "12px" }}
                       >
-                        <PaymentPopUp />
+                        <ModalFoodAndDrink />
                       </div>
                     )}
                   </div>
@@ -153,8 +182,14 @@ export default function Booking() {
                   <div className="booking-date">
                     {store.bookingRoom.Booking.booking.showtime.ngayChieu.slice(
                       11,
-                      16
-                    ) +
+                      13
+                    ) *
+                      1 +
+                      7 +
+                      store.bookingRoom.Booking.booking.showtime.ngayChieu.slice(
+                        13,
+                        16
+                      ) +
                       " - " +
                       store.bookingRoom.Booking.booking.showtime.ngayChieu.slice(
                         8,

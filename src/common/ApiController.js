@@ -12,8 +12,8 @@ export const API_SHOWTIMES = {
   ADD: API_DOMAIN + `admins/movie/`,
 };
 export const API_ROOMS = {
-  GET: API_DOMAIN + 'admins/movie/room'
-}
+  GET: API_DOMAIN + "admins/movie/room",
+};
 
 export const API_THEATERS = {
   SHOWING: API_DOMAIN + "movies/showing",
@@ -24,11 +24,15 @@ export const API_SHOWTIME = {
   CLUSTER: API_DOMAIN + "movies/cluster/",
 };
 
+export const API_USER = {
+  PROFILE: API_DOMAIN + "users",
+};
+
 export const API_ACCOUNTS = {
   SIGNIN: API_DOMAIN + "accounts/signin",
   SIGNUP: API_DOMAIN + "accounts/signUp",
 };
 export const API_FOODDRINKS = {
   GETALL: API_DOMAIN + "users/food_drink/",
-  DETAIL: API_DOMAIN + "users/food_drink/"
+  DETAIL: API_DOMAIN + "users/food_drink/",
 };

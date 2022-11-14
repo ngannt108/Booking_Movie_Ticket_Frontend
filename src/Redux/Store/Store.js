@@ -4,7 +4,7 @@ import ReducerAccounts from "../Reducer/ReducerAccounts";
 import ReducerTheaters from "../Reducer/ReducerTheaters";
 import ReducerBooking from "../Reducer/ReducerBooking";
 import RecducerShowtimes from "../Reducer/ReducerShowtimes";
-import ReducerFoodDrinks from '../Reducer/ReducerFoodDrinks';
+import ReducerFoodDrinks from "../Reducer/ReducerFoodDrinks";
 import AllFoodsDrinks from "../../Page/Admin/FoodsDrinks/AllFoodsDrinks";
 export const StoreContext = createContext(null);
 const Store = ({ children }) => {
@@ -12,11 +12,13 @@ const Store = ({ children }) => {
   const [showingMovie, DispatchShowingMovie] = ReducerMovies();
   const [theaters, DispatchTheater] = ReducerTheaters();
   const [userAcc, DispatchAccount] = ReducerAccounts(null);
+  const [profile, DispatchProfile] = ReducerAccounts(null);
   const [detailMovie, DispatchDetailMovie] = ReducerMovies();
   const [updateMovie, DispatchUpdateMovie] = ReducerMovies();
   const [addMovie, DispatchAddMovie] = ReducerMovies();
   const [rooms, DispatchGetRooms] = RecducerShowtimes();
-  const [booking, DispatchBooking] = BookingReducer(null);
+  const [booking, DispatchBooking] = ReducerBooking(null);
+  const [payment, DispatchPayment] = ReducerBooking(null);
   const [lsFDs, DispatchGetAllFDs] = ReducerFoodDrinks(null);
   const [detailFD, DispatchGetDetailFDDispatch] = ReducerFoodDrinks(null);
 
@@ -44,7 +46,7 @@ const Store = ({ children }) => {
       GetAllDispatch: DispatchGetAllFDs,
 
       DetailFD: detailFD,
-      GetDetailFDDispatch: DispatchGetDetailFDDispatch
+      GetDetailFDDispatch: DispatchGetDetailFDDispatch,
     },
     lsRooms: {
       Rooms: rooms,
@@ -57,10 +59,14 @@ const Store = ({ children }) => {
     account: {
       userAccount: userAcc,
       AccountDispatch: DispatchAccount,
+      Profile: profile,
+      ProfileDispatch: DispatchProfile,
     },
     bookingRoom: {
       Booking: booking,
       BookingDispatch: DispatchBooking,
+      Payment: payment,
+      PaymentDisPatch: DispatchPayment,
     },
   };
   return (

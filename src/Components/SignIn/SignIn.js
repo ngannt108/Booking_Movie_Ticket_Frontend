@@ -52,10 +52,7 @@ export default function LogIn() {
           data,
           expiresIn /*taiKhoan, maLoaiNguoiDung, ...authSignIn*/,
         } = dataUser;
-        // set localStorage
-        //const maLichChieu = JSON.parse(localStorage.getItem("maLichChieu"));
         sessionStorage.setItem("token", JSON.stringify(token));
-        //localStorage.setItem("taiKhoan", JSON.stringify(taiKhoan));
         sessionStorage.setItem(
           "maLoaiNguoiDung",
           JSON.stringify(data.maLoaiNguoiDung)
