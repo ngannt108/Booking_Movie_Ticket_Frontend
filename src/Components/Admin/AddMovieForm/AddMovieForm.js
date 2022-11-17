@@ -30,14 +30,11 @@ function AddMovieForm(props) {
   };
   // const navigate = useNavigate();
   const [detailMovie, setDetailMovie] = React.useState(emptyMovie);
-  console.log(">> detailMovie", detailMovie);
-
   const initModal = () => {
     setDetailMovie(emptyMovie);
     setDisplayImage();
   };
   const AddMovieAction = async (e) => {
-    console.log(">> into AddAction");
     e.preventDefault();
     const fd = new FormData();
     if (fileImage != null) fd.append("hinhAnh", fileImage, fileImage.name);
@@ -55,6 +52,18 @@ function AddMovieForm(props) {
       body: fd,
     })
       .then((res) => {
+        if (res.status === 401) {
+          swal({
+            title: "Vui lòng đăng nhập lại",
+            text: "Phiên đăng nhập đã hết hạn",
+            icon: "warning",
+            buttons: true,
+          });
+          setTimeout(function () {
+            sessionStorage.clear();
+            navigate("/signIn");
+          }, 1000);
+        }
         if (res.status == 201) {
           swal({
             title: "Thêm phim thành công",
@@ -97,7 +106,7 @@ function AddMovieForm(props) {
   const uploadImage = async (event) => {
     if (event.target.files[0] != null) {
       setFileImage(event.target.files[0]);
-      console.log(">> uploadImage", event.target.files[0]);
+      // console.log(">> uploadImage", event.target.files[0]);
       let url = URL.createObjectURL(event.target.files[0]);
       setDisplayImage(url);
     }
@@ -105,15 +114,15 @@ function AddMovieForm(props) {
   const uploadBanner = async (event) => {
     if (event.target.files[0] != null) {
       setFileBanner(event.target.files[0]);
-      console.log(">> uploadBanner", event.target.files[0]);
+      // console.log(">> uploadBanner", event.target.files[0]);
       let url = URL.createObjectURL(event.target.files[0]);
       setDisplayBanner(url);
     }
   };
   const checkValid = (event) => {
     let temp = document.getElementsByName(event.target.name).item(0);
-    console.log(">> temp.checkValidity()", temp.checkValidity());
-    console.log(">> temp", temp);
+    // console.log(">> temp.checkValidity()", temp.checkValidity());
+    // console.log(">> temp", temp);
     if (
       temp.name === "banner" ||
       (temp.name === "image" && detailMovie[temp.name])
@@ -146,7 +155,9 @@ function AddMovieForm(props) {
       }
     }
   };
-
+  var today = new Date();
+  var nextMonth = new Date();
+  nextMonth.setMonth(today.getMonth() + 1);
   return (
     <div
       style={{
@@ -157,7 +168,9 @@ function AddMovieForm(props) {
       }}
     >
       <Form id="create-form">
-        <Form.Label>THÔNG TIN PHIM MỚI</Form.Label>
+        <Form.Label style={{ fontWeight: "bold" }}>
+          THÔNG TIN PHIM MỚI
+        </Form.Label>
         <div style={{ background: "white", width: "925px" }}>
           {/* <Form style={{ maxWidth: "800px" }} noValidate validated={validated} onSubmit={handleEdit}> */}
           <Row className="mb-3">
@@ -195,7 +208,7 @@ function AddMovieForm(props) {
                   type="date"
                   name="ngayKhoiChieu"
                   // isInvalid={isInvalid}
-                  min={formattedDate(Date())}
+                  min={formattedDate(nextMonth)}
                   onChange={(event) => {
                     checkValid(event);
                     detailMovie.ngayKhoiChieu = event.target.value;
@@ -355,20 +368,23 @@ function AddMovieForm(props) {
           </Row>
         </div>
         <div className="d-grid gap-2 col-6 mx-auto">
-          <Button
-            color="black"
-            background="yellow"
+          <button
+            className="button-custom yes"
             name="Tạo phim"
             borderRadius="0.4em"
             disabled={isInvalid === undefined ? true : isInvalid}
             onClick={(e) => handleAdd(e)}
-          />
-          <Button
-            color="danger"
+          >
+            Tạo phim
+          </button>
+          <button
+            className="button-custom no"
             name="Hủy"
             borderRadius="0.4em"
             onClick={initModal}
-          />
+          >
+            Hủy
+          </button>
         </div>
       </Form>
       {/* </div> */}

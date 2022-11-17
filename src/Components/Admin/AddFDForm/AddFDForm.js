@@ -32,8 +32,8 @@ function AddFDForm(props) {
   };
   const checkValid = (event) => {
     let temp = document.getElementsByName(event.target.name).item(0);
-    console.log(">> temp.checkValidity()", temp.checkValidity());
-    console.log(">> temp", temp);
+    // console.log(">> temp.checkValidity()", temp.checkValidity());
+    // console.log(">> temp", temp);
     if (temp.name === "image" && detailFD[temp.name]) {
       return temp.classList.remove("is-invalid");
     }
@@ -78,7 +78,7 @@ function AddFDForm(props) {
       title: "Xin chờ giây lát",
       buttons: false,
     });
-    console.log(">> fd", fd);
+    // console.log(">> fd", fd);
     const token = JSON.parse(sessionStorage.getItem("token"));
     let res = await fetch(API_FOODDRINKS.ADD, {
       headers: {
@@ -141,7 +141,7 @@ function AddFDForm(props) {
       }}
     >
       <Form id="create-form">
-        <Form.Label>THÔNG TIN COMBO</Form.Label>
+        <Form.Label style={{ fontWeight: "bold" }}>THÔNG TIN COMBO</Form.Label>
         <div style={{ background: "white", width: "925px" }}>
           {/* <Form style={{ maxWidth: "800px" }} noValidate validated={validated} onSubmit={handleEdit}> */}
           <Row className="mb-3">
@@ -271,20 +271,23 @@ function AddFDForm(props) {
             </Form.Group>
           </Row>
           <div className="d-grid gap-2 col-6 mx-auto">
-            <Button
-              color="black"
-              background="yellow"
+            <button
+              className="button-custom yes"
               name="Tạo combo"
               borderRadius="0.4em"
               disabled={isInvalid === undefined ? true : isInvalid}
               onClick={(e) => handleAdd(e)}
-            />
-            <Button
-              color="danger"
+            >
+              Tạo combo
+            </button>
+            <button
+              className="button-custom no"
               name="Hủy"
               borderRadius="0.4em"
               onClick={initModal}
-            />
+            >
+              Hủy
+            </button>
           </div>
         </div>
       </Form>

@@ -9,13 +9,14 @@ import { Col, FloatingLabel, Modal, Row } from "react-bootstrap";
 import { Button } from "../../Button/Button";
 import isEmpty from "validator/lib/isEmpty";
 import swal from "sweetalert";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
 
 function AddShowtimeModal(props) {
   const [isShow, setInvokeModal] = useState(false);
   const [isInvalid, setInvalid] = useState(true);
   const store = useContext(StoreContext);
+  const navigate = useNavigate();
   // const [validationMsg, setValidationMsg] = React.useState({
   //   ngayChieu: "Vui lòng chọn ngày chiếu cho phim",
   // });
@@ -28,8 +29,8 @@ function AddShowtimeModal(props) {
     tenRap: "",
   };
   const [detailShowtime, setDetailShowtime] = React.useState(emptyShowtime);
-  console.log("*", detailShowtime);
-  console.log("**", props.clusterName);
+  // console.log("*", detailShowtime);
+  // console.log("**", props.clusterName);
 
   let price = {
     Mon: "95000",
@@ -40,11 +41,15 @@ function AddShowtimeModal(props) {
     Sat: "115000",
     Sun: "115000",
   };
-  const checkPrice = (date) => {
-    const formatDay = new Date(date);
-    const dayName = formatDay.toString().split(" ")[0];
-    detailShowtime.giaVe = price[dayName];
-    console.log(">> checkPrice", detailShowtime.giaVe);
+  const checkPrice = (e) => {
+    const formatDay = e.target.value;
+    const dayName = new Date(formatDay).toString().split(" ")[0];
+    let priceTicket = price[dayName];
+    setDetailShowtime({
+      ...detailShowtime,
+      ngayChieu: formatDay,
+      giaVe: priceTicket,
+    });
   };
   useEffect(() => {
     fetch(API_ROOMS.GET)
@@ -61,11 +66,12 @@ function AddShowtimeModal(props) {
   const AddShowtimeAction = async (e) => {
     e.preventDefault();
     let formatDateTime = `${detailShowtime.ngayChieu} ${detailShowtime.gioChieu}:${detailShowtime.phutChieu}`;
-    // console.log(">> formatDateTime", formatDateTime)
+    console.log(">> formatDateTime", formatDateTime);
     swal({
       icon: "info",
       title: "Xin chờ giây lát",
       buttons: false,
+      closeOnClickOutside: false,
     });
     fetch(API_SHOWTIMES.ADD + props.slug + "/showtime", {
       headers: {
@@ -77,10 +83,22 @@ function AddShowtimeModal(props) {
         ngayChieu: formatDateTime,
         tenRap: detailShowtime.tenRap,
         tenCumRap: props.clusterID,
-        giaVe: "70000",
+        giaVe: detailShowtime.giaVe,
       }),
     })
       .then((res) => {
+        if (res.status === 401) {
+          swal({
+            title: "Vui lòng đăng nhập lại",
+            text: "Phiên đăng nhập đã hết hạn",
+            icon: "warning",
+            buttons: true,
+          });
+          setTimeout(function () {
+            sessionStorage.clear();
+            navigate("/signIn");
+          }, 1000);
+        }
         if (res.status == 201) {
           swal({
             title: "Thêm lịch chiếu thành công",
@@ -155,6 +173,9 @@ function AddShowtimeModal(props) {
     }
   };
 
+  var today = new Date();
+  var tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
   return (
     <div style={{ display: "flex" }}>
       <Button
@@ -169,7 +190,7 @@ function AddShowtimeModal(props) {
       <Form id="edit-form" style={{ maxWidth: "800px" }} onSubmit={handleClick}>
         <Modal size="lg" show={isShow}>
           <Modal.Header closeButton onClick={initModal}>
-            <Modal.Title>
+            <Modal.Title style={{ fontWeight: "bold" }}>
               THÊM LỊCH CHIẾU CHO RẠP{" "}
               <span style={{ color: "#e98d9d" }}>{props.clusterName}</span>
             </Modal.Title>
@@ -189,9 +210,10 @@ function AddShowtimeModal(props) {
                         required
                         type="date"
                         name="ngayChieu"
-                        min={formattedDate(new Date())}
+                        min={formattedDate(tomorrow)}
                         onChange={(e) => {
                           checkValid(e);
+                          checkPrice(e);
                           detailShowtime.ngayChieu = e.target.value;
                         }}
                       />
@@ -210,7 +232,6 @@ function AddShowtimeModal(props) {
                         className="is-invalid"
                         required
                         name="rapChieu"
-                        style={{ margin: "8px 0px 0px 0px" }}
                         onChange={(e) => {
                           checkValid(e);
                           detailShowtime.tenRap = e.target.value;
@@ -229,6 +250,11 @@ function AddShowtimeModal(props) {
                         Chọn rạp chiếu phim
                       </Form.Control.Feedback>
                     </FloatingLabel>
+                  </Form.Group>
+                  <Form.Group as={Col} md="3">
+                    {detailShowtime?.giaVe
+                      ? `Giá vé: ${detailShowtime?.giaVe} VNĐ`
+                      : ""}
                   </Form.Group>
                 </Row>
                 <Row className="mb-3">
@@ -300,20 +326,23 @@ function AddShowtimeModal(props) {
 
           <Modal.Footer>
             <div className="d-grid gap-2 col-6 mx-auto">
-              <Button
-                color="white"
-                background="green"
+              <button
+                className="button-custom yes"
                 name="Đồng ý"
                 borderRadius="0.4em"
                 disabled={isInvalid === undefined ? true : isInvalid}
                 onClick={(e, movie) => handleClick(e, movie)}
-              />
-              <Button
-                color="danger"
+              >
+                Đồng ý
+              </button>
+              <button
+                className="button-custom no"
                 name="Hủy"
                 borderRadius="0.4em"
                 onClick={initModal}
-              />
+              >
+                Hủy
+              </button>
             </div>
           </Modal.Footer>
         </Modal>
