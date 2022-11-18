@@ -10,7 +10,7 @@ import AllMoviesTest from "./Movies/AllMoviesTest";
 const MenuAdmin = React.memo(() => (
   <div className="vertical-menu">
     <NavLink defaultValue end to="/Admin">
-      Tất cả phim
+      Danh sách phim
     </NavLink>
     <NavLink end to="/Admin/movie">
       Tạo phim mới

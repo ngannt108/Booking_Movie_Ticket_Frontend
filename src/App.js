@@ -41,7 +41,7 @@ function App() {
         .then((dt) =>
           store.account.ProfileDispatch({
             type: "PROFILE",
-            payload: dt.data[0],
+            payload: dt.data,
           })
         );
     }

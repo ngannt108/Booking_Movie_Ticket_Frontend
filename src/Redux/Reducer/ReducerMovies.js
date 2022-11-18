@@ -11,6 +11,8 @@ function GetMovies(state, { type, payload }) {
       return { ...state, detailMovie: payload };
     case "ADDMOVIE":
       return { ...state, detailMovie: payload };
+    case "TOPMOVIES":
+      return { ...state, topMovies: payload };
 
     default:
       return state;
