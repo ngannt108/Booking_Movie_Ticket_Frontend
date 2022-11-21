@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import "./Booking.css";
 import { StoreContext } from "../../Redux/Store/Store";
-import PaymentPopUp from "../ModalPaymentPopUp/ModalPaymentPopUp";
-import ModalFoodAndDrink from "../FoodAndDrink/ModalFoodAndDrink";
+// import PaymentPopUp from "../ModalPaymentPopUp/ModalPaymentPopUp";
+import ModalPaymentPopUp from "../ModalPaymentPopUp/ModalPaymentPopUp";
 
 export default function Booking() {
   const store = useContext(StoreContext);
@@ -11,6 +11,7 @@ export default function Booking() {
   const [chair, setChair] = useState(null);
   const [seatRow, setSeatRow] = useState(null);
   const [clusterName, setClusterName] = useState(null);
+  const [orderedChairs, setOrderedChairs] = useState(null);
 
   useEffect(() => {
     if (
@@ -29,7 +30,7 @@ export default function Booking() {
   var [arrSelectedSeat, setArr] = useState([]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 552);
   }, []);
 
   useEffect(() => {
@@ -54,6 +55,12 @@ export default function Booking() {
     }
   };
 
+  useEffect(() => {
+    if (store.bookingRoom.Booking.booking.showtime) {
+      setOrderedChairs(store.bookingRoom.Booking.booking.showtime.gheDaChon);
+    }
+  }, [store.bookingRoom.Booking.booking.showtime.gheDaChon]);
+
   return (
     <>
       {store.bookingRoom.Booking.booking && (
@@ -74,42 +81,70 @@ export default function Booking() {
                     {chair &&
                       seatRow &&
                       seatRow.map((seat) =>
-                        chair[seat].slice(0, 7).map((chair, i) => (
-                          <div
-                            key={i}
-                            onClick={(e) => {
-                              checkSelected(e);
-                            }}
-                            className="seat"
-                            name={chair}
-                          >
-                            {chair}
-                          </div>
-                        ))
+                        chair[seat].slice(0, 7).map((chair, i) => {
+                          if (orderedChairs.includes(chair)) {
+                            return (
+                              <div
+                                key={i}
+                                className="seat booked-chair"
+                                name={chair}
+                              >
+                                {chair}
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <div
+                                key={i}
+                                onClick={(e) => {
+                                  checkSelected(e);
+                                }}
+                                className="seat"
+                                name={chair}
+                              >
+                                {chair}
+                              </div>
+                            );
+                          }
+                        })
                       )}
                   </div>
                   <div className="seat-right">
                     {chair &&
                       seatRow &&
                       seatRow.map((seat) =>
-                        chair[seat].slice(7, 10).map((chair, i) => (
-                          <div
-                            key={i}
-                            onClick={(e) => {
-                              checkSelected(e);
-                            }}
-                            className="seat"
-                            name={chair}
-                          >
-                            {chair}
-                          </div>
-                        ))
+                        chair[seat].slice(7, 10).map((chair, i) => {
+                          if (orderedChairs.includes(chair)) {
+                            return (
+                              <div
+                                key={i}
+                                className="seat booked-chair"
+                                name={chair}
+                              >
+                                {chair}
+                              </div>
+                            );
+                          } else {
+                            return (
+                              <div
+                                key={i}
+                                onClick={(e) => {
+                                  checkSelected(e);
+                                }}
+                                className="seat"
+                                name={chair}
+                              >
+                                {chair}
+                              </div>
+                            );
+                          }
+                        })
                       )}
                   </div>
                   <div className="cinema-note">
-                    <div className="single">Casual seat</div>
-                    <div className="choosing">Seat selecting</div>
-                    <div className="busy">Seat have been selected</div>
+                    <div className="single">Ghế trống</div>
+                    <div className="choosing">Ghế bạn chọn</div>
+                    <div className="busy">Ghế đã được đặt</div>
                     {arrSelectedSeat.length > 0 ? (
                       <div style={{ paddingLeft: "12px" }}>
                         <div>Các ghế được chọn là:</div>
@@ -121,7 +156,9 @@ export default function Booking() {
                         ))}
                       </div>
                     ) : (
-                      <div>Quý khách vui lòng chọn ghế!</div>
+                      <div style={{ paddingLeft: "12px" }}>
+                        Quý khách vui lòng chọn ghế!
+                      </div>
                     )}
 
                     <div style={{ paddingLeft: "12px" }}>
@@ -136,7 +173,7 @@ export default function Booking() {
                     </div>
                     {count === 0 ? (
                       <div className="noClick" style={{ paddingLeft: "12px" }}>
-                        <ModalFoodAndDrink />
+                        <ModalPaymentPopUp />
                       </div>
                     ) : (
                       <div
@@ -144,25 +181,28 @@ export default function Booking() {
                           store.bookingRoom.PaymentDisPatch({
                             type: "PAYMENT",
                             payload: {
-                              tentaiKhoan: store.account.Profile.profile._id,
-                              danhSachVe: arrSelectedSeat.map((n) => {
-                                return {
-                                  maGhe: n,
-                                  giaGhe:
-                                    store.bookingRoom.Booking.booking.showtime
-                                      .giaVe,
-                                };
-                              }),
-                              maLichChieu:
-                                store.bookingRoom.Booking.booking.showtime._id,
-                              thoiGianDat: new Date().toISOString(),
-                              // phim:
+                              danhSachGhe: arrSelectedSeat,
+                              hoTen: store.account.Profile.profile.hoTen,
+                              email: store.account.Profile.profile.email,
+                              diemSuDung:
+                                store.account.Profile.profile.diemThuong,
+                              tongTien:
+                                count *
+                                store.bookingRoom.Booking.booking.showtime
+                                  .giaVe,
+                              tenPhim:
+                                store.bookingRoom.Booking.booking.info[1],
+                              biDanh: store.bookingRoom.Booking.booking.info[5],
+                              tenRap: store.bookingRoom.Booking.booking.info[0],
+                              lichChieu:
+                                store.bookingRoom.Booking.booking.showtime,
+                              phongChieu: clusterName,
                             },
                           });
                         }}
                         style={{ paddingLeft: "12px" }}
                       >
-                        <ModalFoodAndDrink />
+                        <ModalPaymentPopUp />
                       </div>
                     )}
                   </div>
@@ -172,7 +212,7 @@ export default function Booking() {
                 <div className="booking-info">
                   <img
                     className="booking-movie-banner"
-                    height={"480px"}
+                    height={"320px"}
                     src={store.bookingRoom.Booking.booking.info[4]}
                     alt=""
                   />

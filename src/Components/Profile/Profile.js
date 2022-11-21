@@ -1,7 +1,6 @@
 import React from "react";
 import { useEffect, useContext } from "react";
 import { StoreContext } from "../../Redux/Store/Store";
-import { API_USER } from "../../common/ApiController";
 import "./Profile.css";
 import { useState } from "react";
 
@@ -12,7 +11,7 @@ export default function Profile() {
     if (store.account.Profile.profile) {
       setProfile(store.account.Profile.profile);
     }
-  }, [store.account.userAccount.account]);
+  }, [store.account.Profile.profile]);
   return (
     <>
       {profile && (

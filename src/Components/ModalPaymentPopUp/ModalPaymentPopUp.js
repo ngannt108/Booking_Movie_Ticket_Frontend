@@ -1,44 +1,38 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import React, { useEffect, useState } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router-dom";
-import './ModalPaymentPopUp.css'
+import "./ModalPaymentPopUp.css";
 
-export default function ModalPaymentPopUp(props) {
+export default function ModalPaymentPopUp() {
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   const navigate = useNavigate();
-  const navigatePayment = () =>{
+  const navigatePayment = () => {
     navigate("/Payment");
-  }
+  };
 
   return (
     <>
-      <Button className='booking-btn' onClick={handleShow}>
-        Payment
+      <Button className="booking-btn" onClick={() => setShow(true)}>
+        Đặt vé
       </Button>
-
       <Modal
         show={show}
-        onHide={handleClose}
+        onHide={() => setShow(false)}
         backdrop="static"
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title>Payment</Modal.Title>
+          <Modal.Title>Đặt vé</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-            Bạn có muốn thanh toán?
-        </Modal.Body>
+        <Modal.Body>Bạn có muốn đặt vé?</Modal.Body>
         <Modal.Footer>
-        <Button variant="warning" onClick={navigatePayment}>
-            Yes
+          <Button variant="warning" onClick={() => navigatePayment()}>
+            Có
           </Button>
-          <Button variant="secondary" onClick={handleClose}>
-            Later
+          <Button variant="secondary" onClick={() => setShow(false)}>
+            Không
           </Button>
         </Modal.Footer>
       </Modal>

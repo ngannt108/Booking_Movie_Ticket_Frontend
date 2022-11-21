@@ -3,6 +3,8 @@ function GetTheaters(state, { type, payload }) {
   switch (type) {
     case "GETTHEATERS":
       return { ...state, lsTheater: payload };
+    case "LISTMOVIESINTHEATER":
+      return { moviesInTheater: payload };
     default:
       return state;
   }

@@ -5,3 +5,9 @@
   outline: none;
   border: none;
 }
+
+.booking-btn {
+  padding: 8px 32px;
+  text-transform: uppercase;
+  border-radius: 8px;
+}

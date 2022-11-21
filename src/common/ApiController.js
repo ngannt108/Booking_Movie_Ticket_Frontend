@@ -1,4 +1,4 @@
-const API_DOMAIN = "http://localhost:5000/";
+export const API_DOMAIN = "http://localhost:5000/";
 
 export const API_MOVIE = {
   COMING: API_DOMAIN + "movies/coming",
@@ -37,4 +37,9 @@ export const API_FOODDRINKS = {
   DETAIL: API_DOMAIN + "users/food_drink/",
   UPDATE: API_DOMAIN + "admins/food_drink/",
   ADD: API_DOMAIN + "admins/food_drink",
+};
+
+export const API_BOOKING = {
+  BOOK_TICKET: API_DOMAIN + "users/",
+  SEND_EMAIL: API_DOMAIN + "users/sendEmailBooking",
 };

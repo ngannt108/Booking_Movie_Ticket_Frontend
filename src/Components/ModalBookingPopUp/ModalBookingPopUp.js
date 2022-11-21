@@ -18,6 +18,7 @@ export default function ModalPopUp(props) {
       type: "BOOKING",
       payload: { info: props.info, showtime: props.showtimeDetail },
     });
+
     navigate("/Booking");
   };
 

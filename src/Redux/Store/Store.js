@@ -11,6 +11,7 @@ const Store = ({ children }) => {
   const [comingMovie, DispatchComingMovie] = ReducerMovies();
   const [showingMovie, DispatchShowingMovie] = ReducerMovies();
   const [theaters, DispatchTheater] = ReducerTheaters();
+  const [lsMovieInTheater, DispatchMoviesInTheater] = ReducerTheaters();
   const [userAcc, DispatchAccount] = ReducerAccounts(null);
   const [profile, DispatchProfile] = ReducerAccounts(null);
   const [detailMovie, DispatchDetailMovie] = ReducerMovies();
@@ -22,6 +23,7 @@ const Store = ({ children }) => {
   const [lsFDs, DispatchGetAllFDs] = ReducerFoodDrinks(null);
   const [detailFD, DispatchGetDetailFD] = ReducerFoodDrinks(null);
   const [addFD, DispatchAddFD] = ReducerFoodDrinks(null);
+  const [combo, DispatchFoodAndDrink] = ReducerFoodDrinks(null);
 
   const store = {
     lsComingMovie: {
@@ -51,6 +53,9 @@ const Store = ({ children }) => {
 
       AddFD: addFD,
       AddFDDispatch: DispatchAddFD,
+
+      FoodAndDrink: combo,
+      FoodAndDrinkDispatch: DispatchFoodAndDrink,
     },
     lsRooms: {
       Rooms: rooms,
@@ -59,6 +64,8 @@ const Store = ({ children }) => {
     lsTheater: {
       Theater: theaters,
       TheaterDispatch: DispatchTheater,
+      MoviesInTheater: lsMovieInTheater,
+      MoviesInTheaterDispatch: DispatchMoviesInTheater,
     },
     account: {
       userAccount: userAcc,

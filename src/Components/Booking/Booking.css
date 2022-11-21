@@ -33,7 +33,7 @@
   margin: 8px 8px 8px 0;
 }
 .booking-movie-name {
-  font-size: 28px;
+  font-size: 20px;
   font-weight: bold;
 }
 .booking-seat {
@@ -71,6 +71,12 @@
   transition: all 0.3s ease-in-out;
   height: 46px;
   display: inline-block;
+}
+
+.booked-chair {
+  background: #ededed
+    url(https://cinestar.com.vn/catalog/view/theme/default/images/single-chair.png)
+    no-repeat center -92px !important;
 }
 /* .seat:hover {
   background: #ededed
@@ -128,5 +134,5 @@
   border-radius: 8px;
   text-align: center;
   background: linear-gradient(to right, #fbbd61, #ec7532);
-  margin: 20px 0px;
+  margin: 28px 0px;
 }

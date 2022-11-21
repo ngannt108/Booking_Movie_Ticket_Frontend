@@ -9,6 +9,7 @@
     "bootstrap": "^5.2.1",
     "dotenv": "^16.0.2",
     "multiselect-react-dropdown": "^2.0.25",
+    "qrcode": "^1.5.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-bootstrap-buttons": "^1.0.0",

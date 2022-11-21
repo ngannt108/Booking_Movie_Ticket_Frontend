@@ -58,7 +58,14 @@ export default function Theaters() {
         body: JSON.stringify({ ngayDaChon: currentDate }),
       })
         .then((res) => res.json())
-        .then((dt) => setFilms(dt.data));
+        .then((dt) => {
+          // store.lsTheater.MoviesInTheaterDispatch({
+          //   type: "LISTMOVIESINTHEATER",
+          //   payload: dt.data,
+          // });
+          // console.log(dt.data);
+          setFilms(dt.data);
+        });
     }
   }, [currentDate, cinemaId]);
 
@@ -204,6 +211,7 @@ export default function Theaters() {
                                           "/" +
                                           currentDate.slice(0, 4),
                                         movie.hinhAnh,
+                                        movie.biDanh,
                                       ]}
                                       showtimeDetail={showtime}
                                     />

@@ -5,7 +5,7 @@ function GetBooking(state, { type, payload }) {
     case "BOOKING":
       return { ...state, booking: payload };
     case "PAYMENT":
-      return { payment: payload };
+      return { ...state, payment: payload };
     default:
       return state;
   }

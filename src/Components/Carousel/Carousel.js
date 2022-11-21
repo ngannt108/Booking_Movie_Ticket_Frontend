@@ -7,7 +7,11 @@ export default function Carousel() {
   const store = useContext(StoreContext);
   return (
     // Carousel
-    <div id="demo" className="carousel slide" data-ride="carousel">
+    <div
+      id="demo"
+      className="carousel slide carousel-fade"
+      data-ride="carousel"
+    >
       {/* Indicators */}
       <ul className="carousel-indicators">
         <li data-target="#demo" data-slide-to="0" className="active"></li>
