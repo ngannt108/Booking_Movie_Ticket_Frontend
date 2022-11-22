@@ -148,7 +148,7 @@ function AddShowtimeModal(props) {
       temp.required
     ) {
       event.preventDefault();
-      //temp.className = "is-invalid form-select";
+      //temp.className = "is-invalid add-showtime form-select";
       temp.classList.add("is-invalid");
     } else {
       //temp.className = "form-select";
@@ -159,10 +159,10 @@ function AddShowtimeModal(props) {
   };
 
   const checkInvalidAndRerender = () => {
-    //console.log(isInvalid === undefined)
-    if (document.getElementsByClassName("is-invalid").length > 0) {
+    console.log("isInvalid", isInvalid);
+    if (document.getElementsByClassName("is-invalid add-showtime").length > 0) {
       // If needed
-      if (isInvalid || isInvalid === undefined) {
+      if (!isInvalid || isInvalid === undefined) {
         setInvalid(true);
       }
     } else {
@@ -206,7 +206,7 @@ function AddShowtimeModal(props) {
                       className="mb-3"
                     >
                       <Form.Control
-                        className="is-invalid"
+                        className="is-invalid add-showtime"
                         required
                         type="date"
                         name="ngayChieu"
@@ -229,7 +229,7 @@ function AddShowtimeModal(props) {
                       className="mb-3"
                     >
                       <Form.Select
-                        className="is-invalid"
+                        className="is-invalid add-showtime"
                         required
                         name="rapChieu"
                         onChange={(e) => {
@@ -265,7 +265,7 @@ function AddShowtimeModal(props) {
                       className="mb-3"
                     >
                       <Form.Select
-                        className="is-invalid"
+                        className="is-invalid add-showtime"
                         name="gioChieu"
                         onChange={(e) => {
                           checkValid(e);
@@ -295,7 +295,7 @@ function AddShowtimeModal(props) {
                       className="mb-3"
                     >
                       <Form.Select
-                        className="is-invalid"
+                        className="is-invalid add-showtime"
                         name="phutChieu"
                         required
                         onChange={(e) => {

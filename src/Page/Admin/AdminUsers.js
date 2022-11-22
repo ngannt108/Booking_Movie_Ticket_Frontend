@@ -3,9 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Showtimes from "./Showtimes/Showtimes";
 import "../../App.css";
 import { Link, NavLink } from "react-router-dom";
-import AllFoodDrinks from "./FoodDrinks/AllFoodDrinks";
-import EditMovieModal from "../../Components/Admin/EditMovieModal/EditMovieModal";
-import AddFDForm from "../../Components/Admin/AddFDForm/AddFDForm";
+import AllUsers from "./Users/AllUsers";
 
 const MenuFDAdmin = React.memo(() => (
   <div className="vertical-menu">
@@ -21,7 +19,7 @@ export default function AdminFoodDrinks() {
     <div className="general" style={{ marginTop: "1em" }}>
       <MenuFDAdmin />
       <Routes>
-        <Route path="/Users" element={<AllFoodDrinks />} />
+        <Route path="/Users" element={<AllUsers />} />
       </Routes>
     </div>
     /* <div className="vertical-menu">

@@ -16,6 +16,7 @@ import AdminFoodsDrinks from "./Page/Admin/AdminFoodsDrinks";
 import Payment from "./Components/Payment/Payment";
 import Profile from "./Components/Profile/Profile";
 import { API_USER } from "./common/ApiController";
+import PrivateRoutes from "./utils/PrivateRoutes";
 
 function App() {
   const store = useContext(StoreContext);
@@ -52,10 +53,12 @@ function App() {
         <Header />
         <Routes>
           {/* Content động */}
+
           <Route path="/" element={<Home />} />
           {/* <Route path="/Admin/Foods" element={<AdminFoodsDrinks />} /> */}
-          <Route path="/Admin/*" element={<HeaderAdmin />} />
-
+          <Route element={<PrivateRoutes />}>
+            <Route path="/Admin/*" element={<HeaderAdmin />} />
+          </Route>
           {/* <Route path="/Admin/movie" element={<AddMovieForm />} />
           <Route path="/Admin/:slug/showtimes" element={<Showtimes />} /> */}
           <Route path="/SignIn" element={<SignIn />} />

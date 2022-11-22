@@ -90,7 +90,7 @@ function AddMovieForm(props) {
     e.preventDefault();
     AddMovieAction(e);
   };
-
+  console.log(">> Invalid in add movie", isInvalid);
   const formattedDate = (dateInput) => {
     let today = new Date(dateInput);
     const yyyy = today.getFullYear();
@@ -124,8 +124,8 @@ function AddMovieForm(props) {
     // console.log(">> temp.checkValidity()", temp.checkValidity());
     // console.log(">> temp", temp);
     if (
-      temp.name === "banner" ||
-      (temp.name === "image" && detailMovie[temp.name])
+      (temp.name === "banner" && banner) ||
+      (temp.name === "image" && image)
     ) {
       return temp.classList.remove("is-invalid");
     }
@@ -143,9 +143,9 @@ function AddMovieForm(props) {
 
   const checkInvalidAndRerender = () => {
     //console.log(isInvalid === undefined)
-    if (document.getElementsByClassName("is-invalid").length > 0) {
+    if (document.getElementsByClassName("is-invalid add-movie").length > 0) {
       // If needed
-      if (isInvalid || isInvalid === undefined) {
+      if (!isInvalid || isInvalid === undefined) {
         setInvalid(true);
       }
     } else {
@@ -181,7 +181,7 @@ function AddMovieForm(props) {
                 className="mb-3"
               >
                 <Form.Control
-                  className="is-invalid"
+                  className="is-invalid add-movie"
                   required
                   type="text"
                   name="tenPhim"
@@ -203,7 +203,7 @@ function AddMovieForm(props) {
                 className="mb-3"
               >
                 <Form.Control
-                  className="is-invalid"
+                  className="is-invalid add-movie"
                   required
                   type="date"
                   name="ngayKhoiChieu"
@@ -226,7 +226,7 @@ function AddMovieForm(props) {
                 className="mb-3"
               >
                 <Form.Control
-                  className="is-invalid"
+                  className="is-invalid add-movie"
                   type="number"
                   name="thoiLuong"
                   min={"1"}
@@ -315,7 +315,7 @@ function AddMovieForm(props) {
             >
               <Form.Label>Ảnh bìa</Form.Label>
               <Form.Control
-                className="is-invalid"
+                className="is-invalid add-movie"
                 type="file"
                 ////// isInvalid={isInvalid}
                 onChange={(event) => {
@@ -345,7 +345,7 @@ function AddMovieForm(props) {
             >
               <Form.Label>Hình ảnh</Form.Label>
               <Form.Control
-                className="is-invalid"
+                className="is-invalid add-movie"
                 type="file"
                 required
                 name="image"

@@ -1,7 +1,11 @@
 import HeaderAdmin from "../Header/HeaderAdmin";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import React, { useState } from "react";
-import { API_MOVIE, API_THEATERS } from "../../../common/ApiController";
+import {
+  API_MOVIE,
+  API_SHOWTIMES,
+  API_THEATERS,
+} from "../../../common/ApiController";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -92,7 +96,7 @@ export default function Showtimes() {
       buttons: false,
       closeOnClickOutside: false,
     });
-    fetch("http://localhost:5000/admins/movie/" + slug.slug + "/showtime", {
+    fetch(API_SHOWTIMES.DELETE + slug.slug + "/showtime", {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",

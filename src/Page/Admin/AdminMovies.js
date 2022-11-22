@@ -15,7 +15,6 @@ const MenuAdmin = React.memo(() => (
     <NavLink end to="/Admin/movie">
       Tạo phim mới
     </NavLink>
-    <Link to="#">Phim được yêu thích</Link>
   </div>
 ));
 
@@ -24,15 +23,6 @@ export default function AdminMovies() {
     // <div className="admin-page">
     //   <HeaderAdmin />
     <div className="general" style={{ marginTop: "1em" }}>
-      {/* <div className="vertical-menu">
-        <NavLink defaultValue end to="/Admin">
-          Tất cả phim
-        </NavLink>
-        <NavLink end to="/Admin/movie">
-          Tạo phim mới
-        </NavLink>
-        <Link to="#">Phim được yêu thích</Link>
-      </div> */}
       <MenuAdmin />
       <Routes>
         <Route index path="/" element={<AllMovies />} />
@@ -41,17 +31,6 @@ export default function AdminMovies() {
 
         <Route path="/edit" element={<EditMovieModal />} />
       </Routes>
-      {/* </div> */}
-      {/* <div className="vertical-menu">
-              <Link to="#" className="active">
-                  Tất cả phim
-              </Link>
-              <NavLink end to="/Admin/movie">
-                  Tạo phim mới
-              </NavLink>
-              <Link to="#">Phim được yêu thích</Link>
-          </div>  */}
-      //{" "}
     </div>
   );
 }

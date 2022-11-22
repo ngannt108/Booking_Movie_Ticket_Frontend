@@ -48,7 +48,7 @@ const Top10MoviesChart = () => {
     ],
     chart: {
       type: "bar",
-      height: 350,
+      height: 100,
     },
     plotOptions: {
       bar: {

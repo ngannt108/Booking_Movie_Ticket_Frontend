@@ -1,40 +1,46 @@
 import React, { useEffect, useContext, useState } from "react";
 import { StoreContext } from "../../../Redux/Store/Store";
-import { API_FOODDRINKS } from "../../../common/ApiController";
+import { API_USER } from "../../../common/ApiController";
 import "../Movies/MovieManage.css";
 import { Button } from "../../../Components/Button/Button";
 import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { List } from "react-content-loader";
-import ItemFoodDrink from "../../../Components/Admin/ItemFoodDrink/ItemFoodDrinks";
+import ItemUser from "../../../Components/Admin/ItemUser/ItemUser";
 
 export default function AllUsers() {
   const store = useContext(StoreContext);
   const [biDanh, setBiDanh] = useState();
   console.log(">>ID in AllUsers", biDanh);
+  let token = JSON.parse(sessionStorage.getItem("token"));
 
   useEffect(() => {
-    fetch(API_FOODDRINKS.GETALL)
+    fetch(API_USER.GETALL, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    })
       .then((res) => res.json())
       .then((dt) => {
-        store.fooddrinks.GetAllDispatch({
-          type: "GETALLFOODDRINKS",
+        store.users.UsersDispatch({
+          type: "GETALL",
           payload: dt.data,
         });
       });
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let fooddrinks = store.fooddrinks.LsFDs?.listFDs;
-  console.log(">> FOODDRINKS", fooddrinks);
-  if (fooddrinks) {
+  let users = store.users.listUsers?.users;
+  console.log(">> users", users);
+  if (users) {
     return (
       <>
         <div style={{ minWidth: "925px" }}>
           <div style={{ padding: "0em 3em 3em 3em" }}>
-            {fooddrinks.length == 0 ? (
+            {users.length == 0 ? (
               <div style={{ color: "white", marginTop: "1em" }}>
-                Hiện chưa có thông tin đồ ăn và thức uống!
+                Hiện chưa có người dùng nào!
               </div>
             ) : (
               <div className="container-body">
@@ -42,14 +48,15 @@ export default function AllUsers() {
                   <thead>
                     <tr>
                       <th>Số thứ tự</th>
-                      <th>Tên combo</th>
-                      <th>Hình ảnh</th>
-                      <th colSpan={2}>Mô tả</th>
+                      <th>Tên tài khoản</th>
+                      <th>Ảnh đại diện</th>
+                      <th> Họ tên</th>
+                      <th colSpan={2}>Email</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {fooddrinks.map((item, index) => (
-                      <ItemFoodDrink fooddrinks={item} index={index} />
+                    {users.map((item, index) => (
+                      <ItemUser user={item} index={index} />
                     ))}
                   </tbody>
                 </table>

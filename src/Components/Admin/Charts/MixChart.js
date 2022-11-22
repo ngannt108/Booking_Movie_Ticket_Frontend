@@ -1,13 +1,14 @@
 import ApexCharts from "apexcharts";
 import { useEffect } from "react";
 import { useContext } from "react";
+import { API_CHARTS } from "../../../common/ApiController";
 import { StoreContext } from "../../../Redux/Store/Store";
 
 const MixChart = () => {
   const store = useContext(StoreContext);
   let token = JSON.parse(sessionStorage.getItem("token"));
   useEffect(() => {
-    fetch("http://localhost:5000/admins/ticketBookings", {
+    fetch(API_CHARTS.GETTICKETS, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -31,7 +32,7 @@ const MixChart = () => {
     if (dd < 10) dd = "0" + dd;
     if (mm < 10) mm = "0" + mm;
 
-    return yyyy + "-" + mm + "-" + dd;
+    return dd + "-" + mm + "-" + yyyy;
   };
   let data = store.ticketBooking?.GetAllTicketBooking?.lsTicketBookings;
   let dateShowtime = [];
@@ -56,7 +57,7 @@ const MixChart = () => {
   var options = {
     series: [
       {
-        name: "LƯỢT MUA CỦA NGÀY CHIẾU",
+        name: "SỐ LƯỢNG",
         type: "area",
         data: count.length == 1 ? [0, ...count] : count,
       },
@@ -78,17 +79,20 @@ const MixChart = () => {
       type: "solid",
       opacity: [0.35, 1],
     },
-    labels: formatDate.length == 1 ? ["01/01/2022", ...formatDate] : formatDate,
+    labels: formatDate.length == 1 ? ["01-01-2022", ...formatDate] : formatDate,
     markers: {
       size: 0,
     },
     // xaxis: {
-    //   type: "datetime",
+    //   title: {
+    //     text: "Ngày chiếu",
+    //     fill: "blue",
+    //   },
     // },
     yaxis: [
       {
         title: {
-          text: "Bán ra",
+          text: "Số lượng",
           fill: "blue",
         },
         fill: "blue",
