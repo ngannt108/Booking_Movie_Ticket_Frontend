@@ -156,6 +156,176 @@ export default function Payment() {
       .render(paypal.current);
   };
 
+  const CreateQR = async () => {
+    let qr = await QRCode.toDataURL(
+      `Họ tên: ${store.bookingRoom.Payment.payment?.hoTen}, Phim: ${
+        store.bookingRoom.Payment.payment?.tenPhim
+      }, Suất chiếu ${
+        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(11, 13) *
+          1 +
+        7 +
+        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(13, 16) +
+        " - " +
+        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(8, 10) +
+        "/" +
+        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(5, 7) +
+        "/" +
+        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(0, 4)
+      }, Ghế:${store.bookingRoom.Payment.payment?.danhSachGhe.join(
+        ", "
+      )}, Cụm rạp: ${store.bookingRoom.Payment.payment?.tenRap}, Phòng chiếu: ${
+        store.bookingRoom.Payment.payment?.phongChieu
+      }`
+    );
+    return qr;
+  };
+
+  const SendEmail = async (dataSendEmail) => {
+    const token = JSON.parse(sessionStorage.getItem("token"));
+    await fetch(API_BOOKING.SEND_EMAIL, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(dataSendEmail),
+    });
+  };
+
+  useEffect(() => {
+    //setQR
+    if (CreateQR() !== false) {
+      const dataSendEmail = {
+        taiKhoan: store.bookingRoom.Payment.payment?.hoTen,
+        tenCumRap: store.bookingRoom.Payment.payment?.tenRap,
+        tenPhim: store.bookingRoom.Payment.payment?.tenPhim,
+        ngayChieu: formatDate(
+          store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
+        ).toString(),
+        gioChieu: formatTime(
+          store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
+        ).toString(),
+        QRCode: CreateQR(),
+      };
+      console.log(dataSendEmail);
+      const DATA_BOOKING = {
+        danhSachGhe: store.bookingRoom.Payment.payment.danhSachGhe,
+        danhSachAnUong: [],
+        diemSuDung: RewardPoints,
+      };
+      if (isSuccessPaypal === true) {
+        console.log("Reward point", RewardPoints);
+        const success = PostPaymenInfo(showtimeID, biDanh, DATA_BOOKING); //{ danhSachGhe:
+        if (success !== false) {
+          SendEmail(dataSendEmail);
+        }
+        setConfirm(false); //đóng modal
+        setIsSuccessPaypal(false);
+      }
+    }
+  }, [isSuccessPaypal]);
+
+  useEffect(() => {
+    if (store.bookingRoom.Payment.payment.tongTien) {
+      setTotalPrice(store.bookingRoom.Payment.payment.tongTien);
+      setTotalPriceBefore(store.bookingRoom.Payment.payment.tongTien);
+    }
+  }, [store.bookingRoom.Payment.payment.tongTien]);
+
+  const UseRewardPoints = (e) => {
+    e.preventDefault();
+    setUseRewardPoints(true);
+    setRewardPoints(
+      store.bookingRoom.Payment.payment.diemSuDung > totalPrice / 1000
+        ? totalPrice / 1000
+        : store.bookingRoom.Payment.payment.diemSuDung
+    );
+    setConfirm(false);
+    // setUseRewardPoints(e.target.value)
+  };
+
+  const afterDiscount = (e) => {
+    e.preventDefault();
+    if (RewardPoints >= 20) {
+      setTotalPrice(totalPriceBefore - RewardPoints * 1000);
+      setUseRewardPoints(false);
+      setConfirm(true);
+    } else {
+      swal(
+        "Sử dụng điểm tích lũy không thành công",
+        "Quý khách vui lòng sử dụng tối thiểu 20 điểm! Hãy thử lại nhé!",
+        "error"
+      );
+    }
+  };
+
+  const modalRewardPoints = () => {
+    return (
+      <>
+        <Modal show={useRewardPoints} onHide={() => setUseRewardPoints(false)}>
+          <Modal.Header>
+            <Modal.Title>Điểm tích lũy của bạn</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <form className="payment-form">
+              <div>
+                <label className="card-number-label">Điểm tích lũy</label>
+                <br />
+                <input
+                  className="card-number-input"
+                  value={store.bookingRoom.Payment.payment?.diemSuDung || 0}
+                  disabled
+                />
+              </div>
+              <div>
+                <label className="card-number-label">
+                  Chọn điểm thanh toán
+                </label>
+                <br />
+                <input
+                  className="card-number-input"
+                  min={20}
+                  max={
+                    store.bookingRoom.Payment.payment?.diemSuDung >
+                    totalPrice / 1000
+                      ? totalPrice / 1000
+                      : store.bookingRoom.Payment.payment?.diemSuDung
+                  }
+                  value={RewardPoints}
+                  type="number"
+                  disabled={
+                    store.bookingRoom.Payment.payment?.diemSuDung >= 2
+                      ? false
+                      : true
+                  }
+                  onChange={(e) => setRewardPoints(e.target.value)}
+                />
+              </div>
+              <button
+                onClick={(e) => afterDiscount(e)}
+                className="points-button"
+              >
+                SỬ DỤNG
+              </button>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+            <button
+              className="cancel-button"
+              onClick={() => {
+                setUseRewardPoints(false);
+                setRewardPoints(0);
+              }}
+            >
+              HỦY
+            </button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  };
+
   const modalConfirm = () => {
     return (
       <>
@@ -295,6 +465,7 @@ export default function Payment() {
                 <button
                   onClick={(e) => {
                     PostPaymenInfo(e);
+                    setIsSuccessPaypal(true);
                   }}
                   className="payment-button"
                 >
@@ -310,175 +481,6 @@ export default function Payment() {
               className="cancel-button"
               onClick={() => {
                 setConfirm(false);
-                setRewardPoints(0);
-              }}
-            >
-              HỦY
-            </button>
-          </Modal.Footer>
-        </Modal>
-      </>
-    );
-  };
-
-  const CreateQR = async () => {
-    return await QRCode.toDataURL(
-      `Họ tên: ${store.bookingRoom.Payment.payment?.hoTen}, Phim: ${
-        store.bookingRoom.Payment.payment?.tenPhim
-      }, Suất chiếu ${
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(11, 13) *
-          1 +
-        7 +
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(13, 16) +
-        " - " +
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(8, 10) +
-        "/" +
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(5, 7) +
-        "/" +
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(0, 4)
-      }, Ghế:${store.bookingRoom.Payment.payment?.danhSachGhe.join(
-        ", "
-      )}, Cụm rạp: ${store.bookingRoom.Payment.payment?.tenRap}, Phòng chiếu: ${
-        store.bookingRoom.Payment.payment?.phongChieu
-      }`
-    );
-  };
-
-  const SendEmail = async (dataSendEmail) => {
-    const token = JSON.parse(sessionStorage.getItem("token"));
-    await fetch(API_BOOKING.SEND_EMAIL, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(dataSendEmail),
-    });
-  };
-
-  useEffect(() => {
-    //setQR
-    if (CreateQR() !== false) {
-      const dataSendEmail = {
-        taiKhoan: store.bookingRoom.Payment.payment?.hoTen,
-        tenCumRap: store.bookingRoom.Payment.payment?.tenRap,
-        tenPhim: store.bookingRoom.Payment.payment?.tenPhim,
-        ngayChieu: formatDate(
-          store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
-        ).toString(),
-        gioChieu: formatTime(
-          store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
-        ).toString(),
-        QRCode: CreateQR(),
-      };
-      console.log(dataSendEmail);
-      const DATA_BOOKING = {
-        danhSachGhe: store.bookingRoom.Payment.payment.danhSachGhe,
-        danhSachAnUong: [],
-        diemSuDung: RewardPoints,
-      };
-      if (isSuccessPaypal === true) {
-        console.log("Reward point", RewardPoints);
-        const success = PostPaymenInfo(showtimeID, biDanh, DATA_BOOKING); //{ danhSachGhe:
-        if (success !== false) {
-          SendEmail(dataSendEmail);
-        }
-        setConfirm(false); //đóng modal
-        setIsSuccessPaypal(false);
-      }
-    }
-  }, [isSuccessPaypal]);
-
-  useEffect(() => {
-    if (store.bookingRoom.Payment.payment.tongTien) {
-      setTotalPrice(store.bookingRoom.Payment.payment.tongTien);
-      setTotalPriceBefore(store.bookingRoom.Payment.payment.tongTien);
-    }
-  }, [store.bookingRoom.Payment.payment.tongTien]);
-
-  const UseRewardPoints = (e) => {
-    e.preventDefault();
-    setUseRewardPoints(true);
-    setRewardPoints(
-      store.bookingRoom.Payment.payment.diemSuDung > totalPrice / 1000
-        ? totalPrice / 1000
-        : store.bookingRoom.Payment.payment.diemSuDung
-    );
-    setConfirm(false);
-    // setUseRewardPoints(e.target.value)
-  };
-
-  const afterDiscount = (e) => {
-    e.preventDefault();
-    if (RewardPoints >= 20) {
-      setTotalPrice(totalPriceBefore - RewardPoints * 1000);
-      setUseRewardPoints(false);
-      setConfirm(true);
-    } else {
-      swal(
-        "Sử dụng điểm tích lũy không thành công",
-        "Quý khách vui lòng sử dụng tối thiểu 20 điểm! Hãy thử lại nhé!",
-        "error"
-      );
-    }
-  };
-
-  const modalRewardPoints = () => {
-    return (
-      <>
-        <Modal show={useRewardPoints} onHide={() => setUseRewardPoints(false)}>
-          <Modal.Header>
-            <Modal.Title>Điểm tích lũy của bạn</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <form className="payment-form">
-              <div>
-                <label className="card-number-label">Điểm tích lũy</label>
-                <br />
-                <input
-                  className="card-number-input"
-                  value={store.bookingRoom.Payment.payment?.diemSuDung || 0}
-                  disabled
-                />
-              </div>
-              <div>
-                <label className="card-number-label">
-                  Chọn điểm thanh toán
-                </label>
-                <br />
-                <input
-                  className="card-number-input"
-                  min={20}
-                  max={
-                    store.bookingRoom.Payment.payment?.diemSuDung >
-                    totalPrice / 1000
-                      ? totalPrice / 1000
-                      : store.bookingRoom.Payment.payment?.diemSuDung
-                  }
-                  value={RewardPoints}
-                  type="number"
-                  disabled={
-                    store.bookingRoom.Payment.payment?.diemSuDung >= 2
-                      ? false
-                      : true
-                  }
-                  onChange={(e) => setRewardPoints(e.target.value)}
-                />
-              </div>
-              <button
-                onClick={(e) => afterDiscount(e)}
-                className="points-button"
-              >
-                SỬ DỤNG
-              </button>
-            </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <button
-              className="cancel-button"
-              onClick={() => {
-                setUseRewardPoints(false);
                 setRewardPoints(0);
               }}
             >

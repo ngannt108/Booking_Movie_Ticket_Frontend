@@ -46,35 +46,36 @@ function AddMovieForm(props) {
       fd.append(keyOfObj, detailMovie[keyOfObj]);
     }
     const token = JSON.parse(sessionStorage.getItem("token"));
+    console.log("*************", fd);
 
-    fetch(API_MOVIE.ADD, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      method: "POST",
-      body: fd,
-    })
-      .then((res) => {
-        if (res.status == 201) {
-          swal({
-            title: "Thêm phim thành công",
-            text: "",
-            icon: "success",
-          });
-          setTimeout(function () {
-            navigate(0);
-          }, 1000);
-        } else return res.json();
-      })
-      .then((response) => {
-        console.log("response", response);
-        if (response != true)
-          return swal({
-            title: "Thêm phim thất bại",
-            text: response.error,
-            icon: "error",
-          });
-      });
+    // fetch(API_MOVIE.ADD, {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    //   method: "POST",
+    //   body: fd,
+    // })
+    //   .then((res) => {
+    //     if (res.status == 201) {
+    //       swal({
+    //         title: "Thêm phim thành công",
+    //         text: "",
+    //         icon: "success",
+    //       });
+    //       setTimeout(function () {
+    //         navigate(0);
+    //       }, 1000);
+    //     } else return res.json();
+    //   })
+    //   .then((response) => {
+    //     console.log("response", response);
+    //     if (response != true)
+    //       return swal({
+    //         title: "Thêm phim thất bại",
+    //         text: response.error,
+    //         icon: "error",
+    //       });
+    //   });
   };
 
   const handleAdd = (e) => {
