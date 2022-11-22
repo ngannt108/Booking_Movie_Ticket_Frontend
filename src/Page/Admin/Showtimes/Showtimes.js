@@ -1,7 +1,11 @@
 import HeaderAdmin from "../Header/HeaderAdmin";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import React, { useState } from "react";
-import { API_MOVIE, API_THEATERS } from "../../../common/ApiController";
+import {
+  API_MOVIE,
+  API_SHOWTIMES,
+  API_THEATERS,
+} from "../../../common/ApiController";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -20,9 +24,9 @@ export default function Showtimes() {
   const store = useContext(StoreContext);
   const [expandedRows, setExpandedRows] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [ID, setID] = useState("");
   const [expandState, setExpandState] = useState({});
-
+  const nagivate = useNavigate();
   const handleExpandRow = (event, theaterId) => {
     const currentExpandedRows = expandedRows;
     const isRowExpanded = currentExpandedRows.includes(theaterId);
@@ -63,68 +67,72 @@ export default function Showtimes() {
 
   const theaters = store.lsTheater.Theater?.lsTheater;
   const movieDetail = store.movie?.DetailMovie?.detailMovie;
-  console.log(
-    ">> movieDetail?.lichChieu?.tenRap",
-    movieDetail?.lichChieu.sort((a, b) =>
-      a.tenRap.tenRap.localeCompare(b.tenRap.tenRap)
-    )
-  );
-  const handleDelete = () => {
+  // console.log(
+  //   ">> movieDetail?.lichChieu?.tenRap",
+  //   movieDetail?.lichChieu.sort((a, b) =>
+  //     a.tenRap.tenRap.localeCompare(b.tenRap.tenRap)
+  //   )
+  // );
+  const handleDelete = (id) => {
+    setID(id);
+
     swal("Bạn chắc chắn muốn xóa suất chiếu này?", {
-      buttons: {
-        cancel: "Hủy",
-        confirm: "Đồng ý",
-      },
+      buttons: ["Hủy", "Đồng ý"],
     }).then((value) => {
       switch (value) {
-        case "Hủy":
+        case true:
+          DeleteShowtimeAction(id);
           break;
         default:
-          swal("Got away safely!");
+          return;
       }
     });
   };
-  // const DeleteShowtimeAction = () => {
-  //     fetch("http://localhost:5000/admin/movie/" + props.slug + "/showtime/" + , {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //         method: "POST",
-  //         body: JSON.stringify({
-  //           ngayChieu: formatDateTime,
-  //           tenRap: detailShowtime.tenRap,
-  //           tenCumRap: props.clusterID,
-  //           giaVe: "70000",
-  //         }),
-  //       })
-  //         .then((res) => {
-  //           if (res.status == 201) {
-  //             swal({
-  //               title: "Thêm lịch chiếu thành công",
-  //               text: "",
-  //               icon: "success",
-  //             });
-  //             setTimeout(function () {
-  //               window.location.reload();
-  //             }, 1000);
-  //           } else return res.json();
-  //         })
-  //         .then((response) => {
-  //           if (response != true)
-  //             return swal({
-  //               title: "Thêm lịch chiếu thất bại",
-  //               text: response.error,
-  //               icon: "error",
-  //             });
-  //         });
-  // }
+  const token = JSON.parse(sessionStorage.getItem("token"));
+  const DeleteShowtimeAction = (id) => {
+    swal({
+      icon: "info",
+      title: "Xin chờ giây lát",
+      buttons: false,
+      closeOnClickOutside: false,
+    });
+    fetch(API_SHOWTIMES.DELETE + slug.slug + "/showtime", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+      body: JSON.stringify({
+        maLichChieu: id,
+      }),
+    })
+      .then((res) => {
+        if (res.status == 200) {
+          swal({
+            title: "Xóa lịch chiếu thành công",
+            text: "",
+            icon: "success",
+          });
+          setTimeout(function () {
+            nagivate(0);
+          }, 1000);
+        } else return res.json();
+      })
+      .then((response) => {
+        if (response != true)
+          return swal({
+            title: "Xóa lịch chiếu thất bại",
+            text: response.error,
+            icon: "error",
+          });
+      });
+  };
   return (
     <>
       <div className="general" style={{ marginLeft: "3em", width: "100%" }}>
         <div style={{ width: "925px" }}>
           <Row>
-            <Col style={{ color: "white" }}>
+            <Col style={{ color: "white", fontWeight: "bold" }}>
               THÔNG TIN PHIM - {movieDetail?.tenPhim}
             </Col>
           </Row>
@@ -194,7 +202,7 @@ export default function Showtimes() {
                                         <>
                                           <h5>{item.tenRap.tenRap}</h5>
                                           <div className="row">
-                                            <div className="col-md-7">
+                                            <div className="col-md-6">
                                               <li>
                                                 <span>
                                                   <b>Ngày chiếu:</b>
@@ -206,7 +214,7 @@ export default function Showtimes() {
                                                 </span>
                                               </li>
                                             </div>
-                                            <div className="col-md-4">
+                                            <div className="col-md-5">
                                               <li>
                                                 <span>
                                                   <b>Thời lượng:</b>
@@ -219,7 +227,7 @@ export default function Showtimes() {
                                             </div>
                                           </div>
                                           <div className="row">
-                                            <div className="col-md-7">
+                                            <div className="col-md-6">
                                               <li>
                                                 <span>
                                                   <b>Giờ kết thúc:</b>
@@ -231,7 +239,7 @@ export default function Showtimes() {
                                                 </span>
                                               </li>
                                             </div>
-                                            <div className="col-md-4">
+                                            <div className="col-md-5">
                                               <li>
                                                 <span>
                                                   <b>Giá vé:</b>
@@ -263,9 +271,10 @@ export default function Showtimes() {
                                                     width="fit-content"
                                                     borderRadius="10.2em"
                                                     fontWeight="bold"
-                                                    onClick={(e) =>
-                                                      handleDelete(e)
-                                                    }
+                                                    onClick={(e) => {
+                                                      e.stopPropagation();
+                                                      handleDelete(item._id);
+                                                    }}
                                                   />
                                                 </span>
                                               </li>

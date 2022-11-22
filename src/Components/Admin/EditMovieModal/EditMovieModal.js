@@ -38,6 +38,7 @@ function EditMovieModal(props) {
   const handleClick = (biDanh) => {
     setBiDanh(biDanh);
     setInvokeModal(true);
+    // debugger;
   };
   var data;
   useEffect(() => {
@@ -67,7 +68,7 @@ function EditMovieModal(props) {
   }, [biDanh, isEdit]);
 
   data = store.movie?.DetailMovie;
-  console.log("> editMovie", data.detailMovie);
+  // console.log("> editMovie", data.detailMovie);
   const [validated, setValidated] = useState(false);
   const initModal = () => {
     setInvokeModal(!isShow);
@@ -109,6 +110,18 @@ function EditMovieModal(props) {
       method: "PUT",
       body: fd,
     });
+    if (res.status === 401) {
+      swal({
+        title: "Vui lòng đăng nhập lại",
+        text: "Phiên đăng nhập đã hết hạn",
+        icon: "warning",
+        buttons: true,
+      });
+      setTimeout(function () {
+        sessionStorage.clear();
+        navigate("/signIn");
+      }, 1000);
+    }
     if (res.status === 200) {
       swal({
         title: "Cập nhật thành công!",
@@ -193,9 +206,13 @@ function EditMovieModal(props) {
         <Modal size="lg" show={isShow}>
           <Modal.Header closeButton onClick={initModal}>
             {isEdit ? (
-              <Modal.Title>CHỈNH SỬA PHIM</Modal.Title>
+              <Modal.Title style={{ fontWeight: "bold" }}>
+                CHỈNH SỬA PHIM
+              </Modal.Title>
             ) : (
-              <Modal.Title>CHI TIẾT PHIM</Modal.Title>
+              <Modal.Title style={{ fontWeight: "bold" }}>
+                CHI TIẾT PHIM
+              </Modal.Title>
             )}
           </Modal.Header>
           {!loading ? (
@@ -479,36 +496,46 @@ function EditMovieModal(props) {
           <Modal.Footer>
             {isEdit ? (
               <div class="d-grid gap-2 col-6 mx-auto">
-                <Button
-                  color="white"
-                  background="green"
+                <button
+                  className="button-custom yes"
                   name="Đồng ý"
                   borderRadius="0.4em"
                   disabled={isInvalid}
                   onClick={(e, movie) => handleEdit(e, movie)}
-                />
-                <Button
-                  color="danger"
+                >
+                  Đồng ý
+                </button>
+                <button
+                  className="button-custom no"
                   name="Hủy"
                   borderRadius="0.4em"
                   onClick={initModal}
-                />
+                >
+                  Hủy
+                </button>
               </div>
             ) : (
               <div class="d-grid gap-2 col-6 mx-auto">
-                <Button
-                  color="black"
-                  background="yellow"
+                <button
+                  className="button-custom yes"
                   name="Chỉnh sửa"
                   borderRadius="0.4em"
+                  style={{
+                    "background-image":
+                      "radial-gradient(100% 100% at 100% 0, #f6fa7e 0, #ffc107 100%)",
+                  }}
                   onClick={() => setIsEdit(true)}
-                />
-                <Button
-                  color="danger"
+                >
+                  Chỉnh sửa
+                </button>
+                <button
+                  className="button-custom no"
                   name="Hủy"
                   borderRadius="0.4em"
                   onClick={initModal}
-                />
+                >
+                  Hủy
+                </button>
               </div>
             )}
           </Modal.Footer>

@@ -1,22 +1,14 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AllMovies from "./Movies/AllMovies";
-import AddMovieForm from "../../Components/Admin/AddMovieForm/AddMovieForm";
 import Showtimes from "./Showtimes/Showtimes";
 import "../../App.css";
-import HeaderAdmin from "./Header/HeaderAdmin";
 import { Link, NavLink } from "react-router-dom";
-import AllFoodDrinks from "./FoodDrinks/AllFoodDrinks";
-import EditMovieModal from "../../Components/Admin/EditMovieModal/EditMovieModal";
-import AddFDForm from "../../Components/Admin/AddFDForm/AddFDForm";
+import AllUsers from "./Users/AllUsers";
 
 const MenuFDAdmin = React.memo(() => (
   <div className="vertical-menu">
-    <NavLink end to="/Admin/Foods">
-      Danh sách combo
-    </NavLink>
-    <NavLink end to="/Admin/Foods/Add">
-      Tạo combo mới
+    <NavLink end to="/Admin/Users">
+      Danh sách người dùng
     </NavLink>
   </div>
 ));
@@ -27,11 +19,7 @@ export default function AdminFoodDrinks() {
     <div className="general" style={{ marginTop: "1em" }}>
       <MenuFDAdmin />
       <Routes>
-        <Route path="/Foods" element={<AllFoodDrinks />} />
-        <Route path="/Foods/add" element={<AddFDForm />} />
-        <Route path="/:slug/showtimes" element={<Showtimes />} />
-
-        <Route path="/edit" element={<EditMovieModal />} />
+        <Route path="/Users" element={<AllUsers />} />
       </Routes>
     </div>
     /* <div className="vertical-menu">

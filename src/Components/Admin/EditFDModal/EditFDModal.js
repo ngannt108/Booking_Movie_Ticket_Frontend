@@ -116,8 +116,9 @@ function EditFDModal(props) {
       icon: "info",
       title: "Xin chờ giây lát",
       buttons: false,
+      closeOnClickOutside: false,
     });
-    console.log(">> fd", fd);
+    // console.log(">> fd", fd);
     const token = JSON.parse(sessionStorage.getItem("token"));
     let res = await fetch(API_FOODDRINKS.UPDATE + biDanh, {
       headers: {
@@ -211,9 +212,13 @@ function EditFDModal(props) {
         <Modal size="lg" show={isShow}>
           <Modal.Header closeButton onClick={initModal}>
             {isEdit ? (
-              <Modal.Title>CHỈNH SỬA COMBO</Modal.Title>
+              <Modal.Title style={{ fontWeight: "bold" }}>
+                CHỈNH SỬA COMBO
+              </Modal.Title>
             ) : (
-              <Modal.Title>CHI TIẾT COMBO</Modal.Title>
+              <Modal.Title style={{ fontWeight: "bold" }}>
+                CHI TIẾT COMBO
+              </Modal.Title>
             )}
           </Modal.Header>
           {!loading ? (
@@ -391,27 +396,6 @@ function EditFDModal(props) {
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Row>
-                  {/* <Form.Group className="mb-3">
-                                <Form.Group as={Col} md="3" controlId="validationCustom05">
-
-                                    <Form.Control.Feedback type="invalid">
-                                        Please provide a valid zip.
-                                    </Form.Control.Feedback>
-
-                                </Form.Group>
-                                <Card style={{ width: '8rem', height: "2rem" }}>
-                                    <Card.Img variant="top" src={image || detailFD?.hinhAnh} />
-                                    <Card.Body>
-                                        <Card.Title>Ảnh bìa</Card.Title>
-                                        <Card.Text>
-                                            <Form.Control type="file" required />
-                                        </Card.Text>
-
-                                    </Card.Body>
-                                </Card>
-
-                            </Form.Group>
- */}
                 </Form>
               </div>
 
@@ -424,36 +408,46 @@ function EditFDModal(props) {
           <Modal.Footer>
             {isEdit ? (
               <div class="d-grid gap-2 col-6 mx-auto">
-                <Button
-                  color="white"
-                  background="green"
+                <button
+                  className="button-custom yes"
                   name="Đồng ý"
                   borderRadius="0.4em"
                   disabled={isInvalid}
                   onClick={(e, movie) => handleEdit(e, movie)}
-                />
-                <Button
-                  color="danger"
+                >
+                  Đồng ý
+                </button>
+                <button
+                  className="button-custom no"
                   name="Hủy"
                   borderRadius="0.4em"
                   onClick={initModal}
-                />
+                >
+                  Hủy
+                </button>
               </div>
             ) : (
               <div class="d-grid gap-2 col-6 mx-auto">
-                <Button
-                  color="black"
-                  background="yellow"
+                <button
+                  className="button-custom yes"
                   name="Chỉnh sửa"
                   borderRadius="0.4em"
+                  style={{
+                    "background-image":
+                      "radial-gradient(100% 100% at 100% 0, #f6fa7e 0, #ffc107 100%)",
+                  }}
                   onClick={() => setIsEdit(true)}
-                />
-                <Button
-                  color="danger"
+                >
+                  Chỉnh sửa
+                </button>
+                <button
+                  className="button-custom no"
                   name="Hủy"
                   borderRadius="0.4em"
                   onClick={initModal}
-                />
+                >
+                  Hủy
+                </button>
               </div>
             )}
           </Modal.Footer>

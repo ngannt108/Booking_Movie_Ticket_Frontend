@@ -4,18 +4,17 @@ import AllMovies from "./Movies/AllMovies";
 import AddMovieForm from "../../Components/Admin/AddMovieForm/AddMovieForm";
 import Showtimes from "./Showtimes/Showtimes";
 import "../../App.css";
-import HeaderAdmin from "./Header/HeaderAdmin";
 import { Link, NavLink } from "react-router-dom";
 import EditMovieModal from "../../Components/Admin/EditMovieModal/EditMovieModal";
+import AllMoviesTest from "./Movies/AllMoviesTest";
 const MenuAdmin = React.memo(() => (
   <div className="vertical-menu">
     <NavLink defaultValue end to="/Admin">
-      Tất cả phim
+      Danh sách phim
     </NavLink>
     <NavLink end to="/Admin/movie">
       Tạo phim mới
     </NavLink>
-    <Link to="#">Phim được yêu thích</Link>
   </div>
 ));
 
@@ -24,15 +23,6 @@ export default function AdminMovies() {
     // <div className="admin-page">
     //   <HeaderAdmin />
     <div className="general" style={{ marginTop: "1em" }}>
-      {/* <div className="vertical-menu">
-        <NavLink defaultValue end to="/Admin">
-          Tất cả phim
-        </NavLink>
-        <NavLink end to="/Admin/movie">
-          Tạo phim mới
-        </NavLink>
-        <Link to="#">Phim được yêu thích</Link>
-      </div> */}
       <MenuAdmin />
       <Routes>
         <Route index path="/" element={<AllMovies />} />
@@ -41,16 +31,6 @@ export default function AdminMovies() {
 
         <Route path="/edit" element={<EditMovieModal />} />
       </Routes>
-      {/* </div> */}
-      {/* <div className="vertical-menu">
-              <Link to="#" className="active">
-                  Tất cả phim
-              </Link>
-              <NavLink end to="/Admin/movie">
-                  Tạo phim mới
-              </NavLink>
-              <Link to="#">Phim được yêu thích</Link>
-          </div>  */}
     </div>
   );
 }

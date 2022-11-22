@@ -8,12 +8,11 @@ import "../../../../node_modules/bootstrap/dist/css/bootstrap.min.css";
 // import { FixedSizeList } from 'react-window';
 import { List } from "react-content-loader";
 import ItemMovie from "../../../Components/Admin/ItemMovie/ItemMovie";
-
+import ReactTable from "react-table";
 export default function AllMovies() {
   const store = useContext(StoreContext);
   const [biDanh, setBiDanh] = useState();
   const [isComing, setIsComing] = useState(true);
-  console.log(">>ID in AllMovies", biDanh);
 
   useEffect(() => {
     if (isComing) {
@@ -50,26 +49,34 @@ export default function AllMovies() {
           <div style={{ padding: "0em 3em 3em 3em" }}>
             <div className="row">
               <div className="col-md-4">
-                <Button
+                <button
+                  className="button-custom no"
                   disabled={isComing ? true : false}
                   width="160px"
                   height="40px"
                   name="Phim sắp chiếu"
                   onClick={() => setIsComing(true)}
-                />
+                >
+                  Phim sắp chiếu
+                </button>
               </div>
               <div className="col-md-4">
-                <Button
+                <button
+                  className="button-custom no"
                   disabled={!isComing ? true : false}
                   width="160px"
                   height="40px"
                   name="Phim đang chiếu"
                   onClick={() => setIsComing(false)}
-                />
+                >
+                  Phim đang chiếu
+                </button>
               </div>
             </div>
             {movies.length == 0 ? (
-              <div style={{ color: "white", marginTop: "1em" }}>
+              <div
+                style={{ color: "white", marginTop: "1em", minWidth: "925px" }}
+              >
                 Hiện chưa có thông tin phim!
               </div>
             ) : (

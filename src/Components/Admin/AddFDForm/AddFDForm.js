@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom";
 import { Col, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import isEmpty from "validator/lib/isEmpty";
-
+import "../../../Page/Admin/Movies/MovieManage.css";
 function AddFDForm(props) {
   const store = useContext(StoreContext);
   const [image, setDisplayImage] = useState();
@@ -32,9 +32,9 @@ function AddFDForm(props) {
   };
   const checkValid = (event) => {
     let temp = document.getElementsByName(event.target.name).item(0);
-    console.log(">> temp.checkValidity()", temp.checkValidity());
-    console.log(">> temp", temp);
-    if (temp.name === "image" && detailFD[temp.name]) {
+    // console.log(">> temp.checkValidity()", temp.checkValidity());
+    // console.log(">> temp", temp);
+    if (temp.name === "image" && image) {
       return temp.classList.remove("is-invalid");
     }
     if (
@@ -51,10 +51,10 @@ function AddFDForm(props) {
 
   const checkInvalidAndRerender = () => {
     //console.log(isInvalid === undefined)
-    if (document.getElementsByClassName("is-invalid").length > 0) {
+    if (document.getElementsByClassName("is-invalid add-fd").length > 0) {
       console.log(">> STILL INVALID");
       // If needed
-      if (isInvalid || isInvalid === undefined) {
+      if (!isInvalid || isInvalid === undefined) {
         setInvalid(true);
       }
     } else {
@@ -78,7 +78,7 @@ function AddFDForm(props) {
       title: "Xin chờ giây lát",
       buttons: false,
     });
-    console.log(">> fd", fd);
+    // console.log(">> fd", fd);
     const token = JSON.parse(sessionStorage.getItem("token"));
     let res = await fetch(API_FOODDRINKS.ADD, {
       headers: {
@@ -141,7 +141,7 @@ function AddFDForm(props) {
       }}
     >
       <Form id="create-form">
-        <Form.Label>THÔNG TIN COMBO</Form.Label>
+        <Form.Label style={{ fontWeight: "bold" }}>THÔNG TIN COMBO</Form.Label>
         <div style={{ background: "white", width: "925px" }}>
           {/* <Form style={{ maxWidth: "800px" }} noValidate validated={validated} onSubmit={handleEdit}> */}
           <Row className="mb-3">
@@ -152,7 +152,7 @@ function AddFDForm(props) {
                 className="mb-3"
               >
                 <Form.Control
-                  className="is-invalid"
+                  className="is-invalid add-fd"
                   required
                   type="text"
                   name="tenCombo"
@@ -197,7 +197,7 @@ function AddFDForm(props) {
                 className="mb-3"
               >
                 <Form.Control
-                  className="is-invalid"
+                  className="is-invalid add-fd"
                   type={"number"}
                   name="giaGoc"
                   min={"1000"}
@@ -224,7 +224,7 @@ function AddFDForm(props) {
                 className="mb-3"
               >
                 <Form.Control
-                  className="is-invalid"
+                  className="is-invalid add-fd"
                   type={"number"}
                   name="giamGia"
                   min={"0"}
@@ -247,7 +247,7 @@ function AddFDForm(props) {
             >
               <Form.Label>Hình ảnh</Form.Label>
               <Form.Control
-                className="is-invalid"
+                className="is-invalid add-fd"
                 type="file"
                 name="image"
                 onChange={(event) => {
@@ -263,6 +263,7 @@ function AddFDForm(props) {
                   }}
                   variant="top"
                   required
+                  src={image}
                 />
               </Card>
               <Form.Control.Feedback type="invalid">
@@ -271,20 +272,23 @@ function AddFDForm(props) {
             </Form.Group>
           </Row>
           <div className="d-grid gap-2 col-6 mx-auto">
-            <Button
-              color="black"
-              background="yellow"
+            <button
+              className="button-custom yes"
               name="Tạo combo"
               borderRadius="0.4em"
               disabled={isInvalid === undefined ? true : isInvalid}
               onClick={(e) => handleAdd(e)}
-            />
-            <Button
-              color="danger"
+            >
+              Tạo combo
+            </button>
+            <button
+              className="button-custom no"
               name="Hủy"
               borderRadius="0.4em"
               onClick={initModal}
-            />
+            >
+              Hủy
+            </button>
           </div>
         </div>
       </Form>
