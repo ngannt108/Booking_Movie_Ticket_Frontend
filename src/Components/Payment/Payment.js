@@ -6,6 +6,7 @@ import { Modal, Image } from "react-bootstrap";
 import swal from "sweetalert";
 import "./Payment.css";
 import QRCode from "qrcode";
+import { queryAllByText } from "@testing-library/react";
 
 export default function Payment() {
   const store = useContext(StoreContext);
@@ -177,7 +178,35 @@ export default function Payment() {
         store.bookingRoom.Payment.payment?.phongChieu
       }`
     );
-    return qr;
+    if (qr !== false) {
+      const dataSendEmail = {
+        taiKhoan: store.bookingRoom.Payment.payment?.hoTen,
+        tenCumRap: store.bookingRoom.Payment.payment?.tenRap,
+        tenPhim: store.bookingRoom.Payment.payment?.tenPhim,
+        ngayChieu: formatDate(
+          store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
+        ).toString(),
+        gioChieu: formatTime(
+          store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
+        ).toString(),
+        QRCode: qr,
+      };
+      console.log(dataSendEmail);
+      const DATA_BOOKING = {
+        danhSachGhe: store.bookingRoom.Payment.payment.danhSachGhe,
+        danhSachAnUong: [],
+        diemSuDung: RewardPoints,
+      };
+      if (isSuccessPaypal === true) {
+        console.log("Reward point", RewardPoints);
+        const success = await PostPaymenInfo(showtimeID, biDanh, DATA_BOOKING); //{ danhSachGhe:
+        if (success !== false) {
+          await SendEmail(dataSendEmail);
+        }
+        setConfirm(false); //đóng modal
+        setIsSuccessPaypal(false);
+      }
+    }
   };
 
   const SendEmail = async (dataSendEmail) => {
@@ -195,35 +224,7 @@ export default function Payment() {
 
   useEffect(() => {
     //setQR
-    if (CreateQR() !== false) {
-      const dataSendEmail = {
-        taiKhoan: store.bookingRoom.Payment.payment?.hoTen,
-        tenCumRap: store.bookingRoom.Payment.payment?.tenRap,
-        tenPhim: store.bookingRoom.Payment.payment?.tenPhim,
-        ngayChieu: formatDate(
-          store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
-        ).toString(),
-        gioChieu: formatTime(
-          store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
-        ).toString(),
-        QRCode: CreateQR(),
-      };
-      console.log(dataSendEmail);
-      const DATA_BOOKING = {
-        danhSachGhe: store.bookingRoom.Payment.payment.danhSachGhe,
-        danhSachAnUong: [],
-        diemSuDung: RewardPoints,
-      };
-      if (isSuccessPaypal === true) {
-        console.log("Reward point", RewardPoints);
-        const success = PostPaymenInfo(showtimeID, biDanh, DATA_BOOKING); //{ danhSachGhe:
-        if (success !== false) {
-          SendEmail(dataSendEmail);
-        }
-        setConfirm(false); //đóng modal
-        setIsSuccessPaypal(false);
-      }
-    }
+    CreateQR();
   }, [isSuccessPaypal]);
 
   useEffect(() => {
