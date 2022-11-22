@@ -4,7 +4,7 @@ function GetUser(state, { type, payload }) {
     case "GETALL":
       return { ...state, users: payload };
     case "GETDETAIL":
-      const found = state.users.find((item) => item.tentaiKhoan == payload);
+      const found = state.users.find((item) => item.tentaiKhoan === payload);
       // console.log(">> GETDETAIL", found);
       if (found) return { ...state, detail: found };
     default:

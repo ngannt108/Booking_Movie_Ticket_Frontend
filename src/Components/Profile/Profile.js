@@ -5,11 +5,13 @@ import "./Profile.css";
 import { useState } from "react";
 import ModalChangeProfile from "../ModalChangeProfile/ModalChangeProfile";
 import { API_USER } from "../../common/ApiController";
+import ModalChangePassword from "../ModalChangePassword/ModalChangePassword";
 
 export default function Profile() {
   const store = useContext(StoreContext);
   const [profile, setProfile] = useState(null);
   const [changeInfo, setChangeInfo] = useState(false);
+  const [changePassword, setChangePassword] = useState(false);
   useEffect(() => {
     if (store.account.userAccount.account) {
       let token = JSON.parse(sessionStorage.getItem("token"));
@@ -29,7 +31,7 @@ export default function Profile() {
           })
         );
     }
-  }, [store.account.userAccount.account]);
+  }, [store.account]);
   useEffect(() => {
     if (store.account.Profile.profile) {
       setProfile(store.account.Profile.profile);
@@ -49,6 +51,9 @@ export default function Profile() {
 
   const ClickModal = (data) => {
     setChangeInfo(data);
+  };
+  const ClickModalChangePassword = (data) => {
+    setChangePassword(data);
   };
 
   return (
@@ -146,7 +151,12 @@ export default function Profile() {
                         </button>
                       </div>
                       <div className="payment-cineplex">
-                        <button className="profile-button change-password">
+                        <button
+                          className="profile-button change-password"
+                          onClick={() => {
+                            setChangePassword(true);
+                          }}
+                        >
                           THAY ĐỔI MẬT KHẨU
                         </button>
                       </div>
@@ -154,9 +164,14 @@ export default function Profile() {
                   </div>
                   {changeInfo && (
                     <ModalChangeProfile
-                      profile={profile}
                       show={changeInfo}
                       HandleClick={ClickModal}
+                    />
+                  )}
+                  {changePassword && (
+                    <ModalChangePassword
+                      show={changePassword}
+                      HandleClick={ClickModalChangePassword}
                     />
                   )}
                 </div>

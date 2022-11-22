@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./SignIn.css";
 import { StoreContext } from "../../Redux/Store/Store";
 import { API_ACCOUNTS } from "../../common/ApiController";
+import swal from "sweetalert";
 
 export default function LogIn() {
   const store = useContext(StoreContext);
@@ -44,9 +45,14 @@ export default function LogIn() {
         method: "POST",
         body: JSON.stringify(info),
       });
+      let dataUser = await res.json();
       if (res.status === 200) {
-        let dataUser = await res.json();
-
+        await swal({
+          title: "Thành công",
+          text: "Đăng nhập thành công!",
+          icon: "success",
+          button: "Ok",
+        });
         const {
           token,
           data,
@@ -69,7 +75,7 @@ export default function LogIn() {
           navigate("/");
         }
       } else {
-        alert("Đăng nhập thất bại!");
+        swal("Thất bại", dataUser.error, "error");
       }
     }
   };
