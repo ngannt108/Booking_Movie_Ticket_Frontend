@@ -504,7 +504,7 @@ export default function Payment() {
                 {listCombo ? (
                   listCombo.map((n, i) => (
                     <div key={i} className="food-n-drink">
-                      <input
+                      {/* <input
                         onClick={(event) => {
                           CheckCombo(
                             {
@@ -518,9 +518,9 @@ export default function Payment() {
                         }}
                         className="combo-check"
                         type="checkbox"
-                      />
+                      /> */}
                       <div className="combo-info">
-                        <img alt="" src={n.hinhAnh} width="100" />
+                        <img alt="" src={n.hinhAnh} width="200" />
                         <div className="combo-detail">
                           <p>{n.tenCombo}</p>
                           <p>{n.moTa}</p>
@@ -531,6 +531,11 @@ export default function Payment() {
                             })}{" "}
                             VND
                           </p>
+                          <div className="countFD">
+                            <button className="count">-</button>
+                            <input placeholder="0" type="number" />
+                            <button className="count">+</button>
+                          </div>
                         </div>
                       </div>
                     </div>
