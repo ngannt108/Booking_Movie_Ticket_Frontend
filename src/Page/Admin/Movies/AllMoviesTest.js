@@ -42,7 +42,7 @@ export default function AllMoviesTest() {
   let movies = isComing
     ? store.lsComingMovie.ComingMovie?.listMovie
     : store.lsShowingMovie.ShowingMovie?.listMovie;
-  console.log(">> MOVIES in test", movies);
+  // console.log(">> MOVIES in test", movies);
   let data;
   data = movies;
   const columns = React.useMemo(

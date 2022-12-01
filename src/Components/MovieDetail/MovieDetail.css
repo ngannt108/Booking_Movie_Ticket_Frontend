@@ -39,7 +39,7 @@
   font-size: 14px;
   font-weight: bold;
   margin-right: 20px;
-  width: 88px;
+  width: fit-content;
 }
 .label-info {
   color: lightgray;

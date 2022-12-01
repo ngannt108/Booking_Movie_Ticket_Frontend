@@ -61,12 +61,12 @@ function AddShowtimeModal(props) {
         });
       });
   }, []);
-  const token = JSON.parse(sessionStorage.getItem("token"));
+  const token = JSON.parse(localStorage.getItem("token"));
 
   const AddShowtimeAction = async (e) => {
     e.preventDefault();
     let formatDateTime = `${detailShowtime.ngayChieu} ${detailShowtime.gioChieu}:${detailShowtime.phutChieu}`;
-    console.log(">> formatDateTime", formatDateTime);
+    // console.log(">> formatDateTime", formatDateTime);
     swal({
       icon: "info",
       title: "Xin chờ giây lát",
@@ -95,7 +95,7 @@ function AddShowtimeModal(props) {
             buttons: true,
           });
           setTimeout(function () {
-            sessionStorage.clear();
+            localStorage.clear();
             navigate("/signIn");
           }, 1000);
         }
@@ -159,7 +159,7 @@ function AddShowtimeModal(props) {
   };
 
   const checkInvalidAndRerender = () => {
-    console.log("isInvalid", isInvalid);
+    // console.log("isInvalid", isInvalid);
     if (document.getElementsByClassName("is-invalid add-showtime").length > 0) {
       // If needed
       if (!isInvalid || isInvalid === undefined) {

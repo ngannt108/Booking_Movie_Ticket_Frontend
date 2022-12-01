@@ -52,7 +52,7 @@ function AddFDForm(props) {
   const checkInvalidAndRerender = () => {
     //console.log(isInvalid === undefined)
     if (document.getElementsByClassName("is-invalid add-fd").length > 0) {
-      console.log(">> STILL INVALID");
+      // console.log(">> STILL INVALID");
       // If needed
       if (!isInvalid || isInvalid === undefined) {
         setInvalid(true);
@@ -79,7 +79,7 @@ function AddFDForm(props) {
       buttons: false,
     });
     // console.log(">> fd", fd);
-    const token = JSON.parse(sessionStorage.getItem("token"));
+    const token = JSON.parse(localStorage.getItem("token"));
     let res = await fetch(API_FOODDRINKS.ADD, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -95,7 +95,7 @@ function AddFDForm(props) {
         buttons: true,
       });
       setTimeout(function () {
-        sessionStorage.clear();
+        localStorage.clear();
         navigate("/signIn");
       }, 1000);
     }
@@ -121,7 +121,7 @@ function AddFDForm(props) {
     AddFDAction(e);
   };
 
-  console.log(">> isInvalid", isInvalid);
+  // console.log(">> isInvalid", isInvalid);
 
   const uploadImage = async (event) => {
     if (event.target.files[0] != null) {

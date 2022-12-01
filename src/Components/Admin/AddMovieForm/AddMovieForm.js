@@ -42,7 +42,12 @@ function AddMovieForm(props) {
     for (let keyOfObj in detailMovie) {
       fd.append(keyOfObj, detailMovie[keyOfObj]);
     }
-    const token = JSON.parse(sessionStorage.getItem("token"));
+    swal({
+      icon: "info",
+      title: "Xin chờ giây lát",
+      buttons: false,
+    });
+    const token = JSON.parse(localStorage.getItem("token"));
     fetch(API_MOVIE.ADD, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -59,7 +64,7 @@ function AddMovieForm(props) {
             buttons: true,
           });
           setTimeout(function () {
-            sessionStorage.clear();
+            localStorage.clear();
             navigate("/signIn");
           }, 1000);
         }
@@ -75,7 +80,7 @@ function AddMovieForm(props) {
         } else return res.json();
       })
       .then((response) => {
-        console.log("response", response);
+        // console.log("response", response);
         if (response != true)
           return swal({
             title: "Thêm phim thất bại",
@@ -89,7 +94,7 @@ function AddMovieForm(props) {
     e.preventDefault();
     AddMovieAction(e);
   };
-  console.log(">> Invalid in add movie", isInvalid);
+  // console.log(">> Invalid in add movie", isInvalid);
   const formattedDate = (dateInput) => {
     let today = new Date(dateInput);
     const yyyy = today.getFullYear();

@@ -64,7 +64,7 @@ export default function Payment() {
   const showtimeID = store.bookingRoom.Payment.payment.lichChieu._id;
 
   const PostPaymenInfo = async (showtimeID, biDanh, DATA_BOOKING) => {
-    let token = JSON.parse(sessionStorage.getItem("token"));
+    let token = JSON.parse(localStorage.getItem("token"));
     const res = await fetch(
       `${API_BOOKING.BOOK_TICKET}${biDanh}/showtime/${showtimeID}`,
       {
@@ -115,7 +115,7 @@ export default function Payment() {
   //PAYPAL
   const Paypal = ({ total }) => {
     const paypal = useRef();
-    console.log("tổng tiền", total);
+    // console.log("tổng tiền", total);
     useEffect(() => {
       FetchDataPaypal(total, paypal);
     }, [total]);
@@ -146,11 +146,11 @@ export default function Payment() {
         },
         onApprove: async (data, actions) => {
           const order = await actions.order.capture();
-          console.log(order);
+          // console.log(order);
           setIsSuccessPaypal(true);
         },
         onError: (err) => {
-          console.log(err);
+          // console.log(err);
         },
       })
       .render(paypal.current);
@@ -181,7 +181,7 @@ export default function Payment() {
   };
 
   const SendEmail = async (dataSendEmail) => {
-    const token = JSON.parse(sessionStorage.getItem("token"));
+    const token = JSON.parse(localStorage.getItem("token"));
     await fetch(API_BOOKING.SEND_EMAIL, {
       method: "POST",
       headers: {
@@ -208,14 +208,14 @@ export default function Payment() {
         ).toString(),
         QRCode: CreateQR(),
       };
-      console.log(dataSendEmail);
+      // console.log(dataSendEmail);
       const DATA_BOOKING = {
         danhSachGhe: store.bookingRoom.Payment.payment.danhSachGhe,
         danhSachAnUong: [],
         diemSuDung: RewardPoints,
       };
       if (isSuccessPaypal === true) {
-        console.log("Reward point", RewardPoints);
+        // console.log("Reward point", RewardPoints);
         const success = PostPaymenInfo(showtimeID, biDanh, DATA_BOOKING); //{ danhSachGhe:
         if (success !== false) {
           SendEmail(dataSendEmail);
@@ -637,7 +637,7 @@ export default function Payment() {
       </div>
       {/* <div>
         {store.bookingRoom.Payment.payment &&
-          console.log(store.bookingRoom.Payment.payment)}
+        // console.log(store.bookingRoom.Payment.payment)}
       </div> */}
       <div>{isConfirm && modalConfirm()}</div>
       <div>{useRewardPoints && modalRewardPoints()}</div>

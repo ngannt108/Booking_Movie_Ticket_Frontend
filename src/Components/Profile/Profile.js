@@ -12,7 +12,7 @@ export default function Profile() {
   const [changeInfo, setChangeInfo] = useState(false);
   useEffect(() => {
     if (store.account.userAccount.account) {
-      let token = JSON.parse(sessionStorage.getItem("token"));
+      let token = JSON.parse(localStorage.getItem("token"));
       fetch(API_USER.PROFILE, {
         headers: {
           //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json

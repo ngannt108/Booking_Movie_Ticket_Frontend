@@ -119,7 +119,7 @@ function EditFDModal(props) {
       closeOnClickOutside: false,
     });
     // console.log(">> fd", fd);
-    const token = JSON.parse(sessionStorage.getItem("token"));
+    const token = JSON.parse(localStorage.getItem("token"));
     let res = await fetch(API_FOODDRINKS.UPDATE + biDanh, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -135,7 +135,7 @@ function EditFDModal(props) {
         buttons: true,
       });
       setTimeout(function () {
-        sessionStorage.clear();
+        localStorage.clear();
         navigate("/signIn");
       }, 1000);
     }

@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AllMovies from "./Movies/AllMovies";
 import AddMovieForm from "../../Components/Admin/AddMovieForm/AddMovieForm";
 import Showtimes from "./Showtimes/Showtimes";
-import "../../App.css";
 import { Link, NavLink } from "react-router-dom";
 import EditMovieModal from "../../Components/Admin/EditMovieModal/EditMovieModal";
 import AllMoviesTest from "./Movies/AllMoviesTest";

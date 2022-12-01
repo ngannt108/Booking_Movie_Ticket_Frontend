@@ -71,7 +71,7 @@ export default function Header() {
                               type: "ACCOUNT",
                               payload: null,
                             });
-                            sessionStorage.clear();
+                            localStorage.clear();
                           }}
                           to="/"
                         >

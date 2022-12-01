@@ -4,7 +4,7 @@ function GetTicketBookings(state = [], { type, payload }) {
     case "GETTICKETBOOKINGS":
       return { ...state, lsTicketBookings: payload };
     case "GETTICKETSBYTIME":
-      console.log(">> GETTICKETSBYTIME", payload);
+      // console.log(">> GETTICKETSBYTIME", payload);
       return { ...state, lsTicketBookings: payload };
     default:
       return state;

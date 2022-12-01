@@ -5,7 +5,7 @@ import { StoreContext } from "../../../Redux/Store/Store";
 
 const Top10MoviesChart = () => {
   const store = useContext(StoreContext);
-  let token = JSON.parse(sessionStorage.getItem("token"));
+  let token = JSON.parse(localStorage.getItem("token"));
   useEffect(() => {
     fetch("http://localhost:5000/admins/movie/topMovies", {
       headers: {
@@ -24,7 +24,7 @@ const Top10MoviesChart = () => {
   }, []);
 
   let data = store.movie?.TopMovies?.topMovies;
-  console.log(">> topMovies", data);
+  // console.log(">> topMovies", data);
   let dateMovies = [];
   if (data)
     data.forEach((item) => {
@@ -32,7 +32,7 @@ const Top10MoviesChart = () => {
       if (!found)
         dateMovies.push({ name: item.tenPhim, quantity: item.soLuongBan });
     });
-  console.log(">> dateMovies", dateMovies);
+  // console.log(">> dateMovies", dateMovies);
   var nameMovies = dateMovies.map((item) => {
     return item["name"];
   });

@@ -28,6 +28,7 @@ export const API_SHOWTIME = {
 export const API_USER = {
   PROFILE: API_DOMAIN + "users",
   GETALL: API_DOMAIN + "admins/user",
+  POSTCOMMENT: API_DOMAIN + "users/"
 };
 
 export const API_ACCOUNTS = {

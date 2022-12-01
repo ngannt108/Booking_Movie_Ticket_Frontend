@@ -41,7 +41,7 @@ export default function AllMovies() {
   let movies = isComing
     ? store.lsComingMovie.ComingMovie?.listMovie
     : store.lsShowingMovie.ShowingMovie?.listMovie;
-  console.log(">> MOVIES", movies);
+  // console.log(">> MOVIES", movies);
   if (movies) {
     return (
       <>
@@ -74,10 +74,16 @@ export default function AllMovies() {
               </div>
             </div>
             {movies.length == 0 ? (
-              <div
-                style={{ color: "white", marginTop: "1em", minWidth: "925px" }}
-              >
-                Hiện chưa có thông tin phim!
+              <div className="container-body" style={{ overflowY: "hidden" }}>
+                <div
+                  style={{
+                    color: "white",
+                    marginTop: "1em",
+                    minWidth: "917px",
+                  }}
+                >
+                  Hiện chưa có thông tin phim!
+                </div>
               </div>
             ) : (
               <div className="container-body">
