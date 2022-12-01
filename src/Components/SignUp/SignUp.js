@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../SignIn/SignIn.css";
 import { API_ACCOUNTS } from "../../common/ApiController";
+import swal from "sweetalert";
 
 export default function LogIn() {
   const [account, setAccount] = useState({
@@ -91,11 +92,18 @@ export default function LogIn() {
           method: "POST",
           body: JSON.stringify(account),
         });
-        // console.log(res.status);
+        console.log(res.status);
+        let data = await res.json();
         if (res.status === 201) {
+          await swal({
+            title: "Thành công",
+            text: data,
+            icon: "success",
+            button: "Ok",
+          });
           navigate("/SignIn");
         } else {
-          alert("Đăng ký thất bại!");
+          swal("Thất bại", data.error, "error");
         }
       }
     }

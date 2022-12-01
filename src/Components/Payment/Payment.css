@@ -190,3 +190,23 @@ select:focus {
   width: 50%;
   margin-left: 8px;
 }
+
+.countFD {
+  display: flex;
+}
+
+.countFD input,
+.count {
+  height: 36px;
+  border: 1px solid lightgray;
+  font-size: 16px;
+}
+
+.countFD input {
+  width: 30%;
+  text-align: right;
+}
+
+.count {
+  width: 20%;
+}

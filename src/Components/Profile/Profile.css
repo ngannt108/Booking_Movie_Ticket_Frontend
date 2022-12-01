@@ -103,3 +103,66 @@
   border-radius: 4px;
   padding: 4px 8px;
 }
+
+/* Ticket history */
+.history-field {
+  /* display: flex; */
+  margin: 30px;
+  border: 1px solid lightgray;
+  border-radius: 16px;
+}
+
+.menu-field {
+  /* border-bottom: 1px solid lightgray; */
+  text-align: center;
+  display: flex;
+}
+
+.menu-field div {
+  width: 50%;
+  border-bottom: 1px solid lightgray;
+}
+
+.menu-field div:nth-child(1) {
+  border-right: 1px solid lightgray;
+}
+
+.menu-field h5 {
+  padding: 16px;
+}
+
+.payment-ticket-detail {
+  display: flex;
+}
+
+.payment-history {
+  border-right: 1px solid lightgray;
+  width: 50%;
+  overflow-y: scroll;
+  height: 500px;
+}
+
+.history-ticket {
+  padding: 20px 0px 0px 20px;
+  border-top: 1px solid lightgray;
+}
+
+.change-ticket {
+  background: linear-gradient(to right, #380db1, #ec7532);
+  padding: 8px 16px;
+  color: white;
+  border-radius: 8px;
+  border: 0px;
+  margin-bottom: 20px;
+}
+
+.ticket-detail {
+  border-top: 1px solid lightgray;
+  flex-grow: 1;
+}
+
+.noPaymentHistory {
+  padding: 28px;
+  align-items: center;
+  font-size: 24px;
+}
