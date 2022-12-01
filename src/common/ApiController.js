@@ -29,6 +29,7 @@ export const API_USER = {
   PROFILE: API_DOMAIN + "users",
   GETALL: API_DOMAIN + "admins/user",
   CHANGE_PASSWORD: API_DOMAIN + "users/editPassword",
+  HISTORY_TICKET: API_DOMAIN + "users/history",
 };
 
 export const API_ACCOUNTS = {

@@ -57,6 +57,7 @@ export default function Booking() {
 
   useEffect(() => {
     if (store.bookingRoom.Booking.booking.showtime) {
+      console.log(store.bookingRoom.Booking.booking.showtime);
       setOrderedChairs(store.bookingRoom.Booking.booking.showtime.gheDaChon);
     }
   }, [store.bookingRoom.Booking.booking.showtime.gheDaChon]);

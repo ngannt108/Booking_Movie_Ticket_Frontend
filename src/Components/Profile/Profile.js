@@ -12,6 +12,7 @@ export default function Profile() {
   const [profile, setProfile] = useState(null);
   const [changeInfo, setChangeInfo] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
+  const [historyPayment, setHistoryPayment] = useState(null);
   useEffect(() => {
     if (store.account.userAccount.account) {
       let token = JSON.parse(sessionStorage.getItem("token"));
@@ -30,13 +31,32 @@ export default function Profile() {
             payload: dt.data[0],
           })
         );
+      console.log("profile******");
     }
-  }, [store.account]);
+  }, [store.account.userAccount.account]);
   useEffect(() => {
     if (store.account.Profile.profile) {
       setProfile(store.account.Profile.profile);
     }
   }, [store.account.Profile.profile]);
+
+  useEffect(() => {
+    if (store.account.userAccount.account) {
+      let token = JSON.parse(sessionStorage.getItem("token"));
+      fetch(API_USER.HISTORY_TICKET, {
+        headers: {
+          //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((dt) => {
+          setHistoryPayment(dt.data);
+        });
+    }
+  }, [store.account.userAccount.account]);
 
   const checkOnClick = (e, className) => {
     [...document.getElementsByClassName(className)].forEach((element) => {
@@ -95,7 +115,7 @@ export default function Profile() {
                     setChangeProfile(false);
                   }}
                 >
-                  LỊCH SỬ ĐẶT VÉ
+                  LỊCH SỬ GIAO DỊCH
                 </div>
               </div>
               {changeProfile ? (
@@ -175,8 +195,36 @@ export default function Profile() {
                     />
                   )}
                 </div>
+              ) : historyPayment.length != 0 ? (
+                <div className="history-field">
+                  <div className="menu-field">
+                    <div>
+                      <h5>Lịch sử thanh toán</h5>
+                    </div>
+                    <div>
+                      <h5>Chi tiết vé đã đặt</h5>
+                    </div>
+                  </div>
+                  <div className="payment-ticket-detail">
+                    <div className="payment-history">
+                      {historyPayment.map((n, i) => (
+                        <div key={i} className="history-ticket">
+                          <p>Phim: {n.phim.tenPhim}</p>
+                          <p>Thời lượng: {n.phim.thoiLuong}p</p>
+                          {/* { <p>Combo đi kèm: {n.}</p>} */}
+                          <p>Thanh toán: {n.tienThanhToan}</p>
+                          {/* <p>Thời gian đặt: </p> */}
+                          <button className="change-ticket">Đổi vé</button>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="ticket-detail"></div>
+                  </div>
+                </div>
               ) : (
-                <div>LỊCH SỬ ĐẶT VÉ</div>
+                <div className="noPaymentHistory">
+                  Không có thông tin giao dịch gần nhất!
+                </div>
               )}
             </div>
           </div>

@@ -4,11 +4,13 @@ import { StoreContext } from "../../Redux/Store/Store";
 import { Modal } from "react-bootstrap";
 import { API_USER } from "../../common/ApiController";
 import swal from "sweetalert";
+import { useNavigate } from "react-router-dom";
 
 export default function ModalChangeProfile(props) {
   const store = useContext(StoreContext);
   const [isConfirm, setConfirm] = useState(props.show);
   const [fileImage, setFileImage] = useState(null);
+  const navigate = useNavigate();
   const [info, setInfo] = useState({
     tentaiKhoan: store.account.Profile.profile.tentaiKhoan,
     email: store.account.Profile.profile.email,
@@ -29,9 +31,7 @@ export default function ModalChangeProfile(props) {
       const fd = new FormData();
       if (fileImage != null) {
         fd.append("anhDaiDien", fileImage, fileImage.name);
-        console.log(fd);
       }
-      console.log(inputInfo);
       for (let keyOfObj in inputInfo) {
         fd.append(keyOfObj, inputInfo[keyOfObj]);
       }
@@ -46,7 +46,6 @@ export default function ModalChangeProfile(props) {
         method: "PUT",
         body: fd,
       });
-      console.log(res.status);
       if (res.status === 200) {
         await swal({
           title: "Thành công",

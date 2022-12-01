@@ -85,6 +85,7 @@ export default function Payment() {
         icon: "success",
         button: "Ok",
       });
+      navigate("/Profile");
     } else {
       swal(
         "Payment Unsuccessful",

@@ -47,12 +47,12 @@ export default function LogIn() {
       });
       let dataUser = await res.json();
       if (res.status === 200) {
-        await swal({
-          title: "Thành công",
-          text: "Đăng nhập thành công!",
-          icon: "success",
-          button: "Ok",
-        });
+        // await swal({
+        //   title: "Thành công",
+        //   text: "Đăng nhập thành công!",
+        //   icon: "success",
+        //   button: "Ok",
+        // });
         const {
           token,
           data,
