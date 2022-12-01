@@ -65,7 +65,7 @@ export default function Payment() {
   const showtimeID = store.bookingRoom.Payment.payment.lichChieu._id;
 
   const PostPaymenInfo = async (showtimeID, biDanh, DATA_BOOKING) => {
-    let token = JSON.parse(sessionStorage.getItem("token"));
+    let token = JSON.parse(localStorage.getItem("token"));
     const res = await fetch(
       `${API_BOOKING.BOOK_TICKET}${biDanh}/showtime/${showtimeID}`,
       {
@@ -117,7 +117,7 @@ export default function Payment() {
   //PAYPAL
   const Paypal = ({ total }) => {
     const paypal = useRef();
-    console.log("tổng tiền", total);
+    // console.log("tổng tiền", total);
     useEffect(() => {
       FetchDataPaypal(total, paypal);
     }, [total]);
@@ -148,11 +148,11 @@ export default function Payment() {
         },
         onApprove: async (data, actions) => {
           const order = await actions.order.capture();
-          console.log(order);
+          // console.log(order);
           setIsSuccessPaypal(true);
         },
         onError: (err) => {
-          console.log(err);
+          // console.log(err);
         },
       })
       .render(paypal.current);
@@ -160,23 +160,20 @@ export default function Payment() {
 
   const CreateQR = async () => {
     let qr = await QRCode.toDataURL(
-      `Họ tên: ${store.bookingRoom.Payment.payment?.hoTen}, Phim: ${
-        store.bookingRoom.Payment.payment?.tenPhim
-      }, Suất chiếu ${
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(11, 13) *
-          1 +
-        7 +
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(13, 16) +
-        " - " +
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(8, 10) +
-        "/" +
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(5, 7) +
-        "/" +
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(0, 4)
+      `Họ tên: ${store.bookingRoom.Payment.payment?.hoTen}, Phim: ${store.bookingRoom.Payment.payment?.tenPhim
+      }, Suất chiếu ${store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(11, 13) *
+      1 +
+      7 +
+      store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(13, 16) +
+      " - " +
+      store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(8, 10) +
+      "/" +
+      store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(5, 7) +
+      "/" +
+      store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(0, 4)
       }, Ghế:${store.bookingRoom.Payment.payment?.danhSachGhe.join(
         ", "
-      )}, Cụm rạp: ${store.bookingRoom.Payment.payment?.tenRap}, Phòng chiếu: ${
-        store.bookingRoom.Payment.payment?.phongChieu
+      )}, Cụm rạp: ${store.bookingRoom.Payment.payment?.tenRap}, Phòng chiếu: ${store.bookingRoom.Payment.payment?.phongChieu
       }`
     );
     if (qr !== false) {
@@ -211,7 +208,7 @@ export default function Payment() {
   };
 
   const SendEmail = async (dataSendEmail) => {
-    const token = JSON.parse(sessionStorage.getItem("token"));
+    const token = JSON.parse(localStorage.getItem("token"));
     await fetch(API_BOOKING.SEND_EMAIL, {
       method: "POST",
       headers: {
@@ -225,7 +222,35 @@ export default function Payment() {
 
   useEffect(() => {
     //setQR
-    CreateQR();
+    if (CreateQR() !== false) {
+      const dataSendEmail = {
+        taiKhoan: store.bookingRoom.Payment.payment?.hoTen,
+        tenCumRap: store.bookingRoom.Payment.payment?.tenRap,
+        tenPhim: store.bookingRoom.Payment.payment?.tenPhim,
+        ngayChieu: formatDate(
+          store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
+        ).toString(),
+        gioChieu: formatTime(
+          store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
+        ).toString(),
+        QRCode: CreateQR(),
+      };
+      // console.log(dataSendEmail);
+      const DATA_BOOKING = {
+        danhSachGhe: store.bookingRoom.Payment.payment.danhSachGhe,
+        danhSachAnUong: [],
+        diemSuDung: RewardPoints,
+      };
+      if (isSuccessPaypal === true) {
+        // console.log("Reward point", RewardPoints);
+        const success = PostPaymenInfo(showtimeID, biDanh, DATA_BOOKING); //{ danhSachGhe:
+        if (success !== false) {
+          SendEmail(dataSendEmail);
+        }
+        setConfirm(false); //đóng modal
+        setIsSuccessPaypal(false);
+      }
+    }
   }, [isSuccessPaypal]);
 
   useEffect(() => {
@@ -290,7 +315,7 @@ export default function Payment() {
                   min={20}
                   max={
                     store.bookingRoom.Payment.payment?.diemSuDung >
-                    totalPrice / 1000
+                      totalPrice / 1000
                       ? totalPrice / 1000
                       : store.bookingRoom.Payment.payment?.diemSuDung
                   }
@@ -368,7 +393,7 @@ export default function Payment() {
                         11,
                         13
                       ) *
-                        1 +
+                      1 +
                       7 +
                       store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
                         13,
@@ -447,7 +472,7 @@ export default function Payment() {
                 }}
                 disabled={
                   store.bookingRoom.Payment.payment?.diemSuDung >= 20 &&
-                  RewardPoints === 0
+                    RewardPoints === 0
                     ? false
                     : true
                 }
@@ -588,7 +613,7 @@ export default function Payment() {
                         11,
                         13
                       ) *
-                        1 +
+                      1 +
                       7 +
                       store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
                         13,
@@ -644,7 +669,7 @@ export default function Payment() {
       </div>
       {/* <div>
         {store.bookingRoom.Payment.payment &&
-          console.log(store.bookingRoom.Payment.payment)}
+        // console.log(store.bookingRoom.Payment.payment)}
       </div> */}
       <div>{isConfirm && modalConfirm()}</div>
       <div>{useRewardPoints && modalRewardPoints()}</div>

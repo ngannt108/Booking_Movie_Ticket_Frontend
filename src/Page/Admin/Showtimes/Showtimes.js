@@ -88,7 +88,7 @@ export default function Showtimes() {
       }
     });
   };
-  const token = JSON.parse(sessionStorage.getItem("token"));
+  const token = JSON.parse(localStorage.getItem("token"));
   const DeleteShowtimeAction = (id) => {
     swal({
       icon: "info",

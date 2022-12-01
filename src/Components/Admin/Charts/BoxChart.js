@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { API_USER } from "../../../common/ApiController";
 const BoxChart = () => {
   const store = useContext(StoreContext);
-  let token = JSON.parse(sessionStorage.getItem("token"));
+  let token = JSON.parse(localStorage.getItem("token"));
   const navigate = useNavigate();
   useEffect(() => {
     fetch(API_USER.GETALL, {

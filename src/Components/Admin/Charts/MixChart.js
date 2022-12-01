@@ -6,7 +6,7 @@ import { StoreContext } from "../../../Redux/Store/Store";
 
 const MixChart = () => {
   const store = useContext(StoreContext);
-  let token = JSON.parse(sessionStorage.getItem("token"));
+  let token = JSON.parse(localStorage.getItem("token"));
   useEffect(() => {
     fetch(API_CHARTS.GETTICKETS, {
       headers: {
@@ -36,7 +36,7 @@ const MixChart = () => {
   };
   let data = store.ticketBooking?.GetAllTicketBooking?.lsTicketBookings;
   let dateShowtime = [];
-  //   console.log(">> ticket Bookings", data);
+  // // console.log(">> ticket Bookings", data);
   if (data)
     data.forEach((item) => {
       let formatDate = formattedDate(item.maLichChieu?.ngayChieu);
@@ -53,7 +53,7 @@ const MixChart = () => {
     return item["quantity"];
   });
   console.log(">> formatDate", formatDate);
-  console.log(">> count", count);
+  // console.log(">> count", count);
   var options = {
     series: [
       {

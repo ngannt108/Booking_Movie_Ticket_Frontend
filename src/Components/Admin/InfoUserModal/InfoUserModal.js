@@ -48,10 +48,9 @@ function InfoUserModal(props) {
       email: user?.email,
       hoTen: user?.hoTen,
     });
-
     setLoading(false);
     //  });
-  }, [tenTaiKhoan]);
+  }, [tenTaiKhoan, store.users?.listUsers?.detail]);
   // console.log(">> detail user:", detailUser);
   const initModal = () => {
     setInvokeModal(!isShow);
@@ -155,9 +154,6 @@ function InfoUserModal(props) {
                           value={detailUser.email}
                           plaintext
                         />
-                        <Form.Control.Feedback type="invalid">
-                          Phần giảm giá không được âm
-                        </Form.Control.Feedback>
                       </FloatingLabel>
                     </Form.Group>
                   </Row>

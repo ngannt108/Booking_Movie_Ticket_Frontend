@@ -28,9 +28,8 @@ export default function AdminFoodDrinks() {
       <MenuFDAdmin />
       <Routes>
         <Route path="/Foods" element={<AllFoodDrinks />} />
-        <Route path="/Foods/add" element={<AddFDForm />} />
+        <Route path="/Foods/Add" element={<AddFDForm />} />
         <Route path="/:slug/showtimes" element={<Showtimes />} />
-
         <Route path="/edit" element={<EditMovieModal />} />
       </Routes>
     </div>

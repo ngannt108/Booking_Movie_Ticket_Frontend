@@ -10,8 +10,8 @@ import ItemUser from "../../../Components/Admin/ItemUser/ItemUser";
 export default function AllUsers() {
   const store = useContext(StoreContext);
   const [biDanh, setBiDanh] = useState();
-  console.log(">>ID in AllUsers", biDanh);
-  let token = JSON.parse(sessionStorage.getItem("token"));
+  // console.log(">>ID in AllUsers", biDanh);
+  let token = JSON.parse(localStorage.getItem("token"));
 
   useEffect(() => {
     fetch(API_USER.GETALL, {
@@ -32,7 +32,7 @@ export default function AllUsers() {
   }, []);
 
   let users = store.users.listUsers?.users;
-  console.log(">> users", users);
+  // console.log(">> users", users);
   if (users) {
     return (
       <>

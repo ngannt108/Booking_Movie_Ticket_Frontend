@@ -13,7 +13,7 @@ const QuarterlyRevenueChart = () => {
   const [info, setInfo] = useState({ nam: "2022", quy: "1" });
   const [isInvalid, setInvalid] = useState(true);
   const [isLoading, setLoading] = useState(false);
-  let token = JSON.parse(sessionStorage.getItem("token"));
+  let token = JSON.parse(localStorage.getItem("token"));
   let data;
   useEffect(() => {
     fetch(API_CHARTS.GETREVENUE, {
@@ -30,7 +30,7 @@ const QuarterlyRevenueChart = () => {
           type: "GETTICKETSBYTIME",
           payload: dt.data,
         });
-        console.log(">> in useEffect", dt.data);
+        // console.log(">> in useEffect", dt.data);
       });
     setLoading(false);
     // setData(store.ticketBooking?.GetTicketsByTime?.lsTicketBookings);
@@ -49,7 +49,7 @@ const QuarterlyRevenueChart = () => {
 
   // setData(store.ticketBooking?.GetTicketsByTime?.lsTicketBookings); // chinh
   data = store.ticketBooking?.GetTicketsByTime?.lsTicketBookings;
-  console.log(">> quarterRevenue", data);
+  // console.log(">> quarterRevenue", data);
   let dateRevenue = [];
   if (data != undefined)
     data?.forEach((item) => {
@@ -65,7 +65,7 @@ const QuarterlyRevenueChart = () => {
         found.total += item.tienThanhToan;
       }
     });
-  console.log(">> dateRevenue", dateRevenue);
+  // console.log(">> dateRevenue", dateRevenue);
   let formatDate = dateRevenue?.map((item) => {
     return item["date"];
   });
@@ -107,7 +107,7 @@ const QuarterlyRevenueChart = () => {
   const handleClick = (event) => {
     setInfo({ quy: info.quy, nam: info.nam });
     setLoading(true);
-    console.log(">> filter", info);
+    // console.log(">> filter", info);
   };
 
   let options = {
@@ -162,7 +162,7 @@ const QuarterlyRevenueChart = () => {
     options
   );
   chart.render();
-  console.log(">> options,labels", options.labels);
+  // console.log(">> options,labels", options.labels);
   return (
     <>
       {!isLoading ? (

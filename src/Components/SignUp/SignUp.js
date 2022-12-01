@@ -83,7 +83,7 @@ export default function LogIn() {
     event.preventDefault();
     if (Validation(account)) {
       if (password.matKhau === passwordRetype.nhapLaiMatKhau) {
-        console.log(1);
+        // console.log(1);
         let res = await fetch(API_ACCOUNTS.SIGNUP, {
           headers: {
             //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json

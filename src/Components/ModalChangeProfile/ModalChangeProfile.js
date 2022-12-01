@@ -36,7 +36,7 @@ export default function ModalChangeProfile(props) {
         fd.append(keyOfObj, inputInfo[keyOfObj]);
       }
 
-      let token = JSON.parse(sessionStorage.getItem("token"));
+      let token = JSON.parse(localStorage.getItem("token"));
       let res = await fetch(API_USER.PROFILE, {
         headers: {
           //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json
@@ -67,7 +67,7 @@ export default function ModalChangeProfile(props) {
   const uploadImage = async (event) => {
     if (event.target.files[0] != null) {
       setFileImage(event.target.files[0]);
-      console.log(event.target.files[0]);
+      // console.log(event.target.files[0]);
     }
   };
 
@@ -148,7 +148,7 @@ export default function ModalChangeProfile(props) {
                 }}
                 className="card-name-input"
                 type="file"
-                src={info.anhDaiDien}
+              // src={info.anhDaiDien}
               />
             </div>
             <button

@@ -10,26 +10,25 @@ import Movies from "./Components/Movies/Movies";
 import Booking from "./Components/Booking/Booking";
 import "./App.css";
 import Footer from "./Components/Footer/Footer";
-import AdminMovies from "./Page/Admin/AdminMovies";
 import HeaderAdmin from "./Page/Admin/Header/HeaderAdmin";
-import AdminFoodsDrinks from "./Page/Admin/AdminFoodsDrinks";
 import Payment from "./Components/Payment/Payment";
 import Profile from "./Components/Profile/Profile";
 import { API_USER } from "./common/ApiController";
-import PrivateRoutes from "./utils/PrivateRoutes";
+import PrivateAdminRoutes from "./utils/PrivateAdminRoutes";
+import PrivateUserRoutes from "./utils/PrivateUserRoutes";
 
 function App() {
   const store = useContext(StoreContext);
   useEffect(() => {
     store.account.AccountDispatch({
       type: "ACCOUNT",
-      payload: sessionStorage.getItem("taiKhoan"),
+      payload: localStorage.getItem("taiKhoan"),
     });
-  }, [sessionStorage.getItem("taiKhoan")]);
+  }, [localStorage.getItem("taiKhoan")]);
 
   useEffect(() => {
     if (store.account.userAccount.account) {
-      let token = JSON.parse(sessionStorage.getItem("token"));
+      let token = JSON.parse(localStorage.getItem("token"));
       fetch(API_USER.PROFILE, {
         headers: {
           //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json
@@ -56,7 +55,7 @@ function App() {
 
           <Route path="/" element={<Home />} />
           {/* <Route path="/Admin/Foods" element={<AdminFoodsDrinks />} /> */}
-          <Route element={<PrivateRoutes />}>
+          <Route element={<PrivateAdminRoutes />}>
             <Route path="/Admin/*" element={<HeaderAdmin />} />
           </Route>
           {/* <Route path="/Admin/movie" element={<AddMovieForm />} />
@@ -65,9 +64,11 @@ function App() {
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/Movie/*" element={<Movies />}></Route>
           <Route path="/Theaters" element={<Theaters />} />
-          <Route path="/Booking" element={<Booking />}></Route>
-          <Route path="/Payment" element={<Payment />}></Route>
-          <Route path="/Profile" element={<Profile />}></Route>
+          <Route element={<PrivateUserRoutes />}>
+            <Route path="/Booking" element={<Booking />}></Route>
+            <Route path="/Payment" element={<Payment />}></Route>
+            <Route path="/Profile" element={<Profile />}></Route>
+          </Route>
         </Routes>
         <Footer />
       </BrowserRouter>

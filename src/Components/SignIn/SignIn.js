@@ -58,21 +58,21 @@ export default function LogIn() {
           data,
           expiresIn /*taiKhoan, maLoaiNguoiDung, ...authSignIn*/,
         } = dataUser;
-        sessionStorage.setItem("token", JSON.stringify(token));
-        sessionStorage.setItem(
+        localStorage.setItem("token", JSON.stringify(token));
+        localStorage.setItem(
           "maLoaiNguoiDung",
           JSON.stringify(data.maLoaiNguoiDung)
         );
-        sessionStorage.setItem("taiKhoan", JSON.stringify(data.tentaiKhoan));
+        localStorage.setItem("taiKhoan", JSON.stringify(data.tentaiKhoan));
         store.account.AccountDispatch({
           type: "ACCOUNT",
-          payload: sessionStorage.getItem("taiKhoan"),
+          payload: localStorage.getItem("taiKhoan"),
         });
-        sessionStorage.setItem("thoiHan", JSON.stringify(expiresIn));
-        if (JSON.parse(sessionStorage.getItem("maLoaiNguoiDung")) === "0") {
+        localStorage.setItem("thoiHan", JSON.stringify(expiresIn));
+        if (JSON.parse(localStorage.getItem("maLoaiNguoiDung")) === "0") {
           navigate("/Admin");
         } else {
-          navigate("/");
+          navigate(-1);
         }
       } else {
         swal("Thất bại", dataUser.error, "error");
