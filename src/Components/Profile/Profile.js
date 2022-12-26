@@ -4,7 +4,7 @@ import { StoreContext } from "../../Redux/Store/Store";
 import "./Profile.css";
 import { useState } from "react";
 import ModalChangeProfile from "../ModalChangeProfile/ModalChangeProfile";
-import { API_USER } from "../../common/ApiController";
+import { API_USER, API_FOODDRINKS } from "../../common/ApiController";
 import ModalChangePassword from "../ModalChangePassword/ModalChangePassword";
 import { useNavigate } from "react-router-dom";
 
@@ -15,6 +15,7 @@ export default function Profile() {
   const [changePassword, setChangePassword] = useState(false);
   const [historyPayment, setHistoryPayment] = useState(null);
   const [paymentDetail, setPaymentDetail] = useState(null);
+  const [listCombo, setCombo] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     if (store.account.userAccount.account) {
@@ -61,6 +62,15 @@ export default function Profile() {
         });
     }
   }, [store.account.userAccount.account]);
+
+  useEffect(() => {
+    fetch(API_FOODDRINKS.GETALL)
+      .then((res) => res.json())
+      .then((dt) => {
+        setCombo(dt.data);
+        console.log(dt.data);
+      });
+  }, [historyPayment]);
 
   const checkOnClick = (e, className) => {
     [...document.getElementsByClassName(className)].forEach((element) => {
@@ -256,7 +266,20 @@ export default function Profile() {
                         >
                           <p>Phim: {n.phim?.tenPhim}</p>
                           <p>Thời lượng: {n.phim?.thoiLuong}p</p>
-                          {/* { <p>Combo đi kèm: {n.}</p>} */}
+                          {n.danhSachAnUong.length > 0 && (
+                            <p>
+                              Combo đi kèm:{" "}
+                              {listCombo.map((combo) =>
+                                n.danhSachAnUong.map((fD, i) => {
+                                  if (fD.maAnUong === combo._id) {
+                                    return (
+                                      <span key={i}>{combo.tenCombo}</span>
+                                    );
+                                  }
+                                })
+                              )}
+                            </p>
+                          )}
                           <p>Thanh toán: {n.tienThanhToan}</p>
                           <p>
                             Thời gian đặt: {formatDate(n.thoiGianDat)} -{" "}
