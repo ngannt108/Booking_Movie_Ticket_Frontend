@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { API_BOOKING } from "../../common/ApiController";
 import QRCode from "qrcode";
 import swal from "sweetalert";
+import Sweetalert2 from "sweetalert2";
 
 export default function ChangeTicket() {
   const store = useContext(StoreContext);
@@ -225,7 +226,7 @@ export default function ChangeTicket() {
 
   const SendChangeTicketEmail = async (dataChangeTicketEmail) => {
     const token = JSON.parse(localStorage.getItem("token"));
-    await fetch(API_BOOKING.CHANGE_TICKET, {
+    await fetch(API_BOOKING.CHANGE_TICKET_MAIL, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -238,6 +239,11 @@ export default function ChangeTicket() {
 
   const ConfirmChangeTicket = async (event) => {
     event.preventDefault();
+    Sweetalert2.fire({
+      title: "Xin chờ giây lát",
+      allowOutsideClick: false,
+    });
+    Sweetalert2.showLoading();
     const token = JSON.parse(localStorage.getItem("token"));
     let res = await fetch(
       `${
@@ -284,7 +290,8 @@ export default function ChangeTicket() {
               .tenCumRap,
           QRCode: qr,
         };
-        SendChangeTicketEmail(dataBooking);
+        await SendChangeTicketEmail(dataBooking);
+        Sweetalert2.close();
         await swal({
           title: "Thành công",
           text: message.message,
@@ -413,6 +420,7 @@ export default function ChangeTicket() {
                     <div className="single">Ghế trống</div>
                     <div className="choosing">Ghế bạn chọn</div>
                     <div className="busy">Ghế đã được đặt</div>
+                    <div className="old">Ghế muốn đổi</div>
                     <div style={{ display: "flex", paddingLeft: "12px" }}>
                       <div style={{ marginRight: "50px" }}>
                         <div>Ghế cũ:</div>

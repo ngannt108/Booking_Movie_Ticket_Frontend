@@ -79,14 +79,27 @@ export default function Payment() {
   const ConfirmTicket = (event) => {
     event.preventDefault();
     setConfirm(true);
-    setTotalPrice(store.bookingRoom.Payment.payment.tongTien);
-    setTotalPriceBefore(store.bookingRoom.Payment.payment.tongTien);
+    if (listFD === []) {
+      setTotalPrice(store.bookingRoom.Payment.payment.tongTien);
+      setTotalPriceBefore(store.bookingRoom.Payment.payment.tongTien);
+    } else {
+      let tienCombo = 0;
+      listFD.map((n) => (tienCombo += n.giaTien));
+      console.log(tienCombo);
+      setTotalPrice(store.bookingRoom.Payment.payment.tongTien + tienCombo);
+      setTotalPriceBefore(
+        store.bookingRoom.Payment.payment.tongTien + tienCombo
+      );
+    }
   };
 
   useEffect(() => {
     fetch(API_FOODDRINKS.GETALL)
       .then((res) => res.json())
-      .then((dt) => setCombo(dt.data));
+      .then((dt) => {
+        setCombo(dt.data);
+        console.log(dt.data);
+      });
   }, []);
 
   useEffect(() => {
@@ -222,7 +235,7 @@ export default function Payment() {
       // console.log(dataSendEmail);
       const DATA_BOOKING = {
         danhSachGhe: store.bookingRoom.Payment.payment.danhSachGhe,
-        danhSachAnUong: [],
+        danhSachAnUong: listFD,
         diemSuDung: RewardPoints,
       };
       if (isSuccessPaypal === true) {
@@ -239,10 +252,20 @@ export default function Payment() {
 
   useEffect(() => {
     if (store.bookingRoom.Payment.payment.tongTien) {
-      setTotalPrice(store.bookingRoom.Payment.payment.tongTien);
-      setTotalPriceBefore(store.bookingRoom.Payment.payment.tongTien);
+      if (listFD === []) {
+        setTotalPrice(store.bookingRoom.Payment.payment.tongTien);
+        setTotalPriceBefore(store.bookingRoom.Payment.payment.tongTien);
+      } else {
+        let tienCombo = 0;
+        listFD.map((n) => (tienCombo += n.giaTien));
+        console.log(tienCombo);
+        setTotalPrice(store.bookingRoom.Payment.payment.tongTien + tienCombo);
+        setTotalPriceBefore(
+          store.bookingRoom.Payment.payment.tongTien + tienCombo
+        );
+      }
     }
-  }, [store.bookingRoom.Payment.payment.tongTien]);
+  }, [store.bookingRoom.Payment.payment.tongTien, listFD]);
 
   const UseRewardPoints = (e) => {
     e.preventDefault();
@@ -436,6 +459,16 @@ export default function Payment() {
                 </div>
               </div>
 
+              {/* <div>
+                <label className="card-name-label">Combo đã chọn</label>
+                <br />
+                <input
+                  className="card-name-input"
+                  value={listFD.map((n) => n.).join(", ")}
+                  disabled
+                />
+              </div> */}
+
               {RewardPoints >= 20 ? (
                 <h6 style={{ color: "red", fontStyle: "italic" }}>
                   Bạn đã sử dụng {RewardPoints} điểm để thanh toán
@@ -444,7 +477,7 @@ export default function Payment() {
                 ""
               )}
               <div>
-                <label className="card-name-label">Thanh toán</label>
+                <label className="card-name-label">Tổng tiền thanh toán</label>
                 <br />
                 <input
                   className="card-name-input"
@@ -505,13 +538,20 @@ export default function Payment() {
     );
   };
 
-  const [comboChoosen, setComboChoosen] = useState(null);
+  const [comboChoosen, setComboChoosen] = useState([]);
 
   const CheckCombo = (combo, event) => {
     if (event.target.checked === true) {
-      setFD([...listFD, combo]);
+      setFD([
+        ...listFD,
+        {
+          maAnUong: combo.maAnUong,
+          soLuong: combo.soLuong,
+          giaTien: combo.giaTien,
+        },
+      ]);
     } else if (event.target.checked === false) {
-      setFD(listFD.splice(listFD.indexOf(combo.tenCombo), 1));
+      listFD.splice(listFD.indexOf(combo.tenCombo), 1);
     }
   };
 
@@ -526,13 +566,15 @@ export default function Payment() {
                 {listCombo ? (
                   listCombo.map((n, i) => (
                     <div key={i} className="food-n-drink">
-                      {/* <input
+                      <input
                         onClick={(event) => {
                           CheckCombo(
                             {
-                              tenCombo: n.tenCombo,
-                              gia: n.giaGoc,
+                              maAnUong: n._id,
+                              giaTien: n.giaGoc,
                               checked: true,
+                              soLuong: 1,
+                              tenCombo: n.tenCombo,
                             },
                             event,
                             i
@@ -540,7 +582,7 @@ export default function Payment() {
                         }}
                         className="combo-check"
                         type="checkbox"
-                      /> */}
+                      />
                       <div className="combo-info">
                         <img alt="" src={n.hinhAnh} width="200" />
                         <div className="combo-detail">
@@ -553,7 +595,7 @@ export default function Payment() {
                             })}{" "}
                             VND
                           </p>
-                          <div className="countFD">
+                          {/* <div className="countFD">
                             <button className="count">-</button>
                             <input placeholder="0" type="number" />
                             <button
@@ -566,7 +608,7 @@ export default function Payment() {
                             >
                               +
                             </button>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                     </div>
@@ -644,8 +686,9 @@ export default function Payment() {
                   />
                 </div>
                 <div>
-                  <label className="card-name-label">Tổng tiền</label>
+                  <label className="card-name-label">Tiền vé</label>
                   <br />
+
                   <input
                     className="card-name-input"
                     value={
@@ -661,6 +704,7 @@ export default function Payment() {
                 </div>
                 <button
                   onClick={(e) => {
+                    console.log(listFD);
                     ConfirmTicket(e);
                   }}
                   className="payment-button"

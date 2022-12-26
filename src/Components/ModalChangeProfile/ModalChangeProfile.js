@@ -4,6 +4,7 @@ import { StoreContext } from "../../Redux/Store/Store";
 import { Modal } from "react-bootstrap";
 import { API_USER } from "../../common/ApiController";
 import swal from "sweetalert";
+import Sweetalert2 from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 export default function ModalChangeProfile(props) {
@@ -37,6 +38,11 @@ export default function ModalChangeProfile(props) {
       }
 
       let token = JSON.parse(localStorage.getItem("token"));
+      Sweetalert2.fire({
+        title: "Xin chờ giây lát",
+        allowOutsideClick: false,
+      });
+      Sweetalert2.showLoading();
       let res = await fetch(API_USER.PROFILE, {
         headers: {
           //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json
@@ -47,6 +53,7 @@ export default function ModalChangeProfile(props) {
         body: fd,
       });
       let message = await res.json();
+      Sweetalert2.close();
       if (res.status === 200) {
         await swal({
           title: "Thành công",

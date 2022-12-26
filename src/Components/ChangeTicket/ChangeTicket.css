@@ -3,3 +3,9 @@
     url(https://cinestar.com.vn/catalog/view/theme/default/images/single-chair.png)
     no-repeat center -138px !important;
 }
+
+.cinema-note .old {
+  background: url(https://cinestar.com.vn/catalog/view/theme/default/images/single-chair.png)
+    no-repeat left -138px;
+  padding-left: 50px;
+}

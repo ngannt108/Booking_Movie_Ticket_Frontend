@@ -301,12 +301,29 @@ export default function Profile() {
                             {formatDate(paymentDetail?.maLichChieu.ngayChieu)} -{" "}
                             {formatTime(paymentDetail?.maLichChieu.ngayChieu)}
                           </p>
-                          <p>
-                            Ghế đã đặt:{" "}
-                            {paymentDetail.danhSachVe
-                              .map((ghe) => ghe.maGhe)
-                              .join(", ")}
-                          </p>
+                          {paymentDetail.daDoi ? (
+                            <>
+                              <p>
+                                Ghế cũ:{" "}
+                                {paymentDetail.danhSachVe
+                                  .map((n) => n.maGhe)
+                                  .join(", ")}
+                              </p>
+                              <p>
+                                Ghế mới:{" "}
+                                {paymentDetail.danhSachGheDoi
+                                  .map((ghe) => ghe)
+                                  .join(", ")}
+                              </p>
+                            </>
+                          ) : (
+                            <p>
+                              Ghế đã đặt:{" "}
+                              {paymentDetail.danhSachVe
+                                .map((ghe) => ghe.maGhe)
+                                .join(", ")}
+                            </p>
+                          )}
                         </div>
                       ) : (
                         <p>Hãy nhấp chọn vào 1 vé bất kỳ để xem chi tiết</p>
