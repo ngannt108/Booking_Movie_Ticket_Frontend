@@ -35,7 +35,7 @@ export default function Booking() {
 
   useEffect(() => {
     if (chair) {
-      setSeatRow(Object.keys(chair).slice(1));
+      setSeatRow(Object.keys(chair));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chair]);
@@ -174,11 +174,13 @@ export default function Booking() {
                     </div>
                     {count === 0 ? (
                       <div className="noClick" style={{ paddingLeft: "12px" }}>
-                        <ModalPaymentPopUp />
+                        {/* <ModalPaymentPopUp /> */}
+                        <button className="btn btn-secondary">Đặt vé</button>
                       </div>
                     ) : (
                       <div
                         onClick={() => {
+                          console.log(store.account.Profile.profile.hoTen);
                           store.bookingRoom.PaymentDisPatch({
                             type: "PAYMENT",
                             payload: {

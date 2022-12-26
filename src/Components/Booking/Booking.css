@@ -129,6 +129,12 @@
   pointer-events: none;
 }
 
+.noClick > button {
+  padding: 8px 32px;
+  text-transform: uppercase;
+  border-radius: 8px;
+}
+
 .room-name {
   width: 68px;
   border-radius: 8px;

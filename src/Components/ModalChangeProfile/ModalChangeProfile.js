@@ -46,20 +46,17 @@ export default function ModalChangeProfile(props) {
         method: "PUT",
         body: fd,
       });
+      let message = await res.json();
       if (res.status === 200) {
         await swal({
           title: "Thành công",
-          text: "Cập nhật thông tin thành công!",
+          text: message.message,
           icon: "success",
           button: "Ok",
         });
         setConfirm(false);
       } else {
-        swal(
-          "Cập nhật thất bại",
-          "Có lỗi ở đây! Vui lòng kiểm tra và thử lại!",
-          "error"
-        );
+        swal("Cập nhật thất bại", message.error, "error");
       }
     }
   };
@@ -148,7 +145,7 @@ export default function ModalChangeProfile(props) {
                 }}
                 className="card-name-input"
                 type="file"
-              // src={info.anhDaiDien}
+                // src={info.anhDaiDien}
               />
             </div>
             <button

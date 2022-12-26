@@ -6,6 +6,7 @@ import { useState } from "react";
 import ModalChangeProfile from "../ModalChangeProfile/ModalChangeProfile";
 import { API_USER } from "../../common/ApiController";
 import ModalChangePassword from "../ModalChangePassword/ModalChangePassword";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const store = useContext(StoreContext);
@@ -13,6 +14,8 @@ export default function Profile() {
   const [changeInfo, setChangeInfo] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
   const [historyPayment, setHistoryPayment] = useState(null);
+  const [paymentDetail, setPaymentDetail] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     if (store.account.userAccount.account) {
       let token = JSON.parse(localStorage.getItem("token"));
@@ -31,8 +34,8 @@ export default function Profile() {
             payload: dt.data[0],
           })
         );
-      console.log("profile******");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.account.userAccount.account]);
   useEffect(() => {
     if (store.account.Profile.profile) {
@@ -42,7 +45,7 @@ export default function Profile() {
 
   useEffect(() => {
     if (store.account.userAccount.account) {
-      let token = JSON.parse(sessionStorage.getItem("token"));
+      let token = JSON.parse(localStorage.getItem("token"));
       fetch(API_USER.HISTORY_TICKET, {
         headers: {
           //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json
@@ -53,6 +56,7 @@ export default function Profile() {
       })
         .then((res) => res.json())
         .then((dt) => {
+          console.log(dt.data);
           setHistoryPayment(dt.data);
         });
     }
@@ -74,6 +78,40 @@ export default function Profile() {
   };
   const ClickModalChangePassword = (data) => {
     setChangePassword(data);
+  };
+
+  const checkOnClickPaymentDetail = (e, className) => {
+    [...document.getElementsByClassName(className)].forEach((element) => {
+      if (element.classList.value.includes("active-payment")) {
+        element.classList.remove("active-payment");
+      }
+    });
+    if (e.target.classList.value.includes(className))
+      e.target.classList.add("active-payment");
+  };
+
+  const formatDate = (date) => {
+    if (date) {
+      const d = new Date(date); //d.toLocaleString("en-AU")//
+
+      return d.toLocaleString("en-AU", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+      }); // `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
+    }
+    return "";
+  };
+  const formatTime = (date) => {
+    if (date) {
+      const d = new Date(date); //d.toLocaleString("en-AU")//
+      const time = d.toLocaleString("en-AU", {
+        hour: "numeric",
+        minute: "numeric",
+      });
+      return time;
+    }
+    return "";
   };
 
   return (
@@ -195,30 +233,85 @@ export default function Profile() {
                     />
                   )}
                 </div>
-              ) : historyPayment.length != 0 ? (
+              ) : historyPayment.length !== 0 ? (
                 <div className="history-field">
                   <div className="menu-field">
-                    <div>
+                    <div className="field-type">
                       <h5>Lịch sử thanh toán</h5>
                     </div>
-                    <div>
+                    <div className="field-type">
                       <h5>Chi tiết vé đã đặt</h5>
                     </div>
                   </div>
                   <div className="payment-ticket-detail">
                     <div className="payment-history">
                       {historyPayment.map((n, i) => (
-                        <div key={i} className="history-ticket">
-                          <p>Phim: {n.phim.tenPhim}</p>
-                          <p>Thời lượng: {n.phim.thoiLuong}p</p>
+                        <div
+                          key={i}
+                          className="history-ticket onClick-payment"
+                          onClick={(e) => {
+                            checkOnClickPaymentDetail(e, "onClick-payment");
+                            setPaymentDetail(n);
+                          }}
+                        >
+                          <p>Phim: {n.phim?.tenPhim}</p>
+                          <p>Thời lượng: {n.phim?.thoiLuong}p</p>
                           {/* { <p>Combo đi kèm: {n.}</p>} */}
                           <p>Thanh toán: {n.tienThanhToan}</p>
-                          {/* <p>Thời gian đặt: </p> */}
-                          <button className="change-ticket">Đổi vé</button>
+                          <p>
+                            Thời gian đặt: {formatDate(n.thoiGianDat)} -{" "}
+                            {formatTime(n.thoiGianDat)}
+                          </p>
+                          {new Date(n.maLichChieu.ngayChieu) > Date.now() &&
+                            n.daDoi === false && (
+                              <button
+                                className="change-ticket"
+                                onClick={() => {
+                                  store.bookingRoom.ChangeTicketDispatch({
+                                    type: "CHANGE_TICKET",
+                                    payload: n,
+                                  });
+                                  navigate("/ChangeTicket");
+                                }}
+                              >
+                                Đổi vé
+                              </button>
+                            )}
+                          {n.daDoi === true && (
+                            <p style={{ color: "red", fontStyle: "italic" }}>
+                              ĐÃ ĐỔI VÉ
+                            </p>
+                          )}
                         </div>
                       ))}
                     </div>
-                    <div className="ticket-detail"></div>
+                    <div className="ticket-detail">
+                      {paymentDetail ? (
+                        <div>
+                          <p>
+                            Tên cụm rạp:{" "}
+                            {paymentDetail.maLichChieu.tenCumRap.tenCumRap}
+                          </p>
+                          <p>
+                            Phòng chiếu:{" "}
+                            {paymentDetail.maLichChieu.tenRap.tenRap}
+                          </p>
+                          <p>
+                            Ngày chiếu:{" "}
+                            {formatDate(paymentDetail?.maLichChieu.ngayChieu)} -{" "}
+                            {formatTime(paymentDetail?.maLichChieu.ngayChieu)}
+                          </p>
+                          <p>
+                            Ghế đã đặt:{" "}
+                            {paymentDetail.danhSachVe
+                              .map((ghe) => ghe.maGhe)
+                              .join(", ")}
+                          </p>
+                        </div>
+                      ) : (
+                        <p>Hãy nhấp chọn vào 1 vé bất kỳ để xem chi tiết</p>
+                      )}
+                    </div>
                   </div>
                 </div>
               ) : (

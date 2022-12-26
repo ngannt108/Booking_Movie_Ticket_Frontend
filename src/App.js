@@ -10,15 +10,26 @@ import Movies from "./Components/Movies/Movies";
 import Booking from "./Components/Booking/Booking";
 import "./App.css";
 import Footer from "./Components/Footer/Footer";
-import HeaderAdmin from "./Page/Admin/Header/HeaderAdmin";
 import Payment from "./Components/Payment/Payment";
 import Profile from "./Components/Profile/Profile";
-import { API_USER } from "./common/ApiController";
-import PrivateAdminRoutes from "./utils/PrivateAdminRoutes";
+import { API_USER, API_BOOKING } from "./common/ApiController";
 import PrivateUserRoutes from "./utils/PrivateUserRoutes";
+import ChangeTicket from "./Components/ChangeTicket/ChangeTicket";
 
 function App() {
   const store = useContext(StoreContext);
+  let date = new Date();
+  let getDay = date.getDay();
+
+  useEffect(() => {
+    RemindEmail();
+  }, [getDay]);
+
+  const RemindEmail = async () => {
+    const res = await fetch(API_BOOKING.REMIND_EMAIL);
+    console.log(res.status);
+  };
+
   useEffect(() => {
     store.account.AccountDispatch({
       type: "ACCOUNT",
@@ -38,12 +49,12 @@ function App() {
         method: "GET",
       })
         .then((res) => res.json())
-        .then((dt) =>
+        .then((dt) => {
           store.account.ProfileDispatch({
             type: "PROFILE",
-            payload: dt.data,
-          })
-        );
+            payload: dt.data[0],
+          });
+        });
     }
   }, [store.account.userAccount.account]);
   return (
@@ -52,14 +63,7 @@ function App() {
         <Header />
         <Routes>
           {/* Content động */}
-
           <Route path="/" element={<Home />} />
-          {/* <Route path="/Admin/Foods" element={<AdminFoodsDrinks />} /> */}
-          <Route element={<PrivateAdminRoutes />}>
-            <Route path="/Admin/*" element={<HeaderAdmin />} />
-          </Route>
-          {/* <Route path="/Admin/movie" element={<AddMovieForm />} />
-          <Route path="/Admin/:slug/showtimes" element={<Showtimes />} /> */}
           <Route path="/SignIn" element={<SignIn />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/Movie/*" element={<Movies />}></Route>
@@ -68,6 +72,7 @@ function App() {
             <Route path="/Booking" element={<Booking />}></Route>
             <Route path="/Payment" element={<Payment />}></Route>
             <Route path="/Profile" element={<Profile />}></Route>
+            <Route path="/ChangeTicket" element={<ChangeTicket />}></Route>
           </Route>
         </Routes>
         <Footer />

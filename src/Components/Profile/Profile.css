@@ -147,6 +147,10 @@
   border-top: 1px solid lightgray;
 }
 
+.history-ticket:hover {
+  background: lemonchiffon;
+}
+
 .change-ticket {
   background: linear-gradient(to right, #380db1, #ec7532);
   padding: 8px 16px;
@@ -158,7 +162,9 @@
 
 .ticket-detail {
   border-top: 1px solid lightgray;
-  flex-grow: 1;
+  /* flex-grow: 1; */
+  width: 50%;
+  padding: 30px;
 }
 
 .noPaymentHistory {
@@ -166,3 +172,15 @@
   align-items: center;
   font-size: 24px;
 }
+
+.active-payment {
+  background: rgb(192, 221, 245);
+}
+
+.payment-detail {
+  padding: 30px;
+}
+/* 
+.onClick-payment {
+  background: lightblue;
+} */

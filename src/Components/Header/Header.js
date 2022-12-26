@@ -5,11 +5,14 @@ import "./Header.css";
 
 export default function Header() {
   const store = useContext(StoreContext);
-  const [userName, setUserName] = useState();
+  const [userAvt, setUserAvt] = useState();
 
   useEffect(() => {
-    setUserName(store.account.userAccount.account?.slice(1, -1));
-  }, [store.account.userAccount.account]);
+    if (store.account.Profile.profile) {
+      // console.log(store.account.Profile.profile);
+      setUserAvt(store.account.Profile.profile.anhDaiDien);
+    }
+  }, [store.account.Profile.profile]);
   return (
     <div>
       <header style={{ paddingTop: "12px" }} id="header__run">
@@ -55,11 +58,17 @@ export default function Header() {
                   </Link>
                 </li>
 
-                {userName ? (
+                {userAvt ? (
                   <li className="nav-item LoggedIn">
                     <div style={{ marginTop: "20px" }} className="dropdown ">
                       <Link className="userName" to="/">
-                        {userName}
+                        <img
+                          src={userAvt}
+                          width="36"
+                          height="36"
+                          style={{ borderRadius: "50%" }}
+                          alt=""
+                        />
                       </Link>
                       <div className="dropdown-content">
                         <Link onClick={() => {}} to="/Profile">
@@ -72,6 +81,11 @@ export default function Header() {
                               payload: null,
                             });
                             localStorage.clear();
+                            store.account.ProfileDispatch({
+                              type: "PROFILE",
+                              payload: null,
+                            });
+                            setUserAvt(null);
                           }}
                           to="/"
                         >

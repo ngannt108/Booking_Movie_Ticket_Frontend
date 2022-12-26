@@ -20,6 +20,7 @@ const Store = ({ children }) => {
   const [addMovie, DispatchAddMovie] = ReducerMovies();
   const [rooms, DispatchGetRooms] = RecducerShowtimes();
   const [booking, DispatchBooking] = ReducerBooking(null);
+  const [change, DispatchChangeTicket] = ReducerBooking(null);
   const [payment, DispatchPayment] = ReducerBooking(null);
   const [lsFDs, DispatchGetAllFDs] = ReducerFoodDrinks(null);
   const [detailFD, DispatchGetDetailFD] = ReducerFoodDrinks(null);
@@ -95,6 +96,8 @@ const Store = ({ children }) => {
       BookingDispatch: DispatchBooking,
       Payment: payment,
       PaymentDisPatch: DispatchPayment,
+      ChangeTicket: change,
+      ChangeTicketDispatch: DispatchChangeTicket,
     },
     users: {
       listUsers: users,

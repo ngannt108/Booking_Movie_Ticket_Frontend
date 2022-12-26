@@ -8,6 +8,8 @@ function GetBooking(state, { type, payload }) {
       return { payment: payload };
     case "HISTORY":
       return { payment: payload };
+    case "CHANGE_TICKET":
+      return { ticket: payload };
     default:
       return state;
   }

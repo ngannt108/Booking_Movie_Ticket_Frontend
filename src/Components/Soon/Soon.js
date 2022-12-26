@@ -10,7 +10,7 @@ export default function Soon() {
     dots: false,
     infinite: true,
     speed: 300,
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 1,
     responsive: [
       {
@@ -65,10 +65,10 @@ export default function Soon() {
                         className="read-more"
                         tabIndex="0"
                       >
-                        Read more
+                        Xem thêm
                       </Link>
                       <span className="date">
-                        Released: {movie.ngayKhoiChieu.slice(0, 10)}
+                        Ngày khởi chiếu: {movie.ngayKhoiChieu.slice(0, 10)}
                       </span>
                     </div>
                   </div>

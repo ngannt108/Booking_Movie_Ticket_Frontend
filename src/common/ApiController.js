@@ -47,6 +47,9 @@ export const API_FOODDRINKS = {
 export const API_BOOKING = {
   BOOK_TICKET: API_DOMAIN + "users/",
   SEND_EMAIL: API_DOMAIN + "users/sendEmailBooking",
+  REMIND_EMAIL: API_DOMAIN + "users/reminderEmail",
+  CHANGE_TICKET_MAIL: API_DOMAIN + "users/sendchangeTicketMail",
+  CHANGE_TICKET: API_DOMAIN + "users/changeTicketBooking/",
 };
 export const API_CHARTS = {
   GETREVENUE: API_DOMAIN + "admins/revenue",

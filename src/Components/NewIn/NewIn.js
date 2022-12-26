@@ -18,7 +18,7 @@ export default function NewIn() {
     fade: true,
   };
   var sliderNav = {
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 1,
     dots: true,
     centerMode: true,
@@ -29,7 +29,7 @@ export default function NewIn() {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
           slidesToScroll: 1,
           arrows: false,
         },
@@ -37,7 +37,7 @@ export default function NewIn() {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           slidesToScroll: 1,
           arrows: false,
         },
@@ -45,7 +45,7 @@ export default function NewIn() {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
           arrows: false,
         },
@@ -65,9 +65,6 @@ export default function NewIn() {
       <>
         <section id="comingsoon" className="dark">
           <div>
-            <div className="newin-popup">
-              <VideoPopUp2 link={link} />
-            </div>
             <Slider
               asNavFor={nav2}
               ref={(slider1) => setNav1(slider1)}
@@ -94,14 +91,22 @@ export default function NewIn() {
                             <p className="pr-5 movie-decription">
                               {movie.moTa}
                             </p>
-                            <Link to={"/Movie/" + movie.biDanh}>
-                              Xem thêm...
-                            </Link>
+                            <div style={{ display: "flex" }}>
+                              <div className="newin-popup">
+                                <VideoPopUp2 link={link} />
+                              </div>
+                              <Link
+                                style={{ paddingTop: "16px" }}
+                                to={"/Movie/" + movie.biDanh}
+                              >
+                                Xem thêm...
+                              </Link>
+                            </div>
                           </div>
                           <div
                             style={{
                               background: `url(${movie.hinhAnh})`,
-                              height: "600px",
+                              height: "400px",
                             }}
                             className="comingsoon__right item1 col-6"
                           ></div>

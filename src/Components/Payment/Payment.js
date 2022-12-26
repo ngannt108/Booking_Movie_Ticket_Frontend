@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { StoreContext } from "../../Redux/Store/Store";
 import { API_BOOKING, API_FOODDRINKS } from "../../common/ApiController";
-import { Modal, Image } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import swal from "sweetalert";
 import "./Payment.css";
 import QRCode from "qrcode";
-import { queryAllByText } from "@testing-library/react";
+// import { queryAllByText } from "@testing-library/react";
 
 export default function Payment() {
   const store = useContext(StoreContext);
@@ -45,22 +45,6 @@ export default function Payment() {
     return "";
   };
 
-  // const renderQR = () => {
-  //   return (
-  //     <div>
-  //       <Image src={QR} />
-  //     </div>
-  //   );
-  // };
-
-  const CheckCombo = (combo, event) => {
-    if (event.target.checked === true) {
-      setFD([...listFD, combo]);
-    } else if (event.target.checked === false) {
-      setFD(listFD.splice(listFD.indexOf(combo.tenCombo), 1));
-    }
-  };
-
   const biDanh = store.bookingRoom.Payment.payment.biDanh;
   const showtimeID = store.bookingRoom.Payment.payment.lichChieu._id;
 
@@ -78,20 +62,17 @@ export default function Payment() {
         body: JSON.stringify(DATA_BOOKING),
       }
     );
+    let message = await res.json();
     if (res.status === 200) {
       await swal({
-        title: "Payment Successful",
-        text: "Enjoy your movie",
+        title: "Thành công",
+        text: message.message,
         icon: "success",
         button: "Ok",
       });
       navigate("/Profile");
     } else {
-      swal(
-        "Payment Unsuccessful",
-        "There is something wrong! Please try again later!",
-        "error"
-      );
+      swal("Thất bại", message.error, "error");
     }
   };
 
@@ -160,20 +141,23 @@ export default function Payment() {
 
   const CreateQR = async () => {
     let qr = await QRCode.toDataURL(
-      `Họ tên: ${store.bookingRoom.Payment.payment?.hoTen}, Phim: ${store.bookingRoom.Payment.payment?.tenPhim
-      }, Suất chiếu ${store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(11, 13) *
-      1 +
-      7 +
-      store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(13, 16) +
-      " - " +
-      store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(8, 10) +
-      "/" +
-      store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(5, 7) +
-      "/" +
-      store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(0, 4)
+      `Họ tên: ${store.bookingRoom.Payment.payment?.hoTen}, Phim: ${
+        store.bookingRoom.Payment.payment?.tenPhim
+      }, Suất chiếu ${
+        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(11, 13) *
+          1 +
+        7 +
+        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(13, 16) +
+        " - " +
+        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(8, 10) +
+        "/" +
+        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(5, 7) +
+        "/" +
+        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(0, 4)
       }, Ghế:${store.bookingRoom.Payment.payment?.danhSachGhe.join(
         ", "
-      )}, Cụm rạp: ${store.bookingRoom.Payment.payment?.tenRap}, Phòng chiếu: ${store.bookingRoom.Payment.payment?.phongChieu
+      )}, Cụm rạp: ${store.bookingRoom.Payment.payment?.tenRap}, Phòng chiếu: ${
+        store.bookingRoom.Payment.payment?.phongChieu
       }`
     );
     if (qr !== false) {
@@ -315,7 +299,7 @@ export default function Payment() {
                   min={20}
                   max={
                     store.bookingRoom.Payment.payment?.diemSuDung >
-                      totalPrice / 1000
+                    totalPrice / 1000
                       ? totalPrice / 1000
                       : store.bookingRoom.Payment.payment?.diemSuDung
                   }
@@ -393,7 +377,7 @@ export default function Payment() {
                         11,
                         13
                       ) *
-                      1 +
+                        1 +
                       7 +
                       store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
                         13,
@@ -453,7 +437,9 @@ export default function Payment() {
               </div>
 
               {RewardPoints >= 20 ? (
-                <h6>Bạn đã sử dụng {RewardPoints} điểm để thanh toán</h6>
+                <h6 style={{ color: "red", fontStyle: "italic" }}>
+                  Bạn đã sử dụng {RewardPoints} điểm để thanh toán
+                </h6>
               ) : (
                 ""
               )}
@@ -472,7 +458,7 @@ export default function Payment() {
                 }}
                 disabled={
                   store.bookingRoom.Payment.payment?.diemSuDung >= 20 &&
-                    RewardPoints === 0
+                  RewardPoints === 0
                     ? false
                     : true
                 }
@@ -519,6 +505,16 @@ export default function Payment() {
     );
   };
 
+  const [comboChoosen, setComboChoosen] = useState(null);
+
+  const CheckCombo = (combo, event) => {
+    if (event.target.checked === true) {
+      setFD([...listFD, combo]);
+    } else if (event.target.checked === false) {
+      setFD(listFD.splice(listFD.indexOf(combo.tenCombo), 1));
+    }
+  };
+
   return (
     <>
       <div className="main-payment">
@@ -560,7 +556,16 @@ export default function Payment() {
                           <div className="countFD">
                             <button className="count">-</button>
                             <input placeholder="0" type="number" />
-                            <button className="count">+</button>
+                            <button
+                              className="count"
+                              // onClick={(e) =>
+                              //   CheckCombo({
+                              //     maAnUong,
+                              //   })
+                              // }
+                            >
+                              +
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -613,7 +618,7 @@ export default function Payment() {
                         11,
                         13
                       ) *
-                      1 +
+                        1 +
                       7 +
                       store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
                         13,
