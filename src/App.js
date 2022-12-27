@@ -8,7 +8,7 @@ import SignIn from "./Components/SignIn/SignIn";
 import SignUp from "./Components/SignUp/SignUp";
 import Movies from "./Components/Movies/Movies";
 import Booking from "./Components/Booking/Booking";
-import "./App.css";
+// import "./App.css";
 import Footer from "./Components/Footer/Footer";
 import Payment from "./Components/Payment/Payment";
 import Profile from "./Components/Profile/Profile";
@@ -18,17 +18,17 @@ import ChangeTicket from "./Components/ChangeTicket/ChangeTicket";
 
 function App() {
   const store = useContext(StoreContext);
-  let date = new Date();
-  let getDay = date.getDay();
+  // let date = new Date();
+  // let getDay = date.getDay();
 
-  useEffect(() => {
-    RemindEmail();
-  }, [getDay]);
+  // useEffect(() => {
+  //   RemindEmail();
+  // }, [getDay]);
 
-  const RemindEmail = async () => {
-    const res = await fetch(API_BOOKING.REMIND_EMAIL);
-    console.log(res.status);
-  };
+  // const RemindEmail = async () => {
+  //   const res = await fetch(API_BOOKING.REMIND_EMAIL);
+  //   console.log(res.status);
+  // };
 
   useEffect(() => {
     store.account.AccountDispatch({
