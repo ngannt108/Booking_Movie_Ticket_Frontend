@@ -15,6 +15,9 @@ import Profile from "./Components/Profile/Profile";
 import { API_USER, API_BOOKING } from "./common/ApiController";
 import PrivateUserRoutes from "./utils/PrivateUserRoutes";
 import ChangeTicket from "./Components/ChangeTicket/ChangeTicket";
+import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap"; // <-- JS File
+
 
 function App() {
   const store = useContext(StoreContext);
