@@ -15,6 +15,7 @@ export default function Booking() {
   const [orderedChairs, setOrderedChairs] = useState(null);
   const [isChoosingChairs, setIsChoosingChairs] = useState(null);
 
+
   useEffect(() => {
     if (
       store.bookingRoom.Booking.booking.showtime &&
@@ -88,7 +89,7 @@ export default function Booking() {
             <div className="booking-header">
               <div className="booking-seat">
                 {clusterName && <div className="room-name">{clusterName}</div>}
-                <div className="booking-screen">Screen</div>
+                <div className="booking-screen">Màn hình</div>
                 <div className="seat-wrapper">
                   <div className="seat-left">
                     {chair &&

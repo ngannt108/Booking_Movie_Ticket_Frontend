@@ -131,23 +131,20 @@ export default function Payment() {
 
   const CreateQR = async () => {
     let qr = await QRCode.toDataURL(
-      `Họ tên: ${store.bookingRoom.Payment.payment?.hoTen}, Phim: ${
-        store.bookingRoom.Payment.payment?.tenPhim
-      }, Suất chiếu ${
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(11, 13) *
-          1 +
-        7 +
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(13, 16) +
-        " - " +
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(8, 10) +
-        "/" +
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(5, 7) +
-        "/" +
-        store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(0, 4)
+      `Họ tên: ${store.bookingRoom.Payment.payment?.hoTen}, Phim: ${store.bookingRoom.Payment.payment?.tenPhim
+      }, Suất chiếu ${store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(11, 13) *
+      1 +
+      7 +
+      store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(13, 16) +
+      " - " +
+      store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(8, 10) +
+      "/" +
+      store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(5, 7) +
+      "/" +
+      store.bookingRoom.Payment.payment?.lichChieu.ngayChieu.slice(0, 4)
       }, Ghế:${store.bookingRoom.Payment.payment?.danhSachGhe.join(
         ", "
-      )}, Cụm rạp: ${store.bookingRoom.Payment.payment?.tenRap}, Phòng chiếu: ${
-        store.bookingRoom.Payment.payment?.phongChieu
+      )}, Cụm rạp: ${store.bookingRoom.Payment.payment?.tenRap}, Phòng chiếu: ${store.bookingRoom.Payment.payment?.phongChieu
       }`
     );
     if (qr !== false) {
@@ -328,7 +325,7 @@ export default function Payment() {
                   min={20}
                   max={
                     store.bookingRoom.Payment.payment?.diemSuDung >
-                    totalPrice / 1000
+                      totalPrice / 1000
                       ? totalPrice / 1000
                       : store.bookingRoom.Payment.payment?.diemSuDung
                   }
@@ -568,7 +565,7 @@ export default function Payment() {
                 }}
                 disabled={
                   store.bookingRoom.Payment.payment?.diemSuDung >= 20 &&
-                  RewardPoints === 0
+                    RewardPoints === 0
                     ? false
                     : true
                 }
@@ -633,37 +630,77 @@ export default function Payment() {
   // const [minutes, setMinutes] = useState(2);
   // const [seconds, setSeconds] = useState(0);
 
-  const Start = () => {
-    let m = document.getElementById("minute").value;
-    let s = document.getElementById("second").value;
-    let timeout;
-
-    m = m * 1;
-    s = s * 1;
-
-    console.log(m);
-    if (s === -1) {
-      m -= 1;
-      s = 59;
+  const addZeroToPrefix = (mNumber) => {
+    if (mNumber < 10) {
+      return `0${mNumber}`;
     }
-    if (m === -1) {
-      clearTimeout(timeout);
-      alert("Hết giờ");
-      return false;
-    }
-    timeout = setTimeout(function () {
+
+    return `${mNumber}`
+  }
+
+  const startCountDown = () => {
+    let m = Number(document.getElementById("minute").firstChild.nodeValue);
+    let s = Number(document.getElementById("second").firstChild.nodeValue);
+    // console.log(`${m}:${s}`)
+    if (m <= 0 && s <= 0) return false;
+    let timeout = setInterval(function () {
       s--;
-      Start();
+
+      if (s <= 0) {
+
+        if (m <= 0) {
+          clearInterval(timeout);
+          navigate(-1)
+          alert("Phiên giao dịch đã hết hạn");
+          return false;
+        }
+
+        m -= 1;
+        s = 59;
+      }
+
+      console.log("H6")
+      document.getElementById("minute").innerText = addZeroToPrefix(m);
+      document.getElementById("second").innerText = addZeroToPrefix(s);
     }, 1000);
 
-    document.getElementById("minute").innerText = m.toString();
-    document.getElementById("second").innerText = s.toString();
+
   };
 
   useEffect(() => {
-    // Start();
+    startCountDown();
   }, []);
 
+  const cancelRemovePreorder = async () => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    const res = await fetch(
+      `${API_BOOKING.CANCEL}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Basic ${token}`,
+        },
+        body: JSON.stringify({ maLichChieu: showtimeID }),
+      }
+    );
+  }
+  // const preorder = async()=>{
+  //   const token = JSON.parse(localStorage.getItem("token"));
+  //   const res = await fetch(
+  //     `${API_BOOKING.IS_CHOOSING_CHAIRS}`,
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //         Authorization: `Basic ${token}`,
+  //       },
+  //       body: JSON.stringify({maLichChieu: showtimeID}),
+  //     }
+  //   );
+  // }
   return (
     <>
       <div className="main-payment">
@@ -736,7 +773,7 @@ export default function Payment() {
                   </label>
                   <br />
                   <div>
-                    <span id="minute">00</span> : <span id="second">00</span>
+                    <span id="minute">02</span> : <span id="second">00</span>
                   </div>
                 </div>
                 <div>
