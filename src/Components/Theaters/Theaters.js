@@ -1,11 +1,12 @@
 import React, { useEffect, useContext, useState } from "react";
 import { StoreContext } from "../../Redux/Store/Store";
-import { API_THEATERS, API_SHOWTIME } from "../../common/ApiController";
+import { API_THEATERS, API_SHOWTIME } from "../../Common/ApiController";
 import ModalBookingPopUp from "../ModalBookingPopUp/ModalBookingPopUp";
 import ModalSignInPopUp from "../ModalSignInPopUp/ModalSignInPopUp";
 import VideoPopUp from "../VideoPopUp/VideoPopUp";
 import { Link } from "react-router-dom";
 import "./Theater.css";
+import { FormatDate, FormatTime } from "../../Common/Format";
 
 export default function Theaters() {
   const store = useContext(StoreContext);
@@ -16,10 +17,11 @@ export default function Theaters() {
   const [films, setFilms] = useState(null);
 
   const [daily, setDaily] = useState(null);
-  const [currentDate, setCurentDate] = useState(null);
+  const [currentDate, setCurrentDate] = useState(null);
 
   const dateHandle = (date) => {
-    setCurentDate(date);
+    setCurrentDate(date);
+    // console.log(date);
   };
 
   useEffect(() => {
@@ -40,30 +42,30 @@ export default function Theaters() {
     for (let i = 0; i < 7; i++) {
       let day = new Date(current);
       day.setDate(current.getDate() + i);
-      day =
-        day.getFullYear() + "-" + (day.getMonth() + 1) + "-" + day.getDate();
+      day = FormatDate(day);
       week.push(day);
     }
     setDaily(week);
+    // console.log(week);
   }, []);
 
   useEffect(() => {
     if (currentDate && cinemaId) {
+      let ngayDaChon = `${currentDate.slice(6, 10)}-${currentDate.slice(
+        3,
+        5
+      )}-${currentDate.slice(0, 2)}`;
+      // console.log(ngayDaChon);
       fetch(API_SHOWTIME.CLUSTER + cinemaId, {
         headers: {
           //Nó sẽ nói cho sever biết, web này sẽ gởi giá trị đi là json
           "Content-Type": "application/json",
         },
         method: "POST",
-        body: JSON.stringify({ ngayDaChon: currentDate }),
+        body: JSON.stringify({ ngayDaChon: ngayDaChon }),
       })
         .then((res) => res.json())
         .then((dt) => {
-          // store.lsTheater.MoviesInTheaterDispatch({
-          //   type: "LISTMOVIESINTHEATER",
-          //   payload: dt.data,
-          // });
-          // console.log(dt.data);
           setFilms(dt.data);
         });
     }
@@ -92,7 +94,7 @@ export default function Theaters() {
       <section id="date" className="container cinemas-field">
         <div className="row">
           {/* Nav pills */}
-          <div style={{ padding: "0" }}>
+          <div style={{ padding: "0", width: "100%" }}>
             <div className="cinema-logo">
               <img
                 style={{ marginRight: "20px" }}
@@ -146,19 +148,14 @@ export default function Theaters() {
                       className="day-wrapper"
                       key={i}
                     >
-                      {date.slice(8, 10)}/{date.slice(5, 7)}
+                      {date.slice(0, 5)}
                     </div>
                   );
                 })}
               </div>
               {cinemaName && currentDate && (
                 <h3 style={{ margin: "28px" }}>
-                  {"Lịch chiếu phim " +
-                    cinemaName +
-                    " ngày " +
-                    currentDate.slice(8, 10) +
-                    "/" +
-                    currentDate.slice(5, 7)}
+                  {"Lịch chiếu phim " + cinemaName + " ngày " + currentDate}
                 </h3>
               )}
               <div className="showtime-detail">
@@ -169,7 +166,7 @@ export default function Theaters() {
                         <img className="img-fluid" src={movie.hinhAnh} alt="" />
                       </Link>
                       <div className="col-md-10">
-                        <h1>{movie.theLoai}</h1>
+                        <h1>{movie.theLoai.join(", ")}</h1>
                         <h2>{movie.tenPhim}</h2>
                         <p className="movie-decription">{movie.moTa}</p>
                         <div className="rating-row">
@@ -183,48 +180,42 @@ export default function Theaters() {
                         <div className="row">
                           <div className="date__time col-md-10">
                             <i className="far fa-clock"></i>
-                            <span>VIEWING TIMES</span>
+                            <span>LỊCH CHIẾU</span>
                             <div>
                               {movie.lichChieu.map((showtime, index) => (
                                 <div
                                   key={index}
                                   style={{ display: "inline-block" }}
                                 >
-                                  {store.account.userAccount.account ? (
-                                    <ModalBookingPopUp
-                                      info={[
-                                        cinemaName,
-                                        movie.tenPhim,
-                                        `${
-                                          showtime.ngayChieu.slice(11, 13) * 1 +
-                                          7 +
-                                          showtime.ngayChieu.slice(13, 16)
-                                        }  - ${
-                                          showtime.gioKetThuc.slice(11, 13) *
-                                            1 +
-                                          7 +
-                                          showtime.gioKetThuc.slice(13, 16)
-                                        }`,
-                                        currentDate.slice(8, 10) +
-                                          "/" +
-                                          currentDate.slice(5, 7) +
-                                          "/" +
-                                          currentDate.slice(0, 4),
-                                        movie.hinhAnh,
-                                        movie.biDanh,
-                                      ]}
-                                      showtimeDetail={showtime}
-                                    />
-                                  ) : (
-                                    <ModalSignInPopUp
-                                      info={`${showtime.ngayChieu.slice(
-                                        11,
-                                        16
-                                      )} - ${showtime.gioKetThuc.slice(
-                                        11,
-                                        16
-                                      )}`}
-                                    />
+                                  {new Date(showtime.ngayChieu) >
+                                    Date.now() && (
+                                    <>
+                                      {store.account.userAccount.account ? (
+                                        <ModalBookingPopUp
+                                          info={[
+                                            cinemaName,
+                                            movie.tenPhim,
+                                            `${FormatTime(
+                                              showtime.ngayChieu
+                                            )}  - ${FormatTime(
+                                              showtime.gioKetThuc
+                                            )}`,
+                                            currentDate,
+                                            movie.hinhAnh,
+                                            movie.biDanh,
+                                          ]}
+                                          showtimeDetail={showtime}
+                                        />
+                                      ) : (
+                                        <ModalSignInPopUp
+                                          info={`${FormatTime(
+                                            showtime.ngayChieu
+                                          )}  - ${FormatTime(
+                                            showtime.gioKetThuc
+                                          )}`}
+                                        />
+                                      )}
+                                    </>
                                   )}
                                 </div>
                               ))}

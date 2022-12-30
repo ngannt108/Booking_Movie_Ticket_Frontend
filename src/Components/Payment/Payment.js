@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { StoreContext } from "../../Redux/Store/Store";
-import { API_BOOKING, API_FOODDRINKS } from "../../common/ApiController";
+import { API_BOOKING, API_FOODDRINKS } from "../../Common/ApiController";
 import { Modal } from "react-bootstrap";
 import swal from "sweetalert";
 import "./Payment.css";
 import QRCode from "qrcode";
+import { FormatDate, FormatTime } from "../../Common/Format";
 // import { queryAllByText } from "@testing-library/react";
 
 export default function Payment() {
@@ -20,30 +21,6 @@ export default function Payment() {
   const [isSuccessPaypal, setIsSuccessPaypal] = useState(false);
   const [useRewardPoints, setUseRewardPoints] = useState(false);
   const [RewardPoints, setRewardPoints] = useState(0);
-
-  const formatDate = (date) => {
-    if (date) {
-      const d = new Date(date); //d.toLocaleString("en-AU")//
-
-      return d.toLocaleString("en-AU", {
-        day: "numeric",
-        month: "numeric",
-        year: "numeric",
-      }); // `${d.getDate()}-${d.getMonth() + 1}-${d.getFullYear()}`;
-    }
-    return "";
-  };
-  const formatTime = (date) => {
-    if (date) {
-      const d = new Date(date); //d.toLocaleString("en-AU")//
-      const time = d.toLocaleString("en-AU", {
-        hour: "numeric",
-        minute: "numeric",
-      });
-      return time;
-    }
-    return "";
-  };
 
   const biDanh = store.bookingRoom.Payment.payment.biDanh;
   const showtimeID = store.bookingRoom.Payment.payment.lichChieu._id;
@@ -174,17 +151,42 @@ export default function Payment() {
       }`
     );
     if (qr !== false) {
+      let Combo = [];
+      let tongTienCb = 0;
+      listCombo.map((n) =>
+        listFD.map((cb) => {
+          if (n._id === cb.maAnUong) {
+            Combo.push({
+              tenCombo: n.tenCombo,
+              soLuongCombo: cb.soLuong,
+              donGiaCombo: cb.giaTien,
+            });
+            tongTienCb += cb.giaTien;
+          }
+        })
+      );
+
       const dataSendEmail = {
         taiKhoan: store.bookingRoom.Payment.payment?.hoTen,
         tenCumRap: store.bookingRoom.Payment.payment?.tenRap,
         tenPhim: store.bookingRoom.Payment.payment?.tenPhim,
-        ngayChieu: formatDate(
+        ngayChieu: FormatDate(
           store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
         ).toString(),
-        gioChieu: formatTime(
+        gioChieu: FormatTime(
           store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
         ).toString(),
         QRCode: qr,
+        soLuongVe: store.bookingRoom.Payment.payment.danhSachGhe.length,
+        donGiaVe:
+          store.bookingRoom.Payment.payment.tongTien /
+          store.bookingRoom.Payment.payment.danhSachGhe.length,
+        tongTienVe: store.bookingRoom.Payment.payment.tongTien,
+        Combo: Combo,
+        tongTienCombo: tongTienCb,
+        tongTienBanDau: totalPriceBefore,
+        diemDaSuDung: RewardPoints,
+        tongTienThanhToan: totalPrice,
       };
       console.log(dataSendEmail);
       const DATA_BOOKING = {
@@ -224,10 +226,10 @@ export default function Payment() {
         taiKhoan: store.bookingRoom.Payment.payment?.hoTen,
         tenCumRap: store.bookingRoom.Payment.payment?.tenRap,
         tenPhim: store.bookingRoom.Payment.payment?.tenPhim,
-        ngayChieu: formatDate(
+        ngayChieu: FormatDate(
           store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
         ).toString(),
-        gioChieu: formatTime(
+        gioChieu: FormatTime(
           store.bookingRoom.Payment.payment?.lichChieu.ngayChieu
         ).toString(),
         QRCode: CreateQR(),
@@ -258,7 +260,6 @@ export default function Payment() {
       } else {
         let tienCombo = 0;
         listFD.map((n) => (tienCombo += n.giaTien));
-        console.log(tienCombo);
         setTotalPrice(store.bookingRoom.Payment.payment.tongTien + tienCombo);
         setTotalPriceBefore(
           store.bookingRoom.Payment.payment.tongTien + tienCombo
@@ -313,6 +314,11 @@ export default function Payment() {
                 />
               </div>
               <div>
+                <h6 style={{ color: "red", fontStyle: "italic" }}>
+                  Mỗi điểm tích lũy sử dụng sẽ tương ứng với giảm 1.000 VND.
+                </h6>
+              </div>
+              <div>
                 <label className="card-number-label">
                   Chọn điểm thanh toán
                 </label>
@@ -335,6 +341,11 @@ export default function Payment() {
                   }
                   onChange={(e) => setRewardPoints(e.target.value)}
                 />
+              </div>
+              <div>
+                <h6 style={{ color: "black", fontStyle: "italic" }}>
+                  Số điểm sử dụng tối thiểu là 20 điểm
+                </h6>
               </div>
               <button
                 onClick={(e) => afterDiscount(e)}
@@ -391,55 +402,6 @@ export default function Payment() {
               </div>
               <div className="payment-cinema">
                 <div className="payment-cluster">
-                  <label className="card-name-label">Lịch chiếu</label>
-                  <br />
-                  <input
-                    className="card-name-input"
-                    value={
-                      store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
-                        11,
-                        13
-                      ) *
-                        1 +
-                      7 +
-                      store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
-                        13,
-                        16
-                      ) +
-                      " - " +
-                      store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
-                        8,
-                        10
-                      ) +
-                      "/" +
-                      store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
-                        5,
-                        7
-                      ) +
-                      "/" +
-                      store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
-                        0,
-                        4
-                      )
-                    }
-                    disabled
-                  />
-                </div>
-                <div className="payment-cineplex">
-                  <label className="card-name-label">Ghế đã chọn</label>
-                  <br />
-                  <input
-                    className="card-name-input"
-                    value={store.bookingRoom.Payment.payment.danhSachGhe.join(
-                      ", "
-                    )}
-                    disabled
-                  />
-                </div>
-              </div>
-
-              <div className="payment-cinema">
-                <div className="payment-cluster">
                   <label className="card-name-label">Cụm rạp</label>
                   <br />
                   <input
@@ -458,30 +420,145 @@ export default function Payment() {
                   />
                 </div>
               </div>
+              <div className="payment-cinema">
+                <div className="payment-cluster">
+                  <label className="card-name-label">Lịch chiếu</label>
+                  <br />
+                  <input
+                    className="card-name-input"
+                    value={
+                      FormatTime(
+                        store.bookingRoom.Payment.payment.lichChieu.ngayChieu
+                      ) +
+                      " - " +
+                      FormatDate(
+                        store.bookingRoom.Payment.payment.lichChieu.ngayChieu
+                      )
+                    }
+                    disabled
+                  />
+                </div>
+                <div className="payment-cineplex">
+                  <label className="card-name-label">Ghế đã chọn</label>
+                  <br />
+                  <input
+                    className="card-name-input"
+                    value={store.bookingRoom.Payment.payment.danhSachGhe.join(
+                      ", "
+                    )}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="payment-cinema">
+                <div className="payment-cluster">
+                  <label className="card-name-label">Số lượng ghế</label>
+                  <br />
+                  <input
+                    className="card-name-input"
+                    value={store.bookingRoom.Payment.payment.danhSachGhe.length}
+                    disabled
+                  />
+                </div>
+                <div className="payment-cineplex">
+                  <label className="card-name-label">Tổng tiền ghế</label>
+                  <br />
+                  <input
+                    className="card-name-input"
+                    value={
+                      store.bookingRoom.Payment.payment.tongTien.toLocaleString(
+                        {
+                          style: "currency",
+                          currency: "VND",
+                        }
+                      ) + " VND"
+                    }
+                    disabled
+                  />
+                </div>
+              </div>
 
-              {/* <div>
+              <div>
                 <label className="card-name-label">Combo đã chọn</label>
                 <br />
-                <input
-                  className="card-name-input"
-                  value={listFD.map((n) => n.).join(", ")}
-                  disabled
-                />
-              </div> */}
+                {listFD.length > 0 ? (
+                  <>
+                    {listCombo.map((combo) =>
+                      listFD.map((n, i) => {
+                        if (combo._id === n.maAnUong) {
+                          return (
+                            <div key={i}>
+                              <input
+                                className="card-name-input"
+                                value={
+                                  combo.tenCombo +
+                                  ": số lượng " +
+                                  n.soLuong +
+                                  ", giá tiền: " +
+                                  n.giaTien.toLocaleString({
+                                    style: "currency",
+                                    currency: "VND",
+                                  }) +
+                                  " VND"
+                                }
+                                disabled
+                              />
+                            </div>
+                          );
+                        }
+                      })
+                    )}
+                  </>
+                ) : (
+                  <div>
+                    <input
+                      className="card-name-input"
+                      value={"Không có combo được chọn"}
+                      disabled
+                    />
+                  </div>
+                )}
+              </div>
 
               {RewardPoints >= 20 ? (
-                <h6 style={{ color: "red", fontStyle: "italic" }}>
-                  Bạn đã sử dụng {RewardPoints} điểm để thanh toán
-                </h6>
+                <div>
+                  <label className="card-name-label">
+                    Số điểm tích lũy sử dụng để thanh toán
+                  </label>
+                  <br />
+                  <input
+                    className="card-name-input"
+                    value={
+                      RewardPoints +
+                      " điểm => Số tiền được khấu trừ là: " +
+                      (RewardPoints * 1000).toLocaleString({
+                        style: "currency",
+                        currency: "VND",
+                      }) +
+                      " VND"
+                    }
+                    disabled
+                  />
+                </div>
               ) : (
+                // <h6 style={{ color: "red", fontStyle: "italic" }}>
+                //   Bạn đã sử dụng {RewardPoints} điểm để thanh toán
+                // </h6>
                 ""
               )}
               <div>
-                <label className="card-name-label">Tổng tiền thanh toán</label>
+                <label className="card-name-label">
+                  Tổng tiền cần thanh toán
+                </label>
                 <br />
                 <input
                   className="card-name-input"
-                  value={totalPrice}
+                  value={
+                    totalPrice.toLocaleString({
+                      style: "currency",
+                      currency: "VND",
+                    }) + " VND"
+                  }
                   disabled
                 />
               </div>
@@ -538,8 +615,6 @@ export default function Payment() {
     );
   };
 
-  const [comboChoosen, setComboChoosen] = useState([]);
-
   const CheckCombo = (combo, event) => {
     if (event.target.checked === true) {
       setFD([
@@ -551,9 +626,43 @@ export default function Payment() {
         },
       ]);
     } else if (event.target.checked === false) {
-      listFD.splice(listFD.indexOf(combo.tenCombo), 1);
+      listFD.splice(listFD.indexOf(combo.maAnUong), 1);
     }
   };
+
+  // const [minutes, setMinutes] = useState(2);
+  // const [seconds, setSeconds] = useState(0);
+
+  const Start = () => {
+    let m = document.getElementById("minute").value;
+    let s = document.getElementById("second").value;
+    let timeout;
+
+    m = m * 1;
+    s = s * 1;
+
+    console.log(m);
+    if (s === -1) {
+      m -= 1;
+      s = 59;
+    }
+    if (m === -1) {
+      clearTimeout(timeout);
+      alert("Hết giờ");
+      return false;
+    }
+    timeout = setTimeout(function () {
+      s--;
+      Start();
+    }, 1000);
+
+    document.getElementById("minute").innerText = m.toString();
+    document.getElementById("second").innerText = s.toString();
+  };
+
+  useEffect(() => {
+    // Start();
+  }, []);
 
   return (
     <>
@@ -622,13 +731,13 @@ export default function Payment() {
               <p className="payment-info-title">CHI TIẾT VÉ XEM PHIM</p>
               <div className="payment-form">
                 <div>
-                  <label className="card-number-label">Tên khách hàng</label>
+                  <label className="card-number-label">
+                    Thời gian còn lại để thực hiện giao dịch
+                  </label>
                   <br />
-                  <input
-                    className="card-number-input"
-                    value={store.bookingRoom.Payment.payment.hoTen}
-                    disabled
-                  />
+                  <div>
+                    <span id="minute">00</span> : <span id="second">00</span>
+                  </div>
                 </div>
                 <div>
                   <label className="card-name-label">Phim</label>
@@ -636,6 +745,23 @@ export default function Payment() {
                   <input
                     className="card-name-input"
                     value={store.bookingRoom.Payment.payment.tenPhim}
+                    disabled
+                  />
+                </div>
+                <div>
+                  <label className="card-name-label">Lịch chiếu</label>
+                  <br />
+                  <input
+                    className="card-name-input"
+                    value={
+                      FormatTime(
+                        store.bookingRoom.Payment.payment.lichChieu.ngayChieu
+                      ) +
+                      " - " +
+                      FormatDate(
+                        store.bookingRoom.Payment.payment.lichChieu.ngayChieu
+                      )
+                    }
                     disabled
                   />
                 </div>
@@ -651,44 +777,17 @@ export default function Payment() {
                   />
                 </div>
                 <div>
-                  <label className="card-name-label">Lịch chiếu</label>
+                  <label className="card-name-label">Số lượng ghế</label>
                   <br />
                   <input
                     className="card-name-input"
-                    value={
-                      store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
-                        11,
-                        13
-                      ) *
-                        1 +
-                      7 +
-                      store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
-                        13,
-                        16
-                      ) +
-                      " - " +
-                      store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
-                        8,
-                        10
-                      ) +
-                      "/" +
-                      store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
-                        5,
-                        7
-                      ) +
-                      "/" +
-                      store.bookingRoom.Payment.payment.lichChieu.ngayChieu.slice(
-                        0,
-                        4
-                      )
-                    }
+                    value={store.bookingRoom.Payment.payment.danhSachGhe.length}
                     disabled
                   />
                 </div>
                 <div>
-                  <label className="card-name-label">Tiền vé</label>
+                  <label className="card-name-label">Tổng tiền vé</label>
                   <br />
-
                   <input
                     className="card-name-input"
                     value={

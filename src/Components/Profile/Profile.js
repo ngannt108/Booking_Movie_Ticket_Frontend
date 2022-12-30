@@ -4,7 +4,7 @@ import { StoreContext } from "../../Redux/Store/Store";
 import "./Profile.css";
 import { useState } from "react";
 import ModalChangeProfile from "../ModalChangeProfile/ModalChangeProfile";
-import { API_USER, API_FOODDRINKS } from "../../common/ApiController";
+import { API_USER, API_FOODDRINKS } from "../../Common/ApiController";
 import ModalChangePassword from "../ModalChangePassword/ModalChangePassword";
 import { useNavigate } from "react-router-dom";
 
@@ -68,7 +68,7 @@ export default function Profile() {
       .then((res) => res.json())
       .then((dt) => {
         setCombo(dt.data);
-        console.log(dt.data);
+        // console.log(dt.data);
       });
   }, [historyPayment]);
 
@@ -123,6 +123,12 @@ export default function Profile() {
     }
     return "";
   };
+
+  const [detailHistory, setDetailHistory] = useState(null);
+
+  const TimeExpiredPayment = () => {};
+
+  const ShowingPayment = () => {};
 
   return (
     <>
@@ -244,116 +250,134 @@ export default function Profile() {
                   )}
                 </div>
               ) : historyPayment.length !== 0 ? (
-                <div className="history-field">
-                  <div className="menu-field">
-                    <div className="field-type">
-                      <h5>Lịch sử thanh toán</h5>
-                    </div>
-                    <div className="field-type">
-                      <h5>Chi tiết vé đã đặt</h5>
-                    </div>
+                <>
+                  <div style={{ padding: "30px" }}>
+                    <button
+                      className="btn btn-danger"
+                      style={{ marginRight: "30px" }}
+                      onClick={() => TimeExpiredPayment()}
+                    >
+                      Đã hết hạn
+                    </button>
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => ShowingPayment()}
+                    >
+                      Chưa xem
+                    </button>
                   </div>
-                  <div className="payment-ticket-detail">
-                    <div className="payment-history">
-                      {historyPayment.map((n, i) => (
-                        <div
-                          key={i}
-                          className="history-ticket onClick-payment"
-                          onClick={(e) => {
-                            checkOnClickPaymentDetail(e, "onClick-payment");
-                            setPaymentDetail(n);
-                          }}
-                        >
-                          <p>Phim: {n.phim?.tenPhim}</p>
-                          <p>Thời lượng: {n.phim?.thoiLuong}p</p>
-                          {n.danhSachAnUong.length > 0 && (
-                            <p>
-                              Combo đi kèm:{" "}
-                              {listCombo.map((combo) =>
-                                n.danhSachAnUong.map((fD, i) => {
-                                  if (fD.maAnUong === combo._id) {
-                                    return (
-                                      <span key={i}>{combo.tenCombo}</span>
-                                    );
-                                  }
-                                })
-                              )}
-                            </p>
-                          )}
-                          <p>Thanh toán: {n.tienThanhToan}</p>
-                          <p>
-                            Thời gian đặt: {formatDate(n.thoiGianDat)} -{" "}
-                            {formatTime(n.thoiGianDat)}
-                          </p>
-                          {new Date(n.maLichChieu.ngayChieu) > Date.now() &&
-                            n.daDoi === false && (
-                              <button
-                                className="change-ticket"
-                                onClick={() => {
-                                  store.bookingRoom.ChangeTicketDispatch({
-                                    type: "CHANGE_TICKET",
-                                    payload: n,
-                                  });
-                                  navigate("/ChangeTicket");
-                                }}
-                              >
-                                Đổi vé
-                              </button>
+                  <div className="history-field">
+                    <div className="menu-field">
+                      <div className="field-type">
+                        <h5>Lịch sử thanh toán</h5>
+                      </div>
+                      <div className="field-type">
+                        <h5>Chi tiết vé đã đặt</h5>
+                      </div>
+                    </div>
+                    <div className="payment-ticket-detail">
+                      <div className="payment-history">
+                        {historyPayment.map((n, i) => (
+                          <div
+                            key={i}
+                            className="history-ticket onClick-payment"
+                            onClick={(e) => {
+                              checkOnClickPaymentDetail(e, "onClick-payment");
+                              setPaymentDetail(n);
+                            }}
+                          >
+                            <p>Phim: {n.phim?.tenPhim}</p>
+                            <p>Thời lượng: {n.phim?.thoiLuong}p</p>
+                            {n.danhSachAnUong.length > 0 && (
+                              <p>
+                                Combo đi kèm:{" "}
+                                {listCombo.map((combo) =>
+                                  n.danhSachAnUong.map((fD, i) => {
+                                    if (fD.maAnUong === combo._id) {
+                                      return (
+                                        <span key={i}>{combo.tenCombo} </span>
+                                      );
+                                    }
+                                  })
+                                )}
+                              </p>
                             )}
-                          {n.daDoi === true && (
-                            <p style={{ color: "red", fontStyle: "italic" }}>
-                              ĐÃ ĐỔI VÉ
-                            </p>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                    <div className="ticket-detail">
-                      {paymentDetail ? (
-                        <div>
-                          <p>
-                            Tên cụm rạp:{" "}
-                            {paymentDetail.maLichChieu.tenCumRap.tenCumRap}
-                          </p>
-                          <p>
-                            Phòng chiếu:{" "}
-                            {paymentDetail.maLichChieu.tenRap.tenRap}
-                          </p>
-                          <p>
-                            Ngày chiếu:{" "}
-                            {formatDate(paymentDetail?.maLichChieu.ngayChieu)} -{" "}
-                            {formatTime(paymentDetail?.maLichChieu.ngayChieu)}
-                          </p>
-                          {paymentDetail.daDoi ? (
-                            <>
-                              <p>
-                                Ghế cũ:{" "}
-                                {paymentDetail.danhSachVe
-                                  .map((n) => n.maGhe)
-                                  .join(", ")}
-                              </p>
-                              <p>
-                                Ghế mới:{" "}
-                                {paymentDetail.danhSachGheDoi
-                                  .map((ghe) => ghe)
-                                  .join(", ")}
-                              </p>
-                            </>
-                          ) : (
+                            <p>Thanh toán: {n.tienThanhToan}</p>
                             <p>
-                              Ghế đã đặt:{" "}
-                              {paymentDetail.danhSachVe
-                                .map((ghe) => ghe.maGhe)
-                                .join(", ")}
+                              Thời gian đặt: {formatDate(n.thoiGianDat)} -{" "}
+                              {formatTime(n.thoiGianDat)}
                             </p>
-                          )}
-                        </div>
-                      ) : (
-                        <p>Hãy nhấp chọn vào 1 vé bất kỳ để xem chi tiết</p>
-                      )}
+                            {new Date(n.maLichChieu.ngayChieu) > Date.now() &&
+                              n.daDoi === false && (
+                                <button
+                                  className="change-ticket"
+                                  onClick={() => {
+                                    store.bookingRoom.ChangeTicketDispatch({
+                                      type: "CHANGE_TICKET",
+                                      payload: n,
+                                    });
+                                    navigate("/ChangeTicket");
+                                  }}
+                                >
+                                  Đổi vé
+                                </button>
+                              )}
+                            {n.daDoi === true && (
+                              <p style={{ color: "red", fontStyle: "italic" }}>
+                                ĐÃ ĐỔI VÉ
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="ticket-detail">
+                        {paymentDetail ? (
+                          <div>
+                            <p>
+                              Tên cụm rạp:{" "}
+                              {paymentDetail.maLichChieu.tenCumRap.tenCumRap}
+                            </p>
+                            <p>
+                              Phòng chiếu:{" "}
+                              {paymentDetail.maLichChieu.tenRap.tenRap}
+                            </p>
+                            <p>
+                              Ngày chiếu:{" "}
+                              {formatDate(paymentDetail?.maLichChieu.ngayChieu)}{" "}
+                              -{" "}
+                              {formatTime(paymentDetail?.maLichChieu.ngayChieu)}
+                            </p>
+                            {paymentDetail.daDoi ? (
+                              <>
+                                <p>
+                                  Ghế cũ:{" "}
+                                  {paymentDetail.danhSachVe
+                                    .map((n) => n.maGhe)
+                                    .join(", ")}
+                                </p>
+                                <p>
+                                  Ghế mới:{" "}
+                                  {paymentDetail.danhSachGheDoi
+                                    .map((ghe) => ghe)
+                                    .join(", ")}
+                                </p>
+                              </>
+                            ) : (
+                              <p>
+                                Ghế đã đặt:{" "}
+                                {paymentDetail.danhSachVe
+                                  .map((ghe) => ghe.maGhe)
+                                  .join(", ")}
+                              </p>
+                            )}
+                          </div>
+                        ) : (
+                          <p>Hãy nhấp chọn vào 1 vé bất kỳ để xem chi tiết</p>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
+                </>
               ) : (
                 <div className="noPaymentHistory">
                   Không có thông tin giao dịch gần nhất!

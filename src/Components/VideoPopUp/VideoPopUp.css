@@ -7,8 +7,9 @@
   background: linear-gradient(to right, #fbbd61, #ec7532);
   border: none;
   border-radius: 16px;
+  padding: 4px 12px;
 }
-.Modal button:focus{
+.Modal button:focus {
   outline: none;
 }
 .modal__bg {

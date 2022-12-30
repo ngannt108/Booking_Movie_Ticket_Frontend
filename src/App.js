@@ -12,23 +12,22 @@ import "./App.css";
 import Footer from "./Components/Footer/Footer";
 import Payment from "./Components/Payment/Payment";
 import Profile from "./Components/Profile/Profile";
-import { API_USER, API_BOOKING } from "./common/ApiController";
+import { API_USER, API_BOOKING } from "./Common/ApiController";
 import PrivateUserRoutes from "./utils/PrivateUserRoutes";
 import ChangeTicket from "./Components/ChangeTicket/ChangeTicket";
 
 function App() {
   const store = useContext(StoreContext);
-  let date = new Date();
-  let getDay = date.getDay();
+  // let date = new Date();
+  // let getDay = date.getDay();
 
-  useEffect(() => {
-    RemindEmail();
-  }, [getDay]);
+  // useEffect(() => {
+  //   RemindEmail();
+  // }, [getDay]);
 
-  const RemindEmail = async () => {
-    const res = await fetch(API_BOOKING.REMIND_EMAIL);
-    console.log(res.status);
-  };
+  // const RemindEmail = async () => {
+  //   await fetch(API_BOOKING.REMIND_EMAIL);
+  // };
 
   useEffect(() => {
     store.account.AccountDispatch({

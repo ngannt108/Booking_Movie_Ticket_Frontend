@@ -6,7 +6,7 @@ import { Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { StarRating } from "../Rating/Rating";
 import { StoreContext } from "../../Redux/Store/Store";
-import { API_USER } from "../../common/ApiController";
+import { API_USER } from "../../Common/ApiController";
 
 function RatingModal({ slug }) {
   const [isShow, setShow] = useState(false);

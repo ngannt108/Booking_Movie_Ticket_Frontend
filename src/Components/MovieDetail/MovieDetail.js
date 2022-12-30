@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./MovieDetail.css";
 import { StoreContext } from "../../Redux/Store/Store";
 import { useParams } from "react-router-dom";
-import { API_MOVIE } from "../../common/ApiController";
+import { API_MOVIE } from "../../Common/ApiController";
 import { StarRating } from "../Rating/Rating";
 import RatingModal from "../RatingModal/RatingModal";
 import Comments from "../Comments/Comments";
@@ -18,16 +18,16 @@ export default function MovieDetail() {
   const handleLeave = () => {
     setHover(false);
   };
-  console.log(
-    ">> store.movie?.DetailMovie?.detailMovie",
-    store.movie?.DetailMovie?.detailMovie
-  );
+  // console.log(
+  //   ">> store.movie?.DetailMovie?.detailMovie",
+  //   store.movie?.DetailMovie?.detailMovie
+  // );
   useEffect(() => {
     if (biDanh) {
       fetch(`${API_MOVIE.DETAIL + biDanh}`)
         .then((res) => res.json())
         .then((dt) => {
-          // console.log(dt.data[0]);
+          console.log(dt.data[0]);
           store.movie.DetailMovieDispatch({
             type: "GETDETAILMOVIE",
             payload: dt.data[0],
@@ -39,9 +39,6 @@ export default function MovieDetail() {
                 (item) => item._id === idUser
               );
             if (found) setRated(found);
-            console.log(">> idUser", idUser);
-            console.log(">> isRated", isRated);
-            console.log(">> found", found);
           }
         });
     }
@@ -121,7 +118,8 @@ export default function MovieDetail() {
                           }}
                         >
                           {store.movie.DetailMovie.detailMovie.danhGia}/ 5 sao
-                          &nbsp;{isRated ? (
+                          &nbsp;
+                          {isRated ? (
                             <div style={{ color: "yellow" }}>
                               {" "}
                               -&nbsp;Bạn đã thực hiện đánh giá
@@ -143,7 +141,10 @@ export default function MovieDetail() {
                   </div>
                 </div>
                 <div>
-                  <Comments comments={store.movie.DetailMovie.detailMovie.binhLuan} slug={biDanh} />
+                  <Comments
+                    comments={store.movie.DetailMovie.detailMovie.binhLuan}
+                    slug={biDanh}
+                  />
                 </div>
               </div>
             </div>

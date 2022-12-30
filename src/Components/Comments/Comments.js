@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useContext } from "react";
-import { API_USER } from "../../common/ApiController";
+import { API_USER } from "../../Common/ApiController";
 import { StoreContext } from "../../Redux/Store/Store";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
@@ -8,12 +8,12 @@ import { Form } from "react-bootstrap";
 import "./Comments.css";
 export default function Comments({ comments, slug }) {
   const store = useContext(StoreContext);
-  const [content, setContent] = useState("")
+  const [content, setContent] = useState("");
   const [isInvalid, setInvalid] = useState();
   const navigate = useNavigate();
   const handlePostCmt = (e) => {
-    postCmtAction(e)
-  }
+    postCmtAction(e);
+  };
   const formattedDate = (dateInput) => {
     let date = new Date(dateInput);
     const yyyy = date.getFullYear();
@@ -31,13 +31,12 @@ export default function Comments({ comments, slug }) {
   };
   const checkVailid = (e) => {
     let temp = document.getElementsByName(e.target.name).item(0);
-    if (temp.checkValidity() == false ||
-      temp.value.trim() == 0) {
+    if (temp.checkValidity() == false || temp.value.trim() == 0) {
       e.preventDefault();
       temp.classList.add("is-invalid");
     } else temp.classList.remove("is-invalid");
     checkInvalidAndRerender();
-  }
+  };
   const checkInvalidAndRerender = () => {
     //console.log(isInvalid === undefined)
     if (document.getElementsByClassName("is-invalid post-cmt").length > 0) {
@@ -69,8 +68,8 @@ export default function Comments({ comments, slug }) {
       },
       method: "POST",
       body: JSON.stringify({
-        noiDung: content
-      })
+        noiDung: content,
+      }),
     })
       .then((res) => {
         if (res.status === 401) {
@@ -105,16 +104,15 @@ export default function Comments({ comments, slug }) {
             icon: "error",
           });
       });
-  }
+  };
   return (
     <div className="comment-container">
       <div className="row">
         <div className="col-sm-6 col-md-7 col-12 pb-4">
           <h4>Bình luận</h4>
           <div className="all-cmt">
-            {comments.length > 0
-              ?
-              comments.map((item) =>
+            {comments.length > 0 ? (
+              comments.map((item) => (
                 <div className="comment mt-4 text-justify">
                   <div style={{ display: "flex" }}>
                     <img
@@ -132,68 +130,80 @@ export default function Comments({ comments, slug }) {
                     </div>
                   </div>
                   <span>
-                    <h6> { }</h6>
+                    <h6> {}</h6>
                   </span>
-                  <p style={{ fontSize: "16px", textAlign: "justify", fontStyle: "italic" }}>
+                  <p
+                    style={{
+                      fontSize: "16px",
+                      textAlign: "justify",
+                      fontStyle: "italic",
+                    }}
+                  >
                     {item.noiDung}
                   </p>
                 </div>
-              )
-              :
+              ))
+            ) : (
               <h6 style={{ color: "black", overflowY: "hidden" }}>
-                Hiện chưa có bình luận nào</h6>
-            }
+                Hiện chưa có bình luận nào
+              </h6>
+            )}
           </div>
         </div>
-        {
-          store.account.userAccount.account
-            ?
-            <div style={{ width: "40%" }}>
+        {store.account.userAccount.account ? (
+          <div style={{ width: "40%" }}>
+            <Form.Group className="mb-3">
+              <Form.Label style={{ fontSize: "24px", color: "black" }}>
+                Viết bình luận của bạn
+              </Form.Label>
+              <Form.Control
+                className="is-invalid post-cmt"
+                style={{ backgroundColor: "#000000ba", color: "white" }}
+                as="textarea"
+                type="text"
+                name="content"
+                rows={4}
+                onChange={(e) => {
+                  checkVailid(e);
+                  setContent(e.target.value);
+                }}
+              />
+              <Form.Control.Feedback
+                style={{ fontSize: "16px" }}
+                type="invalid"
+              >
+                Hãy nói lên cảm nghĩ của bạn
+              </Form.Control.Feedback>
+            </Form.Group>
+            <button
+              className="button-custom yes"
+              name="Đăng bình luận"
+              borderRadius="0.4em"
+              disabled={isInvalid === undefined ? true : isInvalid}
+              onClick={(e) => handlePostCmt(e)}
+            >
+              Đăng bình luận
+            </button>
+          </div>
+        ) : (
+          <div style={{ width: "40%" }}>
+            <form id="algin-form">
               <Form.Group className="mb-3">
-                <Form.Label style={{ fontSize: "24px", color: "black" }}>Viết bình luận của bạn</Form.Label>
-                <Form.Control
-                  className="is-invalid post-cmt"
-                  style={{ backgroundColor: "#000000ba", color: "white" }}
-                  as="textarea"
-                  type="text"
-                  name="content"
-                  rows={4}
-                  onChange={(e) => {
-                    checkVailid(e)
-                    setContent(e.target.value)
-                  }}
-                />
-                <Form.Control.Feedback style={{ fontSize: "16px" }} type="invalid">
-                  Hãy nói lên cảm nghĩ của bạn
-                </Form.Control.Feedback>
+                <Form.Label style={{ fontSize: "24px", color: "black" }}>
+                  Viết bình luận của bạn
+                </Form.Label>
               </Form.Group>
               <button
                 className="button-custom yes"
-                name="Đăng bình luận"
+                name="Đăng nhập để viết"
                 borderRadius="0.4em"
-                disabled={isInvalid === undefined ? true : isInvalid}
-                onClick={(e) => handlePostCmt(e)}
+                onClick={(e) => navigate("/signIn")}
               >
-                Đăng bình luận
+                Đăng nhập để viết
               </button>
-            </div>
-            :
-            <div style={{ width: "40%" }}>
-              <form id="algin-form">
-                <Form.Group className="mb-3">
-                  <Form.Label style={{ fontSize: "24px", color: "black" }}>Viết bình luận của bạn</Form.Label>
-                </Form.Group>
-                <button
-                  className="button-custom yes"
-                  name="Đăng nhập để viết"
-                  borderRadius="0.4em"
-                  onClick={(e) => navigate("/signIn")}
-                >
-                  Đăng nhập để viết
-                </button>
-              </form>
-            </div>
-        }
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );

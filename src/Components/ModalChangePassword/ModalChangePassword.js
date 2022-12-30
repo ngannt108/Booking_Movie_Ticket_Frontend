@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { API_USER } from "../../common/ApiController";
+import { API_USER } from "../../Common/ApiController";
 import { Modal } from "react-bootstrap";
 import swal from "sweetalert";
 

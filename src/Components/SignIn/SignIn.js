@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./SignIn.css";
 import { StoreContext } from "../../Redux/Store/Store";
-import { API_ACCOUNTS } from "../../common/ApiController";
+import { API_ACCOUNTS } from "../../Common/ApiController";
 import swal from "sweetalert";
 
 export default function LogIn() {
