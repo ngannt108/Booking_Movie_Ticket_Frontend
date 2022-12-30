@@ -336,8 +336,8 @@ export default function Profile() {
                               )}
                               <p>Thanh toán: {n.tienThanhToan}</p>
                               <p>
-                                Thời gian đặt: {formatDate(n.thoiGianDat)} -{" "}
-                                {formatTime(n.thoiGianDat)}
+                                Thời gian đặt: {formatDate(n.createdAt)} -{" "}
+                                {formatTime(n.createdAt)}
                               </p>
                               {new Date(n.maLichChieu.ngayChieu) > Date.now() &&
                                 n.daDoi === false && (

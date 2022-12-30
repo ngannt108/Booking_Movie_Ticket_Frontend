@@ -150,9 +150,9 @@ export default function Payment() {
         store.bookingRoom.Payment.payment?.phongChieu
       }`
     );
-    if (qr !== false) {
-      let Combo = [];
-      let tongTienCb = 0;
+    let Combo = [];
+    let tongTienCb = 0;
+    if (listCombo && listFD) {
       listCombo.map((n) =>
         listFD.map((cb) => {
           if (n._id === cb.maAnUong) {
@@ -165,7 +165,8 @@ export default function Payment() {
           }
         })
       );
-
+    }
+    if (qr !== false) {
       const dataSendEmail = {
         taiKhoan: store.bookingRoom.Payment.payment?.hoTen,
         tenCumRap: store.bookingRoom.Payment.payment?.tenRap,
@@ -191,7 +192,7 @@ export default function Payment() {
       console.log(dataSendEmail);
       const DATA_BOOKING = {
         danhSachGhe: store.bookingRoom.Payment.payment.danhSachGhe,
-        danhSachAnUong: [],
+        danhSachAnUong: listFD,
         diemSuDung: RewardPoints,
       };
       if (isSuccessPaypal === true) {
