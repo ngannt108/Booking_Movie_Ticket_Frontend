@@ -3,7 +3,7 @@ import { StoreContext } from "../../Redux/Store/Store";
 import "./ChangeTicket.css";
 import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { API_BOOKING } from "../../common/ApiController";
+import { API_BOOKING } from "../../Common/ApiController";
 import QRCode from "qrcode";
 import swal from "sweetalert";
 import Sweetalert2 from "sweetalert2";

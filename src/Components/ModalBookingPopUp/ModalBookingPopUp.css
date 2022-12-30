@@ -1,9 +1,14 @@
-.time:hover{
-    background-color: #000;
-    color:  #fbbd61;
+.time:hover {
+  background-color: #000 !important;
+  color: #fbbd61 !important;
 }
-.time:focus{
-    border-color: white !important;
-    box-shadow: none !important;
-    outline: none;
+.time:focus {
+  border-color: white !important;
+  box-shadow: none !important;
+  outline: none;
+}
+
+.time {
+  background-color: #fbbd61 !important;
+  color: black !important;
 }

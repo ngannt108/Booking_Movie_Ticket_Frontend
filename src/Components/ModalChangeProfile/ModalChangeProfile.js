@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useContext } from "react";
 import { StoreContext } from "../../Redux/Store/Store";
 import { Modal } from "react-bootstrap";
-import { API_USER } from "../../common/ApiController";
+import { API_USER } from "../../Common/ApiController";
 import swal from "sweetalert";
 import Sweetalert2 from "sweetalert2";
 import { useNavigate } from "react-router-dom";

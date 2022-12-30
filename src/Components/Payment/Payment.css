@@ -2,7 +2,7 @@
   background: url(./bg2.jpg);
   position: relative;
   display: flex;
-  height: 1000px;
+  height: 75%;
   justify-content: center;
   align-items: center;
 }
@@ -10,8 +10,8 @@
   background-color: white;
   border-radius: 12px;
   margin-top: 100px;
-  width: 1000px;
-  height: 660px;
+  width: 85%px;
+  height: 50%;
 }
 .payment-info {
   width: 50%;
@@ -138,14 +138,14 @@ select:focus {
 
 .food-n-drink {
   display: flex;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .combo-check {
   display: flex;
   align-items: center;
-  height: 28px;
-  width: 28px;
+  /* height: 28px;
+  width: 28px; */
 }
 
 .combo-info {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../SignIn/SignIn.css";
-import { API_ACCOUNTS } from "../../common/ApiController";
+import { API_ACCOUNTS } from "../../Common/ApiController";
 import swal from "sweetalert";
 
 export default function LogIn() {
@@ -37,45 +37,45 @@ export default function LogIn() {
     SDT: phoneNumber.SDT,
   };
 
-  const REGEX_LIST = [
-    {
-      nameInput: "account",
-      inputValue: "taiKhoan",
-      error: "messError",
-      pattern: /^.+$/,
-      messError: "Vui lòng nhập tên tài khoản!",
-    },
-    {
-      nameInput: "password",
-      inputValue: "matKhau",
-      error: "messError",
-      pattern: /^.+$/,
-      messError: "Vui lòng nhập mật khẩu!",
-    },
-    {
-      nameInput: "email",
-      inputValue: "email",
-      error: "messError",
-      pattern: /^\w+@\w+(\.\w+)+$/,
-      messError: "Vui lòng nhập đúng cú pháp email!",
-      messError1: "Vui lòng nhập email!",
-    },
-    {
-      nameInput: "phoneNumber",
-      inputValue: "SDT",
-      error: "messError",
-      pattern: /^\d{10}$/,
-      messError: "Vui lòng nhập đúng dãy số điện thoại!",
-      messError1: "Vui lòng nhập số điện thoại!",
-    },
-    {
-      nameInput: "name",
-      inputValue: "hoTen",
-      error: "messError",
-      pattern: /^.+$/,
-      messError: "Vui lòng nhập tên đầy đủ",
-    },
-  ];
+  // const REGEX_LIST = [
+  //   {
+  //     nameInput: "account",
+  //     inputValue: "taiKhoan",
+  //     error: "messError",
+  //     pattern: /^.+$/,
+  //     messError: "Vui lòng nhập tên tài khoản!",
+  //   },
+  //   {
+  //     nameInput: "password",
+  //     inputValue: "matKhau",
+  //     error: "messError",
+  //     pattern: /^.+$/,
+  //     messError: "Vui lòng nhập mật khẩu!",
+  //   },
+  //   {
+  //     nameInput: "email",
+  //     inputValue: "email",
+  //     error: "messError",
+  //     pattern: /^\w+@\w+(\.\w+)+$/,
+  //     messError: "Vui lòng nhập đúng cú pháp email!",
+  //     messError1: "Vui lòng nhập email!",
+  //   },
+  //   {
+  //     nameInput: "phoneNumber",
+  //     inputValue: "SDT",
+  //     error: "messError",
+  //     pattern: /^\d{10}$/,
+  //     messError: "Vui lòng nhập đúng dãy số điện thoại!",
+  //     messError1: "Vui lòng nhập số điện thoại!",
+  //   },
+  //   {
+  //     nameInput: "name",
+  //     inputValue: "hoTen",
+  //     error: "messError",
+  //     pattern: /^.+$/,
+  //     messError: "Vui lòng nhập tên đầy đủ",
+  //   },
+  // ];
 
   const navigate = useNavigate();
 

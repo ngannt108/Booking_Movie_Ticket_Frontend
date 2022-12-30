@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { StoreContext } from "../../Redux/Store/Store";
 import Carousel from "../Carousel/Carousel";
-import { API_MOVIE, API_ROOMS } from "../../common/ApiController";
+import { API_MOVIE, API_ROOMS } from "../../Common/ApiController";
 import NewIn from "../NewIn/NewIn";
 import Soon from "../Soon/Soon";
 

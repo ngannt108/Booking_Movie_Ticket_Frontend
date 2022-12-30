@@ -35,7 +35,7 @@ export default function ModalPopUp(props) {
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title>Modal title</Modal.Title>
+          <Modal.Title>Đặt vé</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Bạn có muốn đặt vé xem phim {props.info[1]} vào lúc {props.info[2]}{" "}
@@ -43,10 +43,10 @@ export default function ModalPopUp(props) {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="warning" onClick={navigateBooking}>
-            Yes, choose seat
+            Có
           </Button>
           <Button variant="secondary" onClick={handleClose}>
-            No
+            Không
           </Button>
         </Modal.Footer>
       </Modal>

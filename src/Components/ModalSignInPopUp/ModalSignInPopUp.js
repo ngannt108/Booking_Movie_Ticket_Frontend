@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 import { useNavigate } from "react-router-dom";
-import './ModalSignInPopUp.css'
+import "./ModalSignInPopUp.css";
 
 export default function ModalPopUp(props) {
   const [show, setShow] = useState(false);
@@ -11,15 +11,15 @@ export default function ModalPopUp(props) {
   const handleShow = () => setShow(true);
 
   const navigate = useNavigate();
-  
-  const navigateSignIn = () =>{
+
+  const navigateSignIn = () => {
     navigate("/SignIn");
-  }
+  };
 
   return (
     <>
-      <Button className='time' onClick={handleShow}>
-       {props.info}
+      <Button className="time" onClick={handleShow}>
+        {props.info}
       </Button>
 
       <Modal
@@ -29,17 +29,18 @@ export default function ModalPopUp(props) {
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title>Modal title</Modal.Title>
+          <Modal.Title>Thông báo</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            Sorry but you haven't signed in yet. Please sign in before booking ticket for the movie!
+          Rất tiếc nhưng có vẻ bạn chưa đăng nhập! Vui lòng đăng nhập để đặt vé
+          xem phim nào!
         </Modal.Body>
         <Modal.Footer>
-        <Button variant="danger" onClick={navigateSignIn}>
-            Go to Log In
+          <Button variant="danger" onClick={navigateSignIn}>
+            Đăng nhập
           </Button>
           <Button variant="secondary" onClick={handleClose}>
-           Later
+            Để sau
           </Button>
         </Modal.Footer>
       </Modal>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { API_USER } from "../../common/ApiController";
+import { API_USER } from "../../Common/ApiController";
 import { Modal } from "react-bootstrap";
 import swal from "sweetalert";
+import Sweetalert2 from "sweetalert2";
 
 export default function ModalChangePassword(props) {
   const [isConfirm, setConfirm] = useState(props.show);
@@ -13,6 +14,11 @@ export default function ModalChangePassword(props) {
   const UpdatePassword = async (event, info) => {
     event.preventDefault();
     if (Validation(info)) {
+      Sweetalert2.fire({
+        title: "Xin chờ giây lát",
+        allowOutsideClick: false,
+      });
+      Sweetalert2.showLoading();
       let token = JSON.parse(sessionStorage.getItem("token"));
       let res = await fetch(API_USER.CHANGE_PASSWORD, {
         headers: {
@@ -25,6 +31,7 @@ export default function ModalChangePassword(props) {
       });
       console.log(res.status);
       let message = await res.json();
+      Sweetalert2.close();
       if (res.status === 200) {
         await swal({
           title: "Thành công",

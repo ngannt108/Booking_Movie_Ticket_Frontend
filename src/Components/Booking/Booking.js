@@ -1,8 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import "./Booking.css";
 import { StoreContext } from "../../Redux/Store/Store";
-// import PaymentPopUp from "../ModalPaymentPopUp/ModalPaymentPopUp";
 import ModalPaymentPopUp from "../ModalPaymentPopUp/ModalPaymentPopUp";
+import swal from "sweetalert";
+import { FormatDate, FormatTime } from "../../Common/Format";
 
 export default function Booking() {
   const store = useContext(StoreContext);
@@ -12,6 +13,7 @@ export default function Booking() {
   const [seatRow, setSeatRow] = useState(null);
   const [clusterName, setClusterName] = useState(null);
   const [orderedChairs, setOrderedChairs] = useState(null);
+  const [isChoosingChairs, setIsChoosingChairs] = useState(null);
 
   useEffect(() => {
     if (
@@ -45,9 +47,13 @@ export default function Booking() {
       e.target.classList.contains("seat") &&
       !e.target.classList.contains("selected")
     ) {
-      e.target.classList.add("selected");
-      setArr([...arrSelectedSeat, e.target.innerText]);
-      setCount(count + 1);
+      if (arrSelectedSeat.length < 10) {
+        e.target.classList.add("selected");
+        setArr([...arrSelectedSeat, e.target.innerText]);
+        setCount(count + 1);
+      } else {
+        swal("Quá số lượng ghế", "Vui lòng chọn tối đa 10 ghế!", "error");
+      }
     } else if (e.target.classList.contains("selected")) {
       e.target.classList.remove("selected");
       arrSelectedSeat.splice(arrSelectedSeat.indexOf(e.target.innerText), 1);
@@ -57,10 +63,16 @@ export default function Booking() {
 
   useEffect(() => {
     if (store.bookingRoom.Booking.booking.showtime) {
-      console.log(store.bookingRoom.Booking.booking.showtime);
+      // console.log(store.bookingRoom.Booking.booking.showtime);
       setOrderedChairs(store.bookingRoom.Booking.booking.showtime.gheDaChon);
+      setIsChoosingChairs(
+        store.bookingRoom.Booking.booking.showtime.gheDangChon
+      );
     }
-  }, [store.bookingRoom.Booking.booking.showtime.gheDaChon]);
+  }, [
+    store.bookingRoom.Booking.booking.showtime.gheDaChon,
+    store.bookingRoom.Booking.booking.showtime.gheDangChon,
+  ]);
 
   return (
     <>
@@ -88,6 +100,16 @@ export default function Booking() {
                               <div
                                 key={i}
                                 className="seat booked-chair"
+                                name={chair}
+                              >
+                                {chair}
+                              </div>
+                            );
+                          } else if (isChoosingChairs.includes(chair)) {
+                            return (
+                              <div
+                                key={i}
+                                className="seat oldChair"
                                 name={chair}
                               >
                                 {chair}
@@ -180,7 +202,7 @@ export default function Booking() {
                     ) : (
                       <div
                         onClick={() => {
-                          console.log(store.account.Profile.profile.hoTen);
+                          // console.log(store.account.Profile.profile.hoTen);
                           store.bookingRoom.PaymentDisPatch({
                             type: "PAYMENT",
                             payload: {
@@ -205,7 +227,12 @@ export default function Booking() {
                         }}
                         style={{ paddingLeft: "12px" }}
                       >
-                        <ModalPaymentPopUp />
+                        <ModalPaymentPopUp
+                          maLichChieu={
+                            store.bookingRoom.Booking.booking.showtime
+                          }
+                          gheDangChon={arrSelectedSeat}
+                        />
                       </div>
                     )}
                   </div>
@@ -223,30 +250,12 @@ export default function Booking() {
                     {store.bookingRoom.Booking.booking.info[1]}
                   </div>
                   <div className="booking-date">
-                    {store.bookingRoom.Booking.booking.showtime.ngayChieu.slice(
-                      11,
-                      13
-                    ) *
-                      1 +
-                      7 +
-                      store.bookingRoom.Booking.booking.showtime.ngayChieu.slice(
-                        13,
-                        16
-                      ) +
+                    {FormatTime(
+                      store.bookingRoom.Booking.booking.showtime.ngayChieu
+                    ) +
                       " - " +
-                      store.bookingRoom.Booking.booking.showtime.ngayChieu.slice(
-                        8,
-                        10
-                      ) +
-                      "/" +
-                      store.bookingRoom.Booking.booking.showtime.ngayChieu.slice(
-                        5,
-                        7
-                      ) +
-                      "/" +
-                      store.bookingRoom.Booking.booking.showtime.ngayChieu.slice(
-                        0,
-                        4
+                      FormatDate(
+                        store.bookingRoom.Booking.booking.showtime.ngayChieu
                       )}
                   </div>
                 </div>
