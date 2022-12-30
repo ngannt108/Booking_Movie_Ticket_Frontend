@@ -140,28 +140,18 @@ export default function MovieDetail() {
                     {store.movie.DetailMovie.detailMovie.moTa}
                   </div>
                 </div>
-                <div>
-                  <Comments
-                    comments={store.movie.DetailMovie.detailMovie.binhLuan}
-                    slug={biDanh}
-                  />
-                </div>
               </div>
             </div>
           </div>
-          {/* <div className="movie-showtime">
-            <h1 className="movie-showtime-header">Showtime</h1>
-            <section className="container container-mdc">
-              <div className="row showtime-fields">
-                <MovieDetailCinemas
-                  setDate={setCurentDate}
-                  date={currentDate}
-                  banner={store.MovieDetail.detail.GraphicUrl}
-                  title={store.MovieDetail.detail.Title}
-                />
-              </div>
-            </section>
-          </div> */}
+          <div>
+            <div className="movie-detail-cmt-content">
+              <Comments
+                comments={store.movie.DetailMovie.detailMovie.binhLuan}
+                biDanh={store.movie.DetailMovie.detailMovie.biDanh}
+                slug={biDanh}
+              />
+            </div>
+          </div>
         </div>
       )}
     </>

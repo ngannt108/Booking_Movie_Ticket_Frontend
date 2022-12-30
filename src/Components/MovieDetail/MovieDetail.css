@@ -6,6 +6,9 @@
 .movie-detail-main-content {
   margin: -240px 0 0 290px;
 }
+.movie-detail-cmt-content {
+  margin: 0 290px;
+}
 .movie-detail-all-info {
   display: flex;
 }

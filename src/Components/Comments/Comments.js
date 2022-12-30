@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useContext } from "react";
-import { API_USER } from "../../Common/ApiController";
+import { API_USER, API_MOVIE } from "../../Common/ApiController";
 import { StoreContext } from "../../Redux/Store/Store";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import "./Comments.css";
-export default function Comments({ comments, slug }) {
+export default function Comments({ comments, biDanh, slug }) {
   const store = useContext(StoreContext);
   const [content, setContent] = useState("");
   const [isInvalid, setInvalid] = useState();
@@ -90,9 +90,15 @@ export default function Comments({ comments, slug }) {
             text: "",
             icon: "success",
           });
-          setTimeout(function () {
-            navigate(0);
-          }, 1000);
+          fetch(`${API_MOVIE.DETAIL + biDanh}`)
+            .then((res) => res.json())
+            .then((dt) => {
+              console.log(dt.data[0]);
+              store.movie.DetailMovieDispatch({
+                type: "GETDETAILMOVIE",
+                payload: dt.data[0],
+              });
+            });
         } else return res.json();
       })
       .then((response) => {
@@ -151,7 +157,7 @@ export default function Comments({ comments, slug }) {
           </div>
         </div>
         {store.account.userAccount.account ? (
-          <div style={{ width: "40%" }}>
+          <div style={{ width: "40%", marginBottom: "50px" }}>
             <Form.Group className="mb-3">
               <Form.Label style={{ fontSize: "24px", color: "black" }}>
                 Viết bình luận của bạn
@@ -176,7 +182,7 @@ export default function Comments({ comments, slug }) {
               </Form.Control.Feedback>
             </Form.Group>
             <button
-              className="button-custom yes"
+              className="btn btn-success yes"
               name="Đăng bình luận"
               borderRadius="0.4em"
               disabled={isInvalid === undefined ? true : isInvalid}

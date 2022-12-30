@@ -125,10 +125,33 @@ export default function Profile() {
   };
 
   const [detailHistory, setDetailHistory] = useState(null);
+  const [isShowing, setIsShowing] = useState(true);
+  const [isTimeExpired, setExpired] = useState(false);
 
-  const TimeExpiredPayment = () => {};
+  const TimeExpiredPayment = () => {
+    let lsPayment = [];
+    if (isTimeExpired) {
+      historyPayment.map((n) => {
+        if (new Date(n.maLichChieu.ngayChieu) < Date.now()) {
+          lsPayment.push(n);
+        }
+      });
+      setDetailHistory(lsPayment);
+    }
+  };
 
-  const ShowingPayment = () => {};
+  const ShowingPayment = () => {
+    let lsPayment = [];
+    if (isShowing) {
+      historyPayment.map((n) => {
+        if (new Date(n.maLichChieu.ngayChieu) >= Date.now()) {
+          lsPayment.push(n);
+        }
+      });
+      setDetailHistory(lsPayment);
+    }
+    setExpired(false);
+  };
 
   return (
     <>
@@ -255,13 +278,21 @@ export default function Profile() {
                     <button
                       className="btn btn-danger"
                       style={{ marginRight: "30px" }}
-                      onClick={() => TimeExpiredPayment()}
+                      onClick={() => {
+                        setIsShowing(false);
+                        setExpired(true);
+                        TimeExpiredPayment();
+                      }}
                     >
                       Đã hết hạn
                     </button>
                     <button
                       className="btn btn-primary"
-                      onClick={() => ShowingPayment()}
+                      onClick={() => {
+                        setExpired(false);
+                        setIsShowing(true);
+                        ShowingPayment();
+                      }}
                     >
                       Chưa xem
                     </button>
@@ -277,58 +308,61 @@ export default function Profile() {
                     </div>
                     <div className="payment-ticket-detail">
                       <div className="payment-history">
-                        {historyPayment.map((n, i) => (
-                          <div
-                            key={i}
-                            className="history-ticket onClick-payment"
-                            onClick={(e) => {
-                              checkOnClickPaymentDetail(e, "onClick-payment");
-                              setPaymentDetail(n);
-                            }}
-                          >
-                            <p>Phim: {n.phim?.tenPhim}</p>
-                            <p>Thời lượng: {n.phim?.thoiLuong}p</p>
-                            {n.danhSachAnUong.length > 0 && (
-                              <p>
-                                Combo đi kèm:{" "}
-                                {listCombo.map((combo) =>
-                                  n.danhSachAnUong.map((fD, i) => {
-                                    if (fD.maAnUong === combo._id) {
-                                      return (
-                                        <span key={i}>{combo.tenCombo} </span>
-                                      );
-                                    }
-                                  })
-                                )}
-                              </p>
-                            )}
-                            <p>Thanh toán: {n.tienThanhToan}</p>
-                            <p>
-                              Thời gian đặt: {formatDate(n.thoiGianDat)} -{" "}
-                              {formatTime(n.thoiGianDat)}
-                            </p>
-                            {new Date(n.maLichChieu.ngayChieu) > Date.now() &&
-                              n.daDoi === false && (
-                                <button
-                                  className="change-ticket"
-                                  onClick={() => {
-                                    store.bookingRoom.ChangeTicketDispatch({
-                                      type: "CHANGE_TICKET",
-                                      payload: n,
-                                    });
-                                    navigate("/ChangeTicket");
-                                  }}
-                                >
-                                  Đổi vé
-                                </button>
+                        {detailHistory &&
+                          detailHistory.map((n, i) => (
+                            <div
+                              key={i}
+                              className="history-ticket onClick-payment"
+                              onClick={(e) => {
+                                checkOnClickPaymentDetail(e, "onClick-payment");
+                                setPaymentDetail(n);
+                              }}
+                            >
+                              <p>Phim: {n.phim?.tenPhim}</p>
+                              <p>Thời lượng: {n.phim?.thoiLuong}p</p>
+                              {n.danhSachAnUong.length > 0 && (
+                                <p>
+                                  Combo đi kèm:{" "}
+                                  {listCombo.map((combo) =>
+                                    n.danhSachAnUong.map((fD, i) => {
+                                      if (fD.maAnUong === combo._id) {
+                                        return (
+                                          <span key={i}>{combo.tenCombo} </span>
+                                        );
+                                      }
+                                    })
+                                  )}
+                                </p>
                               )}
-                            {n.daDoi === true && (
-                              <p style={{ color: "red", fontStyle: "italic" }}>
-                                ĐÃ ĐỔI VÉ
+                              <p>Thanh toán: {n.tienThanhToan}</p>
+                              <p>
+                                Thời gian đặt: {formatDate(n.thoiGianDat)} -{" "}
+                                {formatTime(n.thoiGianDat)}
                               </p>
-                            )}
-                          </div>
-                        ))}
+                              {new Date(n.maLichChieu.ngayChieu) > Date.now() &&
+                                n.daDoi === false && (
+                                  <button
+                                    className="change-ticket"
+                                    onClick={() => {
+                                      store.bookingRoom.ChangeTicketDispatch({
+                                        type: "CHANGE_TICKET",
+                                        payload: n,
+                                      });
+                                      navigate("/ChangeTicket");
+                                    }}
+                                  >
+                                    Đổi vé
+                                  </button>
+                                )}
+                              {n.daDoi === true && (
+                                <p
+                                  style={{ color: "red", fontStyle: "italic" }}
+                                >
+                                  ĐÃ ĐỔI VÉ
+                                </p>
+                              )}
+                            </div>
+                          ))}
                       </div>
                       <div className="ticket-detail">
                         {paymentDetail ? (

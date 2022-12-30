@@ -7,6 +7,7 @@ import VideoPopUp from "../VideoPopUp/VideoPopUp";
 import { Link } from "react-router-dom";
 import "./Theater.css";
 import { FormatDate, FormatTime } from "../../Common/Format";
+import Sweetalert2 from "sweetalert2";
 
 export default function Theaters() {
   const store = useContext(StoreContext);
@@ -51,6 +52,11 @@ export default function Theaters() {
 
   useEffect(() => {
     if (currentDate && cinemaId) {
+      Sweetalert2.fire({
+        title: "Xin chờ giây lát",
+        allowOutsideClick: false,
+      });
+      Sweetalert2.showLoading();
       let ngayDaChon = `${currentDate.slice(6, 10)}-${currentDate.slice(
         3,
         5
@@ -68,6 +74,7 @@ export default function Theaters() {
         .then((dt) => {
           setFilms(dt.data);
         });
+      Sweetalert2.close();
     }
   }, [currentDate, cinemaId]);
 
